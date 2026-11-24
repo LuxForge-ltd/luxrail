@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # sync-upstream.sh -- merge upstream openrail into LuxRail's Dev branch, once a week.
 #
-# Runs as the `upstream-sync` cron service on LuxForge's OpenRail/LuxRail install (Fridays 02:00 UTC,
-# see railway.json next to this file), or by hand with the same variables.
+# Runs as the `upstream-sync` cron service on LuxForge's OpenRail/LuxRail install, Fridays at 02:00 UTC
+# (the schedule is set on the service; see README.md next to this file), or by hand with the same
+# variables.
 #
 #   1. Clone LuxRail and fetch upstream `main`.
 #   2. Nothing new upstream: log "up to date" and stop.

@@ -4,9 +4,5 @@
     "builder": "DOCKERFILE",
     "dockerfilePath": "luxforge/sync/Dockerfile",
     "watchPatterns": ["luxforge/sync/**"]
-  },
-  "deploy": {
-    "cronSchedule": "0 2 * * 5",
-    "restartPolicyType": "NEVER"
   }
 }

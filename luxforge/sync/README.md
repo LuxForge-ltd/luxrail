@@ -28,16 +28,25 @@ list or the log.
 ## Deploying it (once)
 
 1. **Token.** Create a fine-grained GitHub token for `LuxForge-ltd/luxrail` only, with
-   *Contents: Read and write* and *Pull requests: Read and write*, and an expiry. Keep it in the
-   KeePassXC vault as `luxrail/github-sync-token`.
+   *Contents*, *Pull requests* and *Workflows* set to *Read and write* (upstream merges can touch
+   `.github/workflows/`, which GitHub refuses to push without it; Actions stays off, so nothing
+   runs), and an expiry. Keep it in the KeePassXC vault as `luxrail/github-sync-token`.
 2. **Service.** In the console, in a project such as `luxrail-ops`, add a service from the GitHub
    repository `LuxForge-ltd/luxrail`, branch `Dev`, with the config file
-   `luxforge/sync/railway.json`. That file builds `luxforge/sync/Dockerfile` (from the repository
-   root), sets the schedule `0 2 * * 5` (UTC) and turns restarts off.
-3. **Variables.** Add `GH_TOKEN` as a **sealed** variable (paste it from the vault; it is never
+   `luxforge/sync/railway.json`. That file builds `luxforge/sync/Dockerfile` from the repository
+   root.
+3. **Schedule.** In the service's *Settings > Deploy*, set *Cron Schedule* to `0 2 * * 5` (UTC)
+   and the restart policy to *Never*. These are set on the service, not in `railway.json`:
+   openrail v0.1.9's scheduler and *Run now* only read a service's own schedule, and it refuses a
+   schedule on the service while the config file sets one. (A LuxRail fix will let the file carry
+   it again.)
+4. **Variables.** Add `GH_TOKEN` as a **sealed** variable (paste it from the vault; it is never
    shown again). Optional: `SYNC_ASSIGNEE` (default `30-something-programmer`), `SYNC_TEST_CMD`.
-4. **Deploy**, then use **Run now** once and read the run's log. A first run with nothing new
+5. **Deploy**, then use **Run now** once and read the run's log. A first run with nothing new
    upstream ends with "up to date".
+
+On joyeuse, `L:\LuxForge\bin\luxrail-deploy-sync.ps1` does steps 2 to 5 through the OpenRail API.
+It asks once for the vault password and is safe to run again.
 
 ## Reading the result
 
