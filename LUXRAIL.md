@@ -18,10 +18,10 @@ this repository stays public so everyone using a LuxRail install can get its sou
 
 | Branch | Holds |
 | --- | --- |
-| `main` | An untouched mirror of upstream `main`. Only the weekly sync moves it. |
+| `main` | Released LuxRail. It moves only when the operator approves the "Release Dev to main" pull request. |
 | `Dev` | LuxRail: upstream plus LuxForge changes. The integration branch for all work. |
 | `phase-XX-*` | One approved change each, merged into `Dev` by pull request. |
-| `sync/upstream-<date>` | A weekly upstream merge, opened as a pull request into `Dev`. |
+| `sync/upstream-<date>` | A weekly upstream merge. When it is clean and the tests pass, `Dev` is fast-forwarded to it. |
 
 The other branches copied from upstream when the fork was made are upstream's work in progress and
 are not used here.
@@ -37,10 +37,11 @@ LuxRail at openrail v0.1.9 (`d6fad37`).
 - Agent and contributor rules: `AGENTS.md` (LuxForge governance, integration branch `Dev`).
 - Keep LuxForge changes small and, where possible, in files of their own, so upstream merges stay
   cheap. Fixes that are useful to everyone may be offered upstream as pull requests.
-- No GitHub Actions run in this repository: Actions is turned off for it. Builds, tests, syncs and
-  releases run on LuxForge devices (Pillars `standards/devices.md`). Upstream's workflow files are
+- No GitHub Actions run in this repository: Actions is turned off for it. Builds, tests and
+  releases run on LuxForge devices (Pillars `standards/devices.md`); the weekly sync runs on LuxForge's own LuxRail install. Upstream's workflow files are
   kept unchanged so merges stay clean; they do not run here.
-- Weekly upstream sync, Fridays at 02:00 UTC: a scheduled job on a LuxForge build device fetches upstream, fast-forwards
-  `main`, merges it into a `sync/upstream-<date>` branch from `Dev`, runs the tests and opens a pull
-  request into `Dev`. Conflicts are left marked in that pull request for a person or agent to
-  resolve. Nothing reaches `Dev` without the operator's approval.
+- Weekly upstream sync, Fridays at 02:00 UTC, as a cron service on LuxForge's OpenRail/LuxRail
+  install: it merges upstream `main` into a `sync/upstream-<date>` branch from `Dev` and runs the
+  tests. A clean, passing merge fast-forwards `Dev` and leaves a "Release Dev to main" pull request
+  for the operator to approve; conflicts or failing tests leave a pull request into `Dev` instead.
+  See `luxforge/sync/README.md`.
