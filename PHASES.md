@@ -23,7 +23,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 01 | `phase-01-fork-governance-setup` | Merged | 0.0.1 | [#1](https://github.com/LuxForge-ltd/luxrail/pull/1) | Plan approved by Ben, 2026-11-24 18:47 UTC ("lets do it. Call it LuxRail"); commit approved by Ben, 2026-11-24 18:51 UTC ("go luxrail 01"); merge authorised by Ben, 2026-11-24 19:07 UTC ("merge both") |
 | 02 | `phase-02-upstream-sync-job` | Merged | 0.0.2 | see pull requests | Plan approved by Ben, 2026-11-24 18:47 UTC; design settled 18:55 UTC (see Approved Plans); commit and merge approved by Ben, 2026-11-24 19:07 UTC ("go luxrail 02, merge both") |
 | 03 | `phase-03-sync-cron-settings` | Merged | 0.0.3 | see pull requests | Commit and merge approved by Ben, 2026-11-24 20:57 UTC ("go luxrail 03", choosing option A of the 20:53 UTC proposal: trim `railway.json`, commit and merge into Dev) |
-| 04 | `phase-04-signed-release-builds` | Open | 0.0.4 | see pull requests | Plan approved by Ben, 2026-11-24 21:21 UTC ("go luxrail 04", the plan sent at 21:20 UTC); commit approved by Ben, 2026-11-25 12:15 UTC ("commit luxrail 04"); merge not authorised |
+| 04 | `phase-04-signed-release-builds` | Merged | 0.0.4 | [#4](https://github.com/LuxForge-ltd/luxrail/pull/4) | Plan approved by Ben, 2026-11-24 21:21 UTC ("go luxrail 04", the plan sent at 21:20 UTC); commit approved by Ben, 2026-11-25 12:15 UTC ("commit luxrail 04"); merge authorised by Ben, 2026-11-25 12:18 UTC ("merge luxrail 04") |
 
 ## Handoff Notes
 
