@@ -16,7 +16,7 @@ set -eu
 
 # Release signing keys (minisign, base64), the same list as install/install.sh
 # and internal/upgrade/release-keys.txt. e2e/scripts/release-key.sh writes it.
-RELEASE_PUBKEYS="RWS5v2vaQNNARGmod7/0v3a8ZYZGhT95PWYNvc+dXNxe3/gWarQEiKiR"
+RELEASE_PUBKEYS="RWQYfmJdUyy+FfNgnWslB9GLZIxhs6N3kQs3ZrCNTAlON3GPB84mwgqY"
 
 DEFAULT_REPO="musakkka/openrail"
 
