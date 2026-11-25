@@ -216,6 +216,8 @@ func (c *Core) GitHubWebhook(ctx context.Context, event, signature string, body 
 		if _, err := c.orch.Deploy(ctx, cpapi.DeployInput{EnvID: in.EnvID, ServiceID: in.ServiceID, Trigger: "github", Actor: "github:" + p.Head.Author,
 			Message: p.Head.Message, Commit: commit, Rebuild: true, Skipped: skip}); err != nil {
 			c.log.Warn("cannot deploy a pushed commit", "service", in.ServiceID, "err", err)
+		} else {
+			c.recordPolled(ctx, in.EnvID, in.ServiceID, commit.SHA)
 		}
 	}
 	return nil

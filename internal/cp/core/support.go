@@ -628,8 +628,14 @@ func (c *Core) GitHubCloneToken(ctx context.Context, repo string) (string, error
 	return "", nil
 }
 
-// pollPublicRepos checks public repositories (no App webhook) every 2
-// minutes and deploys services with auto deploy on when their branch moves (9.14).
+// pollPublicRepos checks repositories every 2 minutes and deploys services
+// with auto deploy on when their branch moves (9.14): public repositories with
+// git ls-remote, and repositories the GitHub App reads (private ones) through
+// the API with the App's read-only token for that one repository. Polling App
+// repositories keeps auto deploy working where GitHub's webhooks cannot reach
+// the console (a LAN install, or one behind an access proxy). A commit a
+// webhook already deployed is recorded in github_polls, so it is not deployed
+// twice.
 func (c *Core) pollPublicRepos(ctx context.Context) {
 	t := time.NewTicker(2 * time.Minute)
 	defer t.Stop()
@@ -652,11 +658,11 @@ func (c *Core) pollPublicRepos(ctx context.Context) {
 				continue
 			}
 			ref, ok := github.ParseRepo(src.Repo)
-			if !ok || ref.URL == "" {
+			if !ok {
 				continue
 			}
-			sha, _, err := c.git.LsRemote(ctx, ref.CloneURL(), src.Branch)
-			if err != nil || sha == "" {
+			sha, commit := c.polledHead(ctx, ref, src)
+			if sha == "" {
 				continue
 			}
 			var last string
@@ -669,11 +675,81 @@ func (c *Core) pollPublicRepos(ctx context.Context) {
 			if last == "" || last == sha {
 				continue
 			}
-			if _, err := c.orch.Deploy(ctx, cpapi.DeployInput{EnvID: in.EnvID, ServiceID: in.ServiceID, Trigger: "github", Actor: "github", Ref: sha, Rebuild: true}); err != nil {
+			di := cpapi.DeployInput{EnvID: in.EnvID, ServiceID: in.ServiceID, Trigger: "github", Actor: "github", Ref: sha, Rebuild: true}
+			if commit != nil {
+				di.Ref, di.Commit, di.Message = "", commit, commit.Message
+				if commit.Author != "" {
+					di.Actor = "github:" + commit.Author
+				}
+			}
+			if _, err := c.orch.Deploy(ctx, di); err != nil {
 				c.log.Warn("cannot deploy a new commit found by polling", "service", in.ServiceID, "err", err)
 			}
 		}
 	}
+}
+
+// polledHead returns the commit at the head of the service's branch: through
+// git ls-remote for a public repository (no commit details), or through the
+// GitHub API with the App's read-only token for a repository the App reads.
+// "" means it could not be read; polling tries again next round.
+func (c *Core) polledHead(ctx context.Context, ref github.RepoRef, src api.SourceConfig) (string, *api.Commit) {
+	h := headSources{
+		lsRemote: func(ctx context.Context, url, branch string) (string, error) {
+			sha, _, err := c.git.LsRemote(ctx, url, branch)
+			return sha, err
+		},
+		token: c.GitHubCloneToken,
+	}
+	if c.gh != nil {
+		h.commit = c.gh.CommitInfo
+	}
+	return headFor(ctx, ref, src, h)
+}
+
+// headSources are the lookups polling uses, so headFor can be tested alone.
+type headSources struct {
+	lsRemote func(ctx context.Context, url, branch string) (string, error)
+	token    func(ctx context.Context, repo string) (string, error)
+	commit   func(ctx context.Context, token, repo, ref string) (github.Commit, error)
+}
+
+// headFor reads the head of src's branch: git ls-remote for a public
+// repository (URL form, no commit details), else the GitHub API with the
+// App's token when the App reads the repository. "" when it cannot be read.
+func headFor(ctx context.Context, ref github.RepoRef, src api.SourceConfig, h headSources) (string, *api.Commit) {
+	if ref.URL != "" {
+		sha, err := h.lsRemote(ctx, ref.CloneURL(), src.Branch)
+		if err != nil {
+			return "", nil
+		}
+		return sha, nil
+	}
+	if h.token == nil || h.commit == nil {
+		return "", nil
+	}
+	tok, err := h.token(ctx, src.Repo)
+	if err != nil || tok == "" {
+		return "", nil
+	}
+	branch := src.Branch
+	if branch == "" {
+		branch = "HEAD" // the API resolves the default branch
+	}
+	ci, err := h.commit(ctx, tok, ref.FullName, branch)
+	if err != nil || ci.SHA == "" {
+		return "", nil
+	}
+	return ci.SHA, &api.Commit{SHA: ci.SHA, Author: ci.Author, Message: ci.Message, Branch: src.Branch, URL: ci.URL, Time: ci.Time}
+}
+
+// recordPolled notes the commit a webhook deployed, so polling does not deploy it again.
+func (c *Core) recordPolled(ctx context.Context, envID, serviceID, sha string) {
+	if sha == "" {
+		return
+	}
+	_ = c.st.Exec(ctx, `INSERT INTO github_polls (service_id, environment_id, sha, checked_at) VALUES (?, ?, ?, ?)
+		ON CONFLICT(service_id, environment_id) DO UPDATE SET sha = excluded.sha, checked_at = excluded.checked_at`, serviceID, envID, sha, c.Now())
 }
 
 // updateCheck fetches the latest release version every 6 hours.
