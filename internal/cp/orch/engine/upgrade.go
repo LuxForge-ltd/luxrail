@@ -6,6 +6,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"regexp"
 	"strings"
 	"time"
 
@@ -74,11 +75,24 @@ func (o *Orchestrator) agentUpgradeLoop(ctx context.Context) {
 	}
 }
 
+// releaseVersion reports whether v is a published release whose agents are
+// kept in step: vX.Y.Z, or a downstream build of one tagged vX.Y.Z-lf.N
+// (LuxRail). Development, dirty and snapshot builds, and other pre-release
+// suffixes, never push agents around.
 func releaseVersion(v string) bool {
 	v = strings.TrimPrefix(v, "v")
-	parts := strings.Split(v, ".")
-	return len(parts) == 3 && !strings.Contains(v, "dev") && !strings.Contains(v, "dirty")
+	if strings.Contains(v, "dev") || strings.Contains(v, "dirty") || strings.Contains(v, "snapshot") {
+		return false
+	}
+	core, suffix, hasSuffix := strings.Cut(v, "-")
+	if hasSuffix && !downstreamSuffix.MatchString(suffix) {
+		return false
+	}
+	return len(strings.Split(core, ".")) == 3
 }
+
+// downstreamSuffix matches the build suffix of a downstream release, "lf.N".
+var downstreamSuffix = regexp.MustCompile(`^lf\.[0-9]+$`)
 
 func (o *Orchestrator) setAgentUpgrade(ctx context.Context, a api.AgentUpgrade) {
 	_ = o.st.Write(ctx, func(tx *sql.Tx) error {

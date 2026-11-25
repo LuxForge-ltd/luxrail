@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/musakkka/openrail/internal/cp/core/fail"
 	"github.com/musakkka/openrail/internal/cp/cpapi"
 	"github.com/musakkka/openrail/internal/cp/orch/data/fakerunner"
 	"github.com/musakkka/openrail/pkg/api"
@@ -328,5 +329,48 @@ func TestParseCron(t *testing.T) {
 	next := s.Next(time.Date(2026, 10, 21, 0, 0, 0, 0, time.UTC).In(loc))
 	if next.UTC().Hour() != 13 {
 		t.Errorf("09:00 New York = %v UTC", next.UTC())
+	}
+}
+
+// A schedule set only in a config file (railway.json) is merged into the
+// deployment, not the committed config: the scheduler and Run now follow it.
+func TestCronFollowsConfigFileScheduleOfActiveDeployment(t *testing.T) {
+	e := newEnv(t)
+	committed := api.ServiceConfig{Name: "sync", Source: api.SourceConfig{Type: "image", Image: "busybox:1.37.0"}}
+	svc := e.cfg.AddService(e.envID, committed)
+	deployed := committed
+	deployed.Kind = "cron"
+	deployed.Deploy.CronSchedule = "*/10 * * * *"
+	deployed.Deploy.CronTimeoutSec = 300
+	deployed.Deploy.StartCommand = "sh -c 'echo hello'"
+	e.run.SetImage(e.envID, svc, fakerunner.Image{Ref: "registry/svc:dep", Config: deployed, Env: map[string]string{}})
+	ctx := e.ctx()
+	if err := e.d.cron.boot(ctx); err != nil {
+		t.Fatal(err)
+	}
+	e.clock.Set(time.Date(2026, 10, 21, 10, 10, 5, 0, time.UTC))
+	e.d.cron.tick(ctx, e.clock.Now())
+	e.wait()
+	if n := len(e.run.JobsOfKind("cron")); n != 1 {
+		t.Fatalf("%d scheduled jobs from the config-file schedule, want 1", n)
+	}
+	if _, err := e.d.RunCronNow(ctx, e.envID, svc, ""); err != nil {
+		t.Fatalf("Run now with a config-file schedule: %v", err)
+	}
+	e.wait()
+	if n := len(e.run.JobsOfKind("cron")); n != 2 {
+		t.Fatalf("%d jobs after Run now, want 2", n)
+	}
+}
+
+// Run now's refusals are sentences, which the API answers with 400 and the
+// sentence, not a generic 500.
+func TestRunCronNowRefusalsAreSentences(t *testing.T) {
+	e := newEnv(t)
+	plain := e.cfg.AddService(e.envID, api.ServiceConfig{Name: "web"})
+	_, err := e.d.RunCronNow(e.ctx(), e.envID, plain, "")
+	var s fail.Sentence
+	if !errors.As(err, &s) {
+		t.Fatalf("err = %T %v, want a fail.Sentence", err, err)
 	}
 }
