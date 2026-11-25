@@ -5,13 +5,14 @@
 // deployment" card with the deploy action, and the history list.
 
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDown, CirclePause, EyeOff, Globe, Layers, MapPin, TriangleAlert } from "lucide-react";
+import { ChevronDown, CirclePause, EyeOff, Globe, Layers, MapPin, Play, TriangleAlert } from "lucide-react";
 import type { Deployment, Service } from "../../api/types.gen";
 import { BrandIcon, Button, CopyButton, RelTime, Skeleton, cx, toast } from "../../kit";
 import { get, post, svcPath } from "../service/client";
 import { useEnvEvents } from "../service/events";
 import { useLoad } from "../service/ui";
 import { inProgress, type DepAction } from "./actions";
+import { DEPLOY_LATEST, canDeployLatest, deployLatestLabel, deployLatestStarted } from "./latest";
 import { lookOf, mmss, outcomeText, titleOf, totalMs, viaLabel } from "./format";
 import { AuthorAvatar, DepMenu, OUTCOME_TEXT, OutcomeIcon, StatusBadge, StepRows, useDepActions } from "./parts";
 
@@ -69,8 +70,8 @@ export default function DeploymentsTab({ eid, service, onOpen, onTab }: {
   const deploy = async () => {
     setDeploying(true);
     try {
-      await post<Deployment>(`${base}/deploy`, { ref: "latest" });
-      toast(src.type === "image" ? "Deploying the image" : "Deploying the latest commit", "success");
+      await post<Deployment>(`${base}/deploy`, DEPLOY_LATEST);
+      toast(deployLatestStarted(src), "success");
       await deps.reload();
     } catch (e) { toast(e instanceof Error ? e.message : String(e), "error"); } finally { setDeploying(false); }
   };
@@ -86,6 +87,11 @@ export default function DeploymentsTab({ eid, service, onOpen, onTab }: {
         deps.error ? <LoadError text={deps.error} onRetry={() => void deps.reload()} /> : <ListSkeleton />
       ) : (
         <>
+          {view.lead.length > 0 && canDeployLatest(src) && (
+            <div className="mb-3 flex justify-end">
+              <Button size="sm" icon={<Play size={14} />} busy={deploying} onClick={() => void deploy()}>{deployLatestLabel(src)}</Button>
+            </div>
+          )}
           <div className="space-y-2">
             {view.lead.map((d) => <LeadCard key={d.id} d={d} onOpen={onOpen} onAction={actions.request} />)}
           </div>

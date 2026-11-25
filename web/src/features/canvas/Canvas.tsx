@@ -11,7 +11,7 @@ import {
   type Edge, type EdgeProps, type InternalNode, type Node, type NodeChange, type Viewport,
 } from "@xyflow/react";
 import {
-  Braces, CalendarDays, Camera, ChartNoAxesColumn, Clipboard, Copy, HardDrive, EyeOff, Eye, Group as GroupIcon, PencilLine, Plus, Settings, SlidersVertical, Trash2, Undo2, Upload,
+  Braces, CalendarDays, Camera, ChartNoAxesColumn, Clipboard, Copy, HardDrive, EyeOff, Eye, Group as GroupIcon, PencilLine, Play, Plus, Settings, SlidersVertical, Trash2, Undo2, Upload,
 } from "lucide-react";
 import { api, type Group as ApiGroup, type Service } from "../../api/client";
 import { useProject } from "../../app/project";
@@ -29,6 +29,7 @@ import { COLOUR_DOT, CardBody, cronLabel, EmptyNode, GROUP_COLOURS, GroupFrame, 
 import { Toolbar, type Layer } from "./Toolbar";
 import "./canvas.css";
 import { PANEL_WIDTH } from "../service/panel";
+import { DEPLOY_LATEST, canDeployLatest, deployLatestLabel, deployLatestStarted } from "../deployment/latest";
 
 export type { Tag } from "./nodes";
 
@@ -430,7 +431,15 @@ function Flow() {
     if (!editable) return view;
     const cur = memberOf[s.id];
     const removed = s.stagedAction === "delete";
+    const src = s.config.source;
+    const deploy: CtxEntry[] = canDeployLatest(src) && !removed
+      ? [{
+        label: deployLatestLabel(src), icon: <Play />,
+        onClick: () => { api.deploy(eid, s.id, DEPLOY_LATEST).then(() => { toast(deployLatestStarted(src, (s.staged || s.config).name), "success"); return reload(); }, toastError); },
+      }, "sep"]
+      : [];
     return [
+      ...deploy,
       {
         label: "Group", icon: <GroupIcon />,
         sub: [
