@@ -5,7 +5,6 @@ package data
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"fmt"
 	"strconv"
 	"sync"
@@ -13,6 +12,7 @@ import (
 
 	"github.com/robfig/cron/v3"
 
+	"github.com/musakkka/openrail/internal/cp/core/fail"
 	"github.com/musakkka/openrail/internal/cp/cpapi"
 	"github.com/musakkka/openrail/pkg/api"
 	"github.com/musakkka/openrail/pkg/proto"
@@ -150,8 +150,28 @@ func (d *Data) cronSince(ctx context.Context, envID, svcID string) int64 {
 	return v
 }
 
-// update follows a service's committed schedule.
+// withDeployedCron returns snap with the schedule that applies to it: the
+// committed one, or, when the committed config sets none, the active
+// deployment's, which includes a cronSchedule set in a config file such as
+// railway.json (9.20; the file's values are merged into each deployment).
+func (d *Data) withDeployedCron(ctx context.Context, snap cpapi.ServiceSnapshot) cpapi.ServiceSnapshot {
+	if snap.Deleted || snap.Config.Deploy.CronSchedule != "" || d.run == nil {
+		return snap
+	}
+	_, cfg, _, err := d.run.ActiveImage(ctx, snap.EnvID, snap.ServiceID)
+	if err != nil || cfg.Deploy.CronSchedule == "" {
+		return snap
+	}
+	snap.Config.Deploy.CronSchedule = cfg.Deploy.CronSchedule
+	snap.Config.Deploy.CronTimezone = cfg.Deploy.CronTimezone
+	snap.Config.Deploy.CronOverlap = cfg.Deploy.CronOverlap
+	return snap
+}
+
+// update follows a service's schedule: the committed one, else the one its
+// active deployment carries from a config file.
 func (c *cronScheduler) update(ctx context.Context, snap cpapi.ServiceSnapshot) {
+	snap = c.d.withDeployedCron(ctx, snap)
 	spec := snap.Config.Deploy.CronSchedule
 	k := cronKey(snap.EnvID, snap.ServiceID)
 	if snap.Deleted || spec == "" {
@@ -413,11 +433,12 @@ func (d *Data) RunCronNow(ctx context.Context, envID, serviceID, actor string) (
 	if err != nil {
 		return api.CronRun{}, err
 	}
+	snap = d.withDeployedCron(ctx, snap)
 	if snap.Config.Deploy.CronSchedule == "" {
-		return api.CronRun{}, errors.New("This service has no cron schedule. Set one in Settings > Deploy to make it a cron service.")
+		return api.CronRun{}, fail.Sentence("This service has no cron schedule. Set one in Settings > Deploy to make it a cron service.")
 	}
 	if _, _, _, err := d.run.ActiveImage(ctx, envID, serviceID); err != nil {
-		return api.CronRun{}, errors.New(msgNoImage + ". Deploy it first.")
+		return api.CronRun{}, fail.Sentence(msgNoImage + ". Deploy it first.")
 	}
 	at := d.now().UnixMilli()
 	var id string
@@ -429,7 +450,7 @@ func (d *Data) RunCronNow(ctx context.Context, envID, serviceID, actor string) (
 		}
 	}
 	if id == "" {
-		return api.CronRun{}, errors.New("The run could not be recorded. Try again.")
+		return api.CronRun{}, fail.Sentence("The run could not be recorded. Try again.")
 	}
 	d.background("cron "+id, func(bg context.Context) { d.cron.execute(bg, envID, serviceID, id) })
 	return api.CronRun{ID: id, ServiceID: serviceID, Status: "running", Trigger: "manual", ScheduledAt: at}, nil
