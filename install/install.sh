@@ -17,7 +17,7 @@ set -eu
 # Release signing keys (minisign, base64). The first is the current key, a
 # second one is the announced next key. internal/upgrade/release-keys.txt
 # holds the same keys; e2e/scripts/release-key.sh writes both.
-RELEASE_PUBKEYS="RWS5v2vaQNNARGmod7/0v3a8ZYZGhT95PWYNvc+dXNxe3/gWarQEiKiR"
+RELEASE_PUBKEYS="RWQYfmJdUyy+FfNgnWslB9GLZIxhs6N3kQs3ZrCNTAlON3GPB84mwgqY"
 
 REPO_RELEASES="https://github.com/musakkka/openrail/releases"
 INSTALL_DIR=/opt/5050

@@ -1,0 +1,40 @@
+# Phase Ledger
+
+Handoff record for agent work in this repository, as required by LuxForge [AI Agent Governance](https://github.com/LuxForge-ltd/pillars/blob/main/standards/ai-agent-governance.md#phase-ledger). Read this before starting work; update it as part of each approved commit.
+
+- Repository: `LuxForge-ltd/luxrail`
+- Integration branch: `Dev`
+- Current version: see `VERSION`
+
+## Approved Plans
+
+### LuxRail: a maintained LuxForge fork of openrail
+
+- 2026-11-24 18:47 UTC, Ben (Luxhome project thread "Publish OpenRail at openrail.luxforge.dev"): "lets do it. Call it LuxRail", approving the plan sent at 18:46 UTC in the same thread.
+- The plan: fork `musakkka/openrail` as public `LuxForge-ltd/luxrail` (AGPL); `main` mirrors upstream, `Dev` carries LuxForge changes; a weekly upstream sync job on a LuxForge build device (no GitHub Actions) that opens a pull request into `Dev` and leaves conflicts marked for resolution; builds and minisign-signed releases on Joyeuse so installs can upgrade through `--release-base`; then one phase per change: empty lists returned as `null` (console pages stuck loading), a LAN/IP console that survives Caddy rebuilds, no forced HTTPS redirect for tunnelled hosts, switching an existing install to private mode, the LuxForge theme, and other fixes Ben names.
+- Done when the plan was approved: fork created 2026-11-24 ~18:49 UTC from upstream `main` at `d6fad37` (openrail v0.1.9); `Dev` created at the same commit; GitHub Actions turned off for the repository.
+- 2026-11-24 18:51 UTC, Ben (same thread): "go luxrail 01, sync friday 02:00, upstream yes". The weekly upstream sync runs Fridays at 02:00 UTC, and fixes that are useful to everyone are also offered upstream as pull requests.
+- 2026-11-24 18:55 UTC, Ben (same thread), on how the sync works: "Create a new branch, ensure merges work - push to Dev. Leave a task for me in the morning to approve push to main"; run it "on Savathun, via an OpenRail deployment - we can keep an eye on it then"; conflicts as a draft pull request: "ok". So a clean, tested upstream merge is pushed to `Dev` by the job itself (a standing authorisation for that job only), `main` moves only when Ben approves the "Release Dev to main" pull request, and the job runs as a cron service on the OpenRail install on VM 105 (Savathun) rather than on a build device. The phase numbers after 02 move up by one: builds and signed releases become phase 03.
+
+## Phases
+
+| Phase | Branch | Status | Version | Pull request | Commit approval |
+| --- | --- | --- | --- | --- | --- |
+| 01 | `phase-01-fork-governance-setup` | Merged | 0.0.1 | [#1](https://github.com/LuxForge-ltd/luxrail/pull/1) | Plan approved by Ben, 2026-11-24 18:47 UTC ("lets do it. Call it LuxRail"); commit approved by Ben, 2026-11-24 18:51 UTC ("go luxrail 01"); merge authorised by Ben, 2026-11-24 19:07 UTC ("merge both") |
+| 02 | `phase-02-upstream-sync-job` | Merged | 0.0.2 | see pull requests | Plan approved by Ben, 2026-11-24 18:47 UTC; design settled 18:55 UTC (see Approved Plans); commit and merge approved by Ben, 2026-11-24 19:07 UTC ("go luxrail 02, merge both") |
+| 03 | `phase-03-sync-cron-settings` | Merged | 0.0.3 | see pull requests | Commit and merge approved by Ben, 2026-11-24 20:57 UTC ("go luxrail 03", choosing option A of the 20:53 UTC proposal: trim `railway.json`, commit and merge into Dev) |
+| 04 | `phase-04-signed-release-builds` | Merged | 0.0.4 | [#4](https://github.com/LuxForge-ltd/luxrail/pull/4) | Plan approved by Ben, 2026-11-24 21:21 UTC ("go luxrail 04", the plan sent at 21:20 UTC); commit approved by Ben, 2026-11-25 12:15 UTC ("commit luxrail 04"); merge authorised by Ben, 2026-11-25 12:18 UTC ("merge luxrail 04") |
+
+## Handoff Notes
+
+- Phase 01 adds LuxForge governance (`AGENTS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`, `.claude/`, `.gitattributes` from the Pillars sync script), this ledger, `VERSION` 0.0.1 and `LUXRAIL.md`. No upstream file is changed.
+- Upstream remote: `https://github.com/musakkka/openrail.git` (add it as `upstream` in a fresh clone). Base: v0.1.9, `d6fad37`.
+- Upstream's `.github/workflows` are kept unchanged for clean merges; Actions is turned off for this repository, so they never run.
+- Phase 02 (stacked on phase 01's branch, because PR #1 is not merged yet) adds `luxforge/sync/`: `sync-upstream.sh`, its `Dockerfile` (Go 1.26, Node 24, git, gh; user `luxrail`), `railway.json` for the OpenRail cron service (`0 2 * * 5`, Dockerfile builder, no restarts), a runbook and `test/test-sync-upstream.sh` (local bare repositories and a fake `gh`). Checked on joyeuse in Docker: 29 of 29 tests pass, shellcheck clean, the image builds and has every tool, and openrail's own `pkg/configfile` parses `railway.json`. Deploying the service needs a fine-grained GitHub token (`luxrail/github-sync-token` in the vault) and Ben's go.
+- Follow-up for Pillars: `standards/devices.md` should list the OpenRail/LuxRail install on VM 105 as where LuxRail's weekly sync runs.
+- Joyeuse has no Go toolchain yet; the build and release phase must install Go (and confirm Node) before `make build`, `make test` or `make web`.
+- Phase 03: deploying the sync service (2026-11-24, `luxrail-ops/upstream-sync` on VM 105) showed that openrail v0.1.9 ignores a `cronSchedule` that comes from a config file: `RunCronNow` and the scheduler read only the service's own settings (`snap.Config.Deploy.CronSchedule`; Run now answered a bare 500), and it refuses (422) a schedule on the service while the file sets one. So `railway.json` now holds only the build, and the schedule (`0 2 * * 5` UTC) and the restart policy (never) are set on the service; the runbook says so. `L:\LuxForge\bin\luxrail-deploy-sync.ps1` on joyeuse sets them.
+- LuxRail fix list (and upstream pull request): let the scheduler and Run now use the effective config, including a config file's `cronSchedule`; make Run now return a 4xx with its message instead of a bare 500; then move the schedule back into `railway.json`. Builds and signed releases are now phase 04.
+- Phase 04 adds `luxforge/release/`: `new-release-key.ps1` (once: generates LuxRail's minisign key with upstream's `release-key.sh` in a container, embeds the public key in `internal/upgrade/release-keys.txt`, `install/install.sh` and `install/install-cli.sh`, stores the secret key in the vault as `luxrail/release-signing-key`, wipes the file), `release.ps1` (clean checkout → Docker volume, local tag, `make web` in node:24, goreleaser v2.12.7 with `GOTOOLCHAIN=auto` and publishing skipped, signs with the vault key through an environment variable, verifies with the embedded key, pushes the tag and creates the GitHub Release) and a runbook. Release tags are `v<upstream>-lf.<n>`; the upgrader accepts them with `--version`, and its update notice compares only X.Y.Z. Dry run on joyeuse at `408e8d2`: tag `v0.1.9-lf.0`, console 248 KB gzipped, goreleaser succeeded, signature verified (test key), 12 files, `5050d version` prints `v0.1.9-lf.0 (408e8d2, …)`; about 5.5 minutes.
+- Upgrading an install made from upstream (VM 105): write `/etc/5050/release.json` with LuxRail's release base and public key, take a VM snapshot and `5050d backup-state`, then `5050d upgrade --version <tag>` (phase 05).
+- 2026-11-25 12:15 UTC: Ben ran `new-release-key.ps1`. LuxRail's release public key is `RWQYfmJdUyy+FfNgnWslB9GLZIxhs6N3kQs3ZrCNTAlON3GPB84mwgqY` (replacing upstream's `RWS5v2vaQNNARGmod7/0v3a8ZYZGhT95PWYNvc+dXNxe3/gWarQEiKiR` in the three files); the secret key is in the vault as `luxrail/release-signing-key` and was read back and matched. `check-release-keys.sh` with `REQUIRE_RELEASE_KEY=1`: keys match.

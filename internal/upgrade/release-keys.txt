@@ -4,4 +4,4 @@
 # (RELEASE_PUBKEYS); e2e/scripts/check-release-keys.sh keeps them equal.
 #
 # and writes it here and into install/install.sh.
-RWS5v2vaQNNARGmod7/0v3a8ZYZGhT95PWYNvc+dXNxe3/gWarQEiKiR
+RWQYfmJdUyy+FfNgnWslB9GLZIxhs6N3kQs3ZrCNTAlON3GPB84mwgqY
