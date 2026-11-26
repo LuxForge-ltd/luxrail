@@ -25,9 +25,11 @@ Commit the three changed files.
 From a clean clone at the commit to release (normally the tip of `Dev`):
 
 ```
-pwsh -File luxforge/release/release.ps1 -Version v0.1.9-lf.1 -DryRun
-pwsh -File luxforge/release/release.ps1 -Version v0.1.9-lf.1
+pwsh -File luxforge/release/release.ps1 -DryRun
+pwsh -File luxforge/release/release.ps1
 ```
+
+The release is tagged `v` plus the `VERSION` file (for example `v1.0.0`).
 
 1. The checkout is copied into a Docker volume and tagged with the version.
 2. `make web` builds the console (node:24).
@@ -44,10 +46,14 @@ A build takes about six minutes on joyeuse.
 
 ## Versions
 
-Release tags are `v<upstream version>-lf.<n>`, for example `v0.1.9-lf.1`: the upstream release
-LuxRail is based on, then LuxRail's own count. The upgrader accepts any tag of that form when it is
-named with `--version`; its "update available" notice compares only the `X.Y.Z` part, so pass
-`--version` explicitly. LuxRail's project version in `VERSION` is separate (one step per phase).
+A release is tagged `v<VERSION>`, for example `v1.0.0`, so the tag and LuxRail's project version
+are the same number. `release.ps1` takes the tag from `VERSION` and refuses a `-Version` that
+differs, and refuses a tag that already exists on GitHub, so `VERSION` has moved on (each phase adds
+one to PATCH) before the next release.
+
+LuxRail's first three releases were tagged `v0.1.9-lf.1` to `v0.1.9-lf.3`, when LuxRail still
+followed openrail's releases. Those tags stay published, and agents running them still roll forward
+to a new release. `v1.0.0` sorts after them, so installs on them are offered the update as usual.
 
 ## Installing and upgrading
 

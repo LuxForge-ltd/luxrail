@@ -28,9 +28,9 @@ are not used here.
 
 ## Versions
 
-LuxRail's own version is in `VERSION` (SemVer, starting at 0.0.1; each phase adds one to PATCH).
-The upstream release it is based on is recorded in `PHASES.md` with each sync. Upstream started
-LuxRail at openrail v0.1.9 (`d6fad37`).
+LuxRail's version is in `VERSION` (SemVer; each phase adds one to PATCH). Releases are tagged with
+the same number, `v<VERSION>`, starting at `v1.0.0` (see `luxforge/release/README.md`). LuxRail
+started from openrail v0.1.9 (`d6fad37`).
 
 ## Working rules
 
