@@ -155,7 +155,7 @@ func (s *Server) wrap(rt api.Route, h handler) http.Handler {
 		if rt.Role != api.Public {
 			a, err := s.authenticate(r)
 			if err != nil {
-				writeErr(w, err)
+				s.writeErrLogged(w, r, rt.Method+" "+rt.Path, err)
 				return
 			}
 			a.IP = x.A.IP
@@ -165,7 +165,7 @@ func (s *Server) wrap(rt api.Route, h handler) http.Handler {
 				return
 			}
 			if err := s.authorize(x); err != nil {
-				writeErr(w, err)
+				s.writeErrLogged(w, r, rt.Method+" "+rt.Path, err)
 				return
 			}
 		} else {
@@ -185,7 +185,7 @@ func (s *Server) wrap(rt api.Route, h handler) http.Handler {
 			if errors.Is(err, errHandled) {
 				return
 			}
-			writeErr(w, err)
+			s.writeErrLogged(w, r, rt.Method+" "+rt.Path, err)
 			return
 		}
 		if rt.Audit != "" && !rt.NoAudit && rt.Stream != "ws" {
