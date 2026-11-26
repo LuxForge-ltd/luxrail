@@ -25,7 +25,7 @@ import {
   EMPTY_H, EMPTY_W, GRID, H, W, autoLayout, frames, freeSpot, layoutInput, nodeH, repairOverlaps, resolvePositions, snap, stripsOf, type Frame, type Pos, type StripKind,
 } from "./layout";
 import { CANVAS_EVENT, ConfigField, GroupIconDialog, NEW_MENU, NewFlows, RenameChip, UpdateInfo, newIcon, type CanvasCommand, type NewKind } from "./menus";
-import { COLOUR_DOT, CardBody, cronLabel, EmptyNode, GROUP_COLOURS, GroupFrame, ServiceNode, type GroupColour, type Tag } from "./nodes";
+import { COLOUR_DOT, CardBody, cronLabel, EmptyNode, GROUP_COLOURS, GroupFrame, ServiceNode, WebsiteLink, type GroupColour, type Tag } from "./nodes";
 import { Toolbar, type Layer } from "./Toolbar";
 import "./canvas.css";
 import { PANEL_WIDTH } from "../service/panel";
@@ -668,8 +668,11 @@ function MobileList() {
           return (
             <li key={s.id} data-testid="service-card" className={cx("border-b border-line first:border-t", tag === "Edited" ? "bg-blue-50" : tag === "New" ? "bg-green-100" : tag === "Removed" ? "bg-red-50" : "bg-secondaryBg")}>
               <button type="button" className="flex min-h-[118px] w-full flex-col justify-between gap-6 px-4 py-6 text-left" onClick={() => nav(withEnv(`/project/${pid}/service/${encodeURIComponent(s.id)}`))}>
-                <CardBody s={s} tag={tag} changes={ci?.count || 0} />
+                <CardBody s={s} tag={tag} changes={ci?.count || 0} website={false} />
               </button>
+              {(s.staged || s.config).webFrontend && (s.staged || s.config).website && (
+                <div className="-mt-3 px-4 pb-4"><WebsiteLink url={(s.staged || s.config).website!} /></div>
+              )}
               {stripsOf(s).map((k) => (
                 <div key={k} className="relative grid h-12 grid-cols-[24px_1fr] items-center gap-3 border-t border-gray-100 px-4 pl-10 text-sm text-fg-3">
                   <span aria-hidden className="absolute bottom-0 left-4 top-0 w-1.5 bg-gray-200 opacity-30" />

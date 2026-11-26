@@ -523,6 +523,9 @@ func (c *Core) UpdateServiceConfig(ctx context.Context, a Actor, envID, sid stri
 	if err := changes.CheckPatch(patch); err != nil {
 		return api.Service{}, err
 	}
+	if err := refuseWebsitePatch(patch); err != nil {
+		return api.Service{}, err
+	}
 	var rename *string
 	if n, ok := patch["name"]; ok {
 		s, _ := n.(string)
@@ -627,7 +630,7 @@ func (c *Core) checkFileFields(ctx context.Context, tx *sql.Tx, envID, sid strin
 	return nil
 }
 
-// UpdateServiceInfo renames (staged) or changes the icon (immediate).
+// UpdateServiceInfo renames (staged) or changes the icon or website (immediate).
 func (c *Core) UpdateServiceInfo(ctx context.Context, a Actor, envID, sid string, req api.UpdateServiceInfoRequest) (api.Service, error) {
 	err := c.st.Write(ctx, func(tx *sql.Tx) error {
 		in, err := c.liveInstance(ctx, tx, envID, sid)
@@ -641,6 +644,11 @@ func (c *Core) UpdateServiceInfo(ctx context.Context, a Actor, envID, sid string
 			}
 			in.Config.Icon = icon
 			if _, err := tx.ExecContext(ctx, `UPDATE service_instances SET config = json_set(config, '$.icon', ?) WHERE service_id = ? AND environment_id = ?`, icon, sid, envID); err != nil {
+				return err
+			}
+		}
+		if req.WebFrontend != nil || req.Website != nil {
+			if err := setWebsite(ctx, tx, in, req.WebFrontend, req.Website); err != nil {
 				return err
 			}
 		}
