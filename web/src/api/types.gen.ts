@@ -642,7 +642,7 @@ export interface CreateJoinTokenRequest {
   name?: string;
 }
 export interface JoinToken {
-  command: string; // curl -fsSL https://openrail.app/install.sh | sudo sh -s -- --join <url> --token <t> --roles app
+  command: string; // curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh -s -- --join <url> --token <t> --roles app
   token: string; // single use
   expiresAt: number /* int64 */;
 }

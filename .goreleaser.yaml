@@ -104,8 +104,8 @@ signs:
 
 release:
   github:
-    owner: musakkka
-    name: openrail
+    owner: LuxForge-ltd
+    name: luxrail
   draft: false
   prerelease: auto
   extra_files:

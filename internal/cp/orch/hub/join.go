@@ -80,7 +80,7 @@ func (h *Hub) CreateJoinToken(ctx context.Context, roles []string, name, replace
 
 // JoinCommand is the one-line command the Hosts page shows.
 func JoinCommand(publicURL, token string, roles []string) string {
-	return fmt.Sprintf("curl -fsSL https://openrail.app/install.sh | sudo sh -s -- --join %s --token %s --roles %s",
+	return fmt.Sprintf("curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh -s -- --join %s --token %s --roles %s",
 		publicURL, token, strings.Join(roles, ","))
 }
 

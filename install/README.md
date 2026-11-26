@@ -5,8 +5,8 @@
 copies to `/etc/systemd/system`.
 
 ```
-curl -fsSL https://openrail.app/install.sh | sudo sh
-wget -qO- https://openrail.app/install.sh | sudo sh
+curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
+wget -qO- https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
 ```
 
 What you see: a small banner, numbered steps (`[3/8]`) with a spinner, a

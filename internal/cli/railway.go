@@ -16,7 +16,7 @@ import (
 
 // railwayUnavailable is the answer for Railway verbs openrail does not have.
 func railwayUnavailable(verb string) string {
-	return fmt.Sprintf("railway %s is not available in openrail. See openrail.app/docs/coming-from-railway", verb)
+	return fmt.Sprintf("railway %s is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md", verb)
 }
 
 // Railway verbs that map to ours unchanged (flags may still be renamed).

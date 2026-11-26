@@ -524,7 +524,7 @@ type CreateJoinTokenRequest struct {
 }
 
 type JoinToken struct {
-	Command   string `json:"command"` // curl -fsSL https://openrail.app/install.sh | sudo sh -s -- --join <url> --token <t> --roles app
+	Command   string `json:"command"` // curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh -s -- --join <url> --token <t> --roles app
 	Token     string `json:"token"`   // single use
 	ExpiresAt int64  `json:"expiresAt"`
 }

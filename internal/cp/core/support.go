@@ -20,6 +20,7 @@ import (
 	"github.com/musakkka/openrail/internal/cp/core/mail"
 	"github.com/musakkka/openrail/internal/cp/core/store"
 	"github.com/musakkka/openrail/internal/cp/cpapi"
+	"github.com/musakkka/openrail/internal/upgrade"
 	"github.com/musakkka/openrail/pkg/api"
 	"github.com/musakkka/openrail/pkg/version"
 )
@@ -759,7 +760,7 @@ func (c *Core) updateCheck(ctx context.Context) {
 	}
 	url := c.file.LatestURL
 	if url == "" {
-		url = "https://openrail.app/latest"
+		url = upgrade.DefaultLatestURL
 	}
 	check := func() {
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)

@@ -24,8 +24,8 @@ import (
 
 // Default locations on a host (docs/SPEC.md 4.2 and 6.4).
 const (
-	DefaultReleaseBase = "https://github.com/musakkka/openrail/releases/download"
-	DefaultLatestURL   = "https://github.com/musakkka/openrail/releases/latest/download/latest.txt"
+	DefaultReleaseBase = "https://github.com/LuxForge-ltd/luxrail/releases/download"
+	DefaultLatestURL   = "https://github.com/LuxForge-ltd/luxrail/releases/latest/download/latest.txt"
 	DefaultInstallDir  = "/opt/5050"
 	DefaultDataDir     = "/var/lib/5050"
 	DefaultControlURL  = "http://127.0.0.1:5050"
@@ -42,7 +42,7 @@ var embeddedKeys string
 // defaults above; Defaults fills them.
 type Options struct {
 	// ReleaseBase is where releases are fetched from, default
-	// "https://github.com/musakkka/openrail/releases/download". A release
+	// "https://github.com/LuxForge-ltd/luxrail/releases/download". A release
 	// lives at <ReleaseBase>/<tag>/<file>.
 	ReleaseBase string
 	// LatestURL returns the latest stable tag as plain text.

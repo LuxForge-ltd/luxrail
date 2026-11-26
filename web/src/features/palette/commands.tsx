@@ -14,8 +14,8 @@ import { BrandIcon, ServiceIcon, readPref, setTheme, themePref, toast, toastErro
 import { NEW_MENU, newIcon, sendCanvas, type NewKind } from "../canvas/menus";
 import { toggleActivity } from "../activity/bridge";
 import { redeployLabel, type Cmd } from "./model";
+import { REPO_URL as REPO } from "../../app/links";
 
-const REPO = "https://github.com/musakkka/openrail";
 const DOCS = `${REPO}/tree/main/docs`;
 
 export const PROJECT_SETTINGS: { id: string; label: string; icon: ReactNode }[] = [

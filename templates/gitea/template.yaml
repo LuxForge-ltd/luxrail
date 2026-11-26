@@ -6,7 +6,6 @@ description: >-
   Gitea with repositories on a volume and metadata in Postgres. The first
   account you register becomes the administrator. SSH is off; clone over
   HTTPS.
-docs: https://openrail.app/docs/templates/gitea
 icon: gitea.svg
 category: app
 inputs:
