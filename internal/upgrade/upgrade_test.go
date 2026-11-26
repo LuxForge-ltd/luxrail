@@ -416,7 +416,18 @@ func TestAgentUpgradeAndRevert(t *testing.T) {
 	// The new agent starts and never connects: it reverts.
 	n := o.Defaults()
 	n.Version = "v0.2.0"
-	if err := checkPending(context.Background(), n, func() bool { return true }); err != nil {
+	// checkPending starts watchPending in the background. With a live context
+	// and a connected agent, that goroutine removed the marker while this test
+	// was still reading it, which made the test fail about one run in three.
+	// A cancelled context and a never-connected agent make the background
+	// watcher return at once without touching anything; the test drives
+	// watchPending itself below. A long timeout keeps a slow machine from
+	// reaching the background watcher's deadline either.
+	bg, cancel := context.WithCancel(context.Background())
+	cancel()
+	slow := n
+	slow.AgentConnectTimeout = time.Hour
+	if err := checkPending(bg, slow, func() bool { return false }); err != nil {
 		t.Fatal(err)
 	}
 	var p pendingAgent
