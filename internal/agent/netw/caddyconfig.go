@@ -298,6 +298,7 @@ func renderCaddy(p caddyParams, in proto.Ingress) ([]byte, []error) {
 	}
 	var tlsRoutes, httpRoutes []obj
 	var redirect, acmeDomains, internalDomains []string
+	var forwarded []obj // LuxRail: see caddytunnel.go
 	if !in.Private && !in.ACMEPrimary && in.ACMEPrimaryAddr != "" {
 		if _, _, err := net.SplitHostPort(in.ACMEPrimaryAddr); err != nil {
 			errs = append(errs, fmt.Errorf("the ACME primary address %q is not host:port, so challenges are not forwarded", in.ACMEPrimaryAddr))
@@ -321,12 +322,15 @@ func renderCaddy(p caddyParams, in proto.Ingress) ([]byte, []error) {
 			internalDomains = append(internalDomains, r.Domain)
 			tlsRoutes = append(tlsRoutes, hostRoute([]string{r.Domain}, h))
 			redirect = append(redirect, r.Domain)
+			forwarded = append(forwarded, forwardedHTTPSRoute(r.Domain, h))
 		default:
 			acmeDomains = append(acmeDomains, r.Domain)
 			tlsRoutes = append(tlsRoutes, hostRoute([]string{r.Domain}, h))
 			redirect = append(redirect, r.Domain)
+			forwarded = append(forwarded, forwardedHTTPSRoute(r.Domain, h))
 		}
 	}
+	httpRoutes = append(httpRoutes, forwarded...)
 	if len(redirect) > 0 {
 		httpRoutes = append(httpRoutes, hostRoute(redirect, obj{
 			"handler":     "static_response",
