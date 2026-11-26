@@ -2614,18 +2614,14 @@ doubled.
 | `make loadtest` | S1 with fake agents against a local 5050d |
 | `make clean` | Remove `bin/`, `dist/`, build outputs |
 
-### 17.2 CI (`.github/workflows/`)
+### 17.2 Checks and releases
 
-- `ci.yml` on every push and PR: lint, test with race, cover, build, `check-public`, `govulncheck`,
-  web build with the size budget, site build, `go mod tidy` diff check, `make gen-ts` diff check,
-  `make test-linux` on the Linux runner.
-- `release.yml` on tag `v*`: goreleaser builds `5050_<ver>_linux_<arch>.tar.gz` (5050d,
-  5050-agent, 5050, systemd units, LICENSE files), `openrail-cli_<ver>_<os>_<arch>.tar.gz`,
-  `checksums.txt`, signs it with minisign (secret `MINISIGN_KEY`) into `checksums.txt.minisig`,
-  publishes a GitHub Release with notes, and updates `latest.txt`.
-- `site.yml` on pushes to `main` touching `site/` or `install/`: build and deploy to Pages.
-- The e2e suites need VMs and run outside GitHub Actions (by the release verifiers and a nightly
-  run against `main` once M1 passes) before a tag.
+LuxRail has no GitHub Actions workflows. The same checks (lint, `go test -race`, build, web build
+with the size budget, `go mod tidy` and `make gen-ts` diff checks) run on LuxForge devices, and
+`luxforge/release/release.ps1` builds, signs and publishes a release with goreleaser: it builds
+`5050_<ver>_linux_<arch>.tar.gz` (5050d, 5050-agent, 5050, systemd units, LICENSE files), the CLI
+archives and `checksums.txt`, signs it with minisign into `checksums.txt.minisig`, and publishes a
+GitHub Release with `latest.txt`. The e2e suites need VMs and run outside GitHub before a release.
 
 ### 17.3 Release artefacts and versions
 

@@ -37,9 +37,8 @@ L=$ROOT/.lint
 rm -rf "$L"
 mkdir -p "$L/.github/workflows"
 cp "$REPO/action.yml" "$L/action.yml"
-cp "$REPO/.github/workflows/cli-dist.yml" "$L/.github/workflows/"
 sed 's|uses: musakkka/openrail@v0.1.0|uses: ./|' "$REPO/packaging/action/example-deploy.yml" >"$L/.github/workflows/example-deploy.yml"
-check "actionlint" tool actionlint "$ACTIONLINT_IMAGE" packaging/.lint/.github/workflows/cli-dist.yml packaging/.lint/.github/workflows/example-deploy.yml
+check "actionlint" tool actionlint "$ACTIONLINT_IMAGE" packaging/.lint/.github/workflows/example-deploy.yml
 check "action.yml parses with the expected inputs" python3 -I -c '
 import sys, re
 s = open(sys.argv[1]).read()
