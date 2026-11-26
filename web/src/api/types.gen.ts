@@ -812,6 +812,13 @@ export interface ServiceConfig {
    * TemplateVersion is the chosen major for database templates ("17").
    */
   templateVersion?: string;
+  /**
+   * WebFrontend marks a service as a web frontend; Website is the https URL
+   * people open it at (the console shows it on the service card). Both are
+   * set at once through UpdateServiceInfoRequest, never staged.
+   */
+  webFrontend?: boolean;
+  website?: string;
 }
 export interface SourceConfig {
   type: string; // "github" | "image" | "upload" | "empty"
@@ -1021,11 +1028,15 @@ export interface UpdateServiceConfigRequest {
   patch: { [key: string]: unknown};
 }
 /**
- * UpdateServiceInfoRequest: a rename is staged, an icon change is immediate.
+ * UpdateServiceInfoRequest: a rename is staged; icon and website changes are
+ * immediate. Website must be an https URL and needs WebFrontend; clearing
+ * WebFrontend also clears Website.
  */
 export interface UpdateServiceInfoRequest {
   name?: string;
   icon?: string;
+  webFrontend?: boolean;
+  website?: string;
 }
 export interface MoveReplicaRequest {
   hostId?: string; // empty = best eligible host

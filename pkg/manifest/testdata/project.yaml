@@ -21,6 +21,8 @@ services:
       placement: {}
     networking:
       port: 3000
+    webFrontend: true
+    website: https://api.example.com
     variables:
       DATABASE_URL: ${{Postgres.DATABASE_URL}}
       API_KEY: "@preserve"

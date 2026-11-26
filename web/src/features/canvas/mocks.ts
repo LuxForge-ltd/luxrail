@@ -29,7 +29,7 @@ const vol = (sid: string, name: string, mountPath: string, usedBytes: number) =>
 interface Store { services: Service[]; groups: Group[]; positions: Record<string, number[]>; edges: Canvas["edges"]; changes: Change[] }
 
 function full(): Store {
-  const web = svc("svc_web", cfg("web", { source: { type: "github", repo: "orbit/web", branch: "main" } }), { domains: [dom("svc_web", "web-production-4f2a.5050.app")], listeningPorts: [3000] });
+  const web = svc("svc_web", cfg("web", { source: { type: "github", repo: "orbit/web", branch: "main" }, webFrontend: true, website: "https://shop.example.com" }), { domains: [dom("svc_web", "web-production-4f2a.5050.app")], listeningPorts: [3000] });
   const api = svc("svc_api", cfg("api", { source: { type: "github", repo: "orbit/api", branch: "main" }, deploy: { replicas: 3 } }), { domains: [dom("svc_api", "api-production.5050.app")], listeningPorts: [8080] });
   const worker = svc("svc_worker", cfg("worker", { icon: "nodedotjs", kind: "worker", source: { type: "image", image: "node:22-alpine" } }), { kind: "worker", status: "crashed", statusText: "Crashed 4m ago" });
   const report = svc("svc_report", cfg("nightly-report", { kind: "cron", deploy: { cronSchedule: "0 3 * * *" } }), { kind: "cron", status: "completed", statusText: "Last run 9h ago" });
@@ -133,9 +133,15 @@ export const canvasHandlers: RequestHandler[] = [
   http.patch("*/api/v1/environments/:eid/services/:sid/info", async ({ params, request }) => {
     const s = find(String(params.sid));
     if (!s) return HttpResponse.json({ error: "No such service.", code: "not_found" }, { status: 404 });
-    const b = (await request.json()) as { name?: string; icon?: string };
+    const b = (await request.json()) as { name?: string; icon?: string; webFrontend?: boolean; website?: string };
     const cur = s.staged || s.config;
     if (b.icon !== undefined) { s.config = { ...s.config, icon: b.icon }; if (s.staged) s.staged = { ...s.staged, icon: b.icon }; }
+    if (b.webFrontend !== undefined || b.website !== undefined) {
+      const f = b.webFrontend ?? !!s.config.webFrontend;
+      const w = f ? (b.website ?? s.config.website ?? "") : "";
+      s.config = { ...s.config, webFrontend: f, website: w };
+      if (s.staged) s.staged = { ...s.staged, webFrontend: f, website: w };
+    }
     if (b.name && b.name !== cur.name) {
       s.staged = { ...cur, name: b.name };
       s.stagedAction = s.stagedAction || "rename";

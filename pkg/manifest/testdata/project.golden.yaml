@@ -39,5 +39,7 @@ services:
       DATABASE_URL: ${{Postgres.DATABASE_URL}}
     volume:
       mountPath: /data
+    webFrontend: true
+    website: https://api.example.com
 shared:
   LOG_LEVEL: info

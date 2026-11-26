@@ -5,7 +5,7 @@
 import { memo, type ReactNode } from "react";
 import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
 import {
-  AlertTriangle, CalendarDays, CircleAlert, CircleCheck, Copy, Database, HardDrive, Info, Layers, Loader2, Moon, MoreVertical, Package, Plus, SquareTerminal, Terminal,
+  AlertTriangle, CalendarDays, CircleAlert, CircleCheck, Copy, Database, ExternalLink, HardDrive, Info, Layers, Loader2, Moon, MoreVertical, Package, Plus, SquareTerminal, Terminal,
 } from "lucide-react";
 import type { Service } from "../../api/client";
 import { BrandIcon, ServiceIcon, cx } from "../../kit";
@@ -88,7 +88,7 @@ export type CardData = {
 } & Record<string, unknown>;
 
 /** The card body shared by the canvas node and the phone list. */
-export function CardBody({ s, tag, changes }: { s: Service; tag: Tag; changes: number }) {
+export function CardBody({ s, tag, changes, website = true }: { s: Service; tag: Tag; changes: number; /** Show the website link (off inside a button). */ website?: boolean }) {
   const cfg = s.staged || s.config;
   const domain = s.domains[0]?.domain;
   const st = statusLook(s, tag, changes);
@@ -104,11 +104,26 @@ export function CardBody({ s, tag, changes }: { s: Service; tag: Tag; changes: n
           {domain && <p className="truncate text-sm leading-5 text-gray-700">{domain}</p>}
         </div>
       </div>
-      <div title={s.statusText || undefined} className={cx("text-sm leading-5", st.icon ? "grid grid-cols-[24px_1fr] items-center gap-3" : "", st.cls)}>
-        {st.icon && <span className="flex h-5 items-center">{st.icon}</span>}
-        <span className="truncate">{st.text}</span>
+      <div className="flex min-w-0 items-center gap-3">
+        <div title={s.statusText || undefined} className={cx("min-w-0 flex-1 text-sm leading-5", st.icon ? "grid grid-cols-[24px_1fr] items-center gap-3" : "", st.cls)}>
+          {st.icon && <span className="flex h-5 items-center">{st.icon}</span>}
+          <span className="truncate">{st.text}</span>
+        </div>
+        {website && cfg.webFrontend && cfg.website && <WebsiteLink url={cfg.website} />}
       </div>
     </>
+  );
+}
+
+/** LuxRail: the service's website, opened in a new tab without selecting the card. */
+export function WebsiteLink({ url }: { url: string }) {
+  const stop = (e: React.SyntheticEvent) => e.stopPropagation();
+  return (
+    <a href={url} target="_blank" rel="noopener noreferrer" title={url} aria-label={`Website: ${url}`}
+      onClick={stop} onMouseDown={stop} onPointerDown={stop} onDoubleClick={stop}
+      className="nodrag nopan inline-flex h-6 shrink-0 items-center gap-1 rounded-md border border-line px-2 text-caption font-medium text-foreground transition-colors duration-100 hover:border-fg-5 hover:text-accent-text">
+      Website<ExternalLink size={12} aria-hidden />
+    </a>
   );
 }
 

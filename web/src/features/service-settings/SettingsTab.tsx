@@ -6,7 +6,7 @@
 // of the service config; fields set by a config file are read-only.
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Box, Cloud, Code2, FileText, Flag, Flame, Globe, Network, X, Zap } from "lucide-react";
+import { Box, Cloud, Code2, ExternalLink, FileText, Flag, Flame, Globe, Network, X, Zap } from "lucide-react";
 import type { Service } from "../../api/types.gen";
 import { patch, svcPath } from "../service/client";
 import { ErrorLine, Skeleton, cx, toastError } from "../../kit";
@@ -20,12 +20,14 @@ import ScaleSection from "./ScaleSection";
 import BuildSection from "./BuildSection";
 import DeploySection from "./DeploySection";
 import { ConfigSection, DangerSection, FlagsSection } from "./MiscSections";
+import WebsiteSection from "./WebsiteSection";
 
 // `npm run dev:mocks`: stateful settings fixtures (mocks.ts), compiled out of production builds.
 
 const ALL: SectionDef[] = [
   { id: "source", label: "Source", icon: <Code2 /> },
   { id: "networking", label: "Networking", icon: <Network /> },
+  { id: "website", label: "Website", icon: <ExternalLink /> },
   { id: "edge", label: "Edge", icon: <Zap /> },
   { id: "scale", label: "Scale", icon: <Globe /> },
   { id: "build", label: "Build", icon: <Box /> },
@@ -42,6 +44,7 @@ export function sectionsFor(s: Service): SectionDef[] {
   return ALL.filter((d) => {
     if (d.id === "build" || d.id === "config") return repo;
     if (d.id === "edge") return !db && s.kind !== "cron" && s.kind !== "worker";
+    if (d.id === "website") return !db && s.kind !== "cron";
     return true;
   });
 }
@@ -118,6 +121,7 @@ export default function SettingsTab({ eid, service, onService, onDeleted }: {
   const body: Record<string, JSX.Element> = {
     source: <SourceSection />,
     networking: <Networking />,
+    website: <WebsiteSection />,
     edge: <EdgeSection />,
     scale: <ScaleSection />,
     build: <BuildSection />,
