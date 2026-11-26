@@ -127,6 +127,262 @@
             {
               "handle": [
                 {
+                  "dynamic_upstreams": {
+                    "dial_timeout": "1s",
+                    "name": "svc-api.upstream.5050",
+                    "port": "3000",
+                    "refresh": "1s",
+                    "resolver": {
+                      "addresses": [
+                        "udp/127.0.0.1:5354"
+                      ]
+                    },
+                    "source": "a",
+                    "versions": {
+                      "ipv4": true
+                    }
+                  },
+                  "handler": "reverse_proxy",
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Cf-Connecting-Ip": [
+                          "{http.vars.client_ip}"
+                        ],
+                        "X-Real-Ip": [
+                          "{http.vars.client_ip}"
+                        ]
+                      }
+                    }
+                  },
+                  "load_balancing": {
+                    "selection_policy": {
+                      "policy": "random"
+                    },
+                    "try_duration": "5s",
+                    "try_interval": "250ms"
+                  },
+                  "stream_close_delay": "120s",
+                  "transport": {
+                    "dial_timeout": "3s",
+                    "keep_alive": {
+                      "max_idle_conns_per_host": 1024
+                    },
+                    "protocol": "http"
+                  }
+                }
+              ],
+              "match": [
+                {
+                  "header": {
+                    "X-Forwarded-Proto": [
+                      "https"
+                    ]
+                  },
+                  "host": [
+                    "api.example.com"
+                  ]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Cf-Connecting-Ip": [
+                          "{http.vars.client_ip}"
+                        ],
+                        "X-Real-Ip": [
+                          "{http.vars.client_ip}"
+                        ]
+                      }
+                    }
+                  },
+                  "health_checks": {
+                    "passive": {
+                      "fail_duration": "10s",
+                      "max_fails": 2
+                    }
+                  },
+                  "load_balancing": {
+                    "selection_policy": {
+                      "policy": "random"
+                    },
+                    "try_duration": "5s",
+                    "try_interval": "250ms"
+                  },
+                  "stream_close_delay": "120s",
+                  "transport": {
+                    "dial_timeout": "3s",
+                    "keep_alive": {
+                      "max_idle_conns_per_host": 1024
+                    },
+                    "protocol": "http"
+                  },
+                  "upstreams": [
+                    {
+                      "dial": "127.0.0.1:5050"
+                    }
+                  ]
+                }
+              ],
+              "match": [
+                {
+                  "header": {
+                    "X-Forwarded-Proto": [
+                      "https"
+                    ]
+                  },
+                  "host": [
+                    "console.example.com"
+                  ]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "dynamic_upstreams": {
+                    "dial_timeout": "1s",
+                    "name": "svc-dev.upstream.5050",
+                    "port": "5173",
+                    "refresh": "1s",
+                    "resolver": {
+                      "addresses": [
+                        "udp/127.0.0.1:5354"
+                      ]
+                    },
+                    "source": "a",
+                    "versions": {
+                      "ipv4": true
+                    }
+                  },
+                  "handler": "reverse_proxy",
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Cf-Connecting-Ip": [
+                          "{http.vars.client_ip}"
+                        ],
+                        "X-Real-Ip": [
+                          "{http.vars.client_ip}"
+                        ]
+                      }
+                    }
+                  },
+                  "health_checks": {
+                    "passive": {
+                      "fail_duration": "10s",
+                      "max_fails": 2
+                    }
+                  },
+                  "load_balancing": {
+                    "selection_policy": {
+                      "policy": "random"
+                    },
+                    "try_duration": "5s",
+                    "try_interval": "250ms"
+                  },
+                  "stream_close_delay": "120s",
+                  "transport": {
+                    "dial_timeout": "3s",
+                    "keep_alive": {
+                      "max_idle_conns_per_host": 1024
+                    },
+                    "protocol": "http"
+                  }
+                }
+              ],
+              "match": [
+                {
+                  "header": {
+                    "X-Forwarded-Proto": [
+                      "https"
+                    ]
+                  },
+                  "host": [
+                    "dev.internal.test"
+                  ]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
+                  "dynamic_upstreams": {
+                    "dial_timeout": "1s",
+                    "name": "svc-web.upstream.5050",
+                    "port": "8080",
+                    "refresh": "1s",
+                    "resolver": {
+                      "addresses": [
+                        "udp/127.0.0.1:5354"
+                      ]
+                    },
+                    "source": "a",
+                    "versions": {
+                      "ipv4": true
+                    }
+                  },
+                  "handler": "reverse_proxy",
+                  "headers": {
+                    "request": {
+                      "set": {
+                        "Cf-Connecting-Ip": [
+                          "{http.vars.client_ip}"
+                        ],
+                        "X-Real-Ip": [
+                          "{http.vars.client_ip}"
+                        ]
+                      }
+                    }
+                  },
+                  "health_checks": {
+                    "passive": {
+                      "fail_duration": "10s",
+                      "max_fails": 2
+                    }
+                  },
+                  "load_balancing": {
+                    "selection_policy": {
+                      "policy": "random"
+                    },
+                    "try_duration": "5s",
+                    "try_interval": "250ms"
+                  },
+                  "stream_close_delay": "120s",
+                  "transport": {
+                    "dial_timeout": "3s",
+                    "keep_alive": {
+                      "max_idle_conns_per_host": 1024
+                    },
+                    "protocol": "http"
+                  }
+                }
+              ],
+              "match": [
+                {
+                  "header": {
+                    "X-Forwarded-Proto": [
+                      "https"
+                    ]
+                  },
+                  "host": [
+                    "web-ab12.203-0-113-5.sslip.io"
+                  ]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "handle": [
+                {
                   "handler": "static_response",
                   "headers": {
                     "Location": [

@@ -45,3 +45,13 @@ LuxRail at openrail v0.1.9 (`d6fad37`).
   tests. A clean, passing merge fast-forwards `Dev` and leaves a "Release Dev to main" pull request
   for the operator to approve; conflicts or failing tests leave a pull request into `Dev` instead.
   See `luxforge/sync/README.md`.
+
+## How LuxRail behaves differently from openrail
+
+- **HTTPS-forwarded requests are served on port 80.** openrail answers plain HTTP for an `acme`
+  or `internal` domain with a 308 to `https://`. A Cloudflare tunnel, or another proxy that
+  terminates TLS, that forwards to Caddy over plain HTTP would loop on that redirect. LuxRail
+  serves a request on port 80 when it carries `X-Forwarded-Proto: https` (which Cloudflare sets
+  for visitors that used HTTPS) and redirects the rest as before. A tunnel can therefore point at
+  `http://<host>:80` with the app's domain as well as straight at the service.
+  (`internal/agent/netw/caddytunnel.go`)
