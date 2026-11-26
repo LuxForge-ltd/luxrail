@@ -29,7 +29,7 @@ LDFLAGS := -s -w \
 	-X $(MODULE)/pkg/version.Commit=$(COMMIT) \
 	-X $(MODULE)/pkg/version.Date=$(DATE)
 
-BINARIES := 5050d 5050-agent LuxRail
+BINARIES := 5050d 5050-agent luxrail
 # Go packages of this module. web/node_modules can hold stray Go packages
 # from npm dependencies, so ./... is filtered.
 GO_PKGS = $(shell $(GO) list ./... | grep -v /node_modules/)
@@ -116,7 +116,7 @@ cross: dist-placeholder ## Cross-build linux amd64/arm64 for all binaries; darwi
 	@if [ -d cmd/luxrail ]; then \
 		for t in darwin/amd64 darwin/arm64 windows/amd64; do \
 			os=$${t%/*}; arch=$${t#*/}; ext=; [ $$os = windows ] && ext=.exe; \
-			echo "$$t LuxRail"; \
+			echo "$$t luxrail"; \
 			GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 $(GO) build -trimpath -ldflags '$(LDFLAGS)' -o bin/$${os}_$$arch/luxrail$$ext ./cmd/luxrail; \
 		done; \
 	fi

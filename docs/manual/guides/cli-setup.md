@@ -28,6 +28,8 @@ wget -qO- https://github.com/LuxForge-ltd/luxrail/releases/latest/download/insta
 
 Archives for every platform are on the repository's Releases page.
 
+On Windows, take `luxrail.exe` from the `windows_amd64` archive (or build it with `make cross`, which writes `bin/windows_amd64/luxrail.exe`) and put it in a folder on your user `PATH`. With Smart App Control on, Windows only runs it if it is signed by a certificate Microsoft trusts.
+
 ## Log in
 
 ```sh
@@ -42,7 +44,19 @@ Check it worked:
 luxrail whoami
 ```
 
-The CLI keeps one token per console in `~/.config/5050/config.json` (mode 0600), so you can log in to several installs.
+The CLI keeps one token per console in `~/.config/luxrail/config.json` (mode 0600; on Windows `%USERPROFILE%\.config\luxrail\config.json`), so you can log in to several installs.
+
+### A console with its own CA
+
+An install on a LAN often serves its console with a certificate from its own CA, such as Caddy's internal CA. Give the CLI that CA's certificate when you log in:
+
+```sh
+luxrail login https://10.0.0.5 --ca-file caddy-root.crt
+```
+
+The CLI trusts that CA, on top of the system's roots, for this console only, and keeps a copy of the certificate with the login, so later commands need nothing more. TLS verification stays on. The file must hold CA certificates only; a file with a private key is refused. For a single run, or in CI, set `LUXRAIL_CA_FILE` to the file instead. Without it, the CLI says the certificate is signed by a CA it does not trust and suggests `--ca-file`. `luxrail logout` forgets the CA with the token.
+
+On Windows, Go programs read only the Windows certificate store, so `SSL_CERT_FILE` has no effect; use `--ca-file`.
 
 ## Tokens for servers and CI
 

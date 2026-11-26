@@ -123,7 +123,24 @@ func (a *App) client() (*Client, Link, string, error) {
 		link = Link{}
 		dir = ""
 	}
-	return newClient(u, tok), link, dir, nil
+	cl := newClient(u, tok)
+	ca, err := a.caFor(cfg, u)
+	if err != nil {
+		return nil, Link{}, "", err
+	}
+	if err := cl.TrustCA(ca); err != nil {
+		return nil, Link{}, "", err
+	}
+	return cl, link, dir, nil
+}
+
+// caFor returns the extra CA certificates to trust for instance u: the file
+// named by LUXRAIL_CA_FILE (FIFTY_CA_FILE), else the ones stored at login.
+func (a *App) caFor(cfg *Config, u string) ([]byte, error) {
+	if p := a.env("FIFTY_CA_FILE"); p != "" {
+		return readCAFile(p)
+	}
+	return []byte(cfg.CAs[u]), nil
 }
 
 // resolve finds the project, environment and, when needService is set, the service.

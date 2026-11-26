@@ -11,7 +11,9 @@ third-party modules (cobra, coder/websocket, sigs.k8s.io/yaml), so
 |---|---|
 | `root.go` | `Main`, `App.Run` (argv[0] `railway` switches on the alias), the cobra tree and the global flags `-p -e -s --json -y` |
 | `app.go` | Instance, token and link resolution, numbered pickers, confirmations, commit helper |
-| `config.go` | `~/.config/5050/config.json` (0600): instances, default instance, directory links. `FIFTY_CONFIG` overrides the path |
+| `config.go` | `~/.config/luxrail/config.json` (0600): instances, their trusted CAs, default instance, directory links. `LUXRAIL_CONFIG` (or `FIFTY_CONFIG`) overrides the path |
+| `tls.go` | `--ca-file` / `LUXRAIL_CA_FILE`: reads CA certificates (refusing keys and non-CA certificates), adds them to the system roots for one instance, and the "untrusted CA" hint |
+| `term_*.go` | Turning on escape-sequence output on Windows consoles for `ssh` |
 | `client.go` | REST client for section 11: JSON calls, raw bodies, SSE streams and WebSockets, bearer token plus `X-5050-CSRF: 1` |
 | `pack.go`, `ignore.go` | `luxrail up` archive: tar + gzip, skips `.git`, nested `.gitignore` and `.5050ignore` (gitignore syntax with `!`, `/`, `**`), 500 MB cap |
 | `railway.go` | Railway verb and flag translation, the "not available" answer, `alias install/remove` |
@@ -28,6 +30,8 @@ unless `--stage`; `--skip-deploys` commits without deploying.
 uploads it, follows the build log stream, polls the deployment until it ends,
 prints the first deploy lines and `Deployed: https://...`, or the diagnosis
 with exit code 1.
+
+`luxrail ssh` puts the terminal in raw mode with `golang.org/x/term` (macOS, Linux and Windows), sends the initial size and polls for size changes, which go to the shell as `resize` control frames.
 
 `luxrail connect` reads `connect-info`, reveals the private URL, listens on
 127.0.0.1 and forwards each local connection over the tunnel WebSocket. The
@@ -46,9 +50,6 @@ help check. Regenerate goldens with `go test ./internal/cli -update`.
 
 ## Later (not in v0.1.0 of the CLI)
 
-- `ssh`: terminal resize after start (no SIGWINCH forwarding yet; the
-  initial size is sent). Raw mode uses `stty`, so the interactive shell works
-  on macOS and Linux; Windows gets a line-mode session.
 - `ssh -- CMD` types the command into the remote shell followed by `exit $?`,
   because the shell route has no command parameter.
 - End-to-end runs against `5050d --dev` with fakeorch were not done in this

@@ -12,10 +12,13 @@ import (
 	"strings"
 )
 
-// Config is ~/.config/5050/config.json (mode 0600).
+// Config is ~/.config/luxrail/config.json (mode 0600).
 type Config struct {
 	// Instances maps an instance URL to its API token.
 	Instances map[string]string `json:"instances"`
+	// CAs maps an instance URL to the PEM CA certificates trusted for it, set
+	// by `luxrail login --ca-file`, for installs with their own CA.
+	CAs map[string]string `json:"cas,omitempty"`
 	// Default is the instance used when no link or FIFTY_URL names one.
 	Default string `json:"default,omitempty"`
 	// Links maps an absolute directory to what it is linked to.
@@ -83,6 +86,9 @@ func LoadConfig() (*Config, error) {
 	}
 	if c.Links == nil {
 		c.Links = map[string]Link{}
+	}
+	if c.CAs == nil {
+		c.CAs = map[string]string{}
 	}
 	return c, nil
 }

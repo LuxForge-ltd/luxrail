@@ -79,6 +79,9 @@ func (c *Client) newReq(ctx context.Context, method, path string, body io.Reader
 func (c *Client) send(req *http.Request) (*http.Response, error) {
 	resp, err := c.HTTP.Do(req)
 	if err != nil {
+		if h := caHint(c.Base, err); h != nil {
+			return nil, h
+		}
 		return nil, fmt.Errorf("could not reach %s: %w", c.Base, err)
 	}
 	if resp.StatusCode >= 300 {
@@ -193,13 +196,16 @@ func (c *Client) Dial(ctx context.Context, path string) (*websocket.Conn, error)
 		h.Set("Authorization", "Bearer "+c.Token)
 	}
 	h.Set("User-Agent", "luxrail-cli/"+version.Version)
-	conn, resp, err := websocket.Dial(ctx, u, &websocket.DialOptions{HTTPHeader: h})
+	conn, resp, err := websocket.Dial(ctx, u, &websocket.DialOptions{HTTPHeader: h, HTTPClient: c.HTTP})
 	if resp != nil && resp.Body != nil {
 		resp.Body.Close()
 	}
 	if err != nil {
 		if resp != nil && resp.StatusCode >= 300 {
 			return nil, &APIError{Status: resp.StatusCode}
+		}
+		if h := caHint(c.Base, err); h != nil {
+			return nil, h
 		}
 		return nil, fmt.Errorf("could not open %s: %w", path, err)
 	}
