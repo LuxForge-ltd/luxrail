@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { Loader2, Menu, X } from "lucide-react";
 import { BrandIcon, Logo, cx } from "../../kit";
 import { LINKS, REPO_URL } from "../../app/links";
+import { PRODUCT_NAME } from "../../kit/brand";
 
 const YEAR = new Date().getFullYear();
 
@@ -72,9 +73,9 @@ function AuthHeader() {
   return (
     <header className="relative">
       <div className="mx-auto flex h-[72px] w-full max-w-[1160px] items-center justify-between px-5 md:px-0">
-        <Link to="/" className="flex items-center gap-2.5 rounded-md text-foreground" aria-label="openrail home">
+        <Link to="/" className="flex items-center gap-2.5 rounded-md text-foreground" aria-label={`${PRODUCT_NAME} home`}>
           <Logo size={32} />
-          <span className="text-[15px] font-semibold tracking-tight">openrail</span>
+          <span className="text-[15px] font-semibold tracking-tight">{PRODUCT_NAME}</span>
         </Link>
         <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
           {HEADER_LINKS.map((l) => (

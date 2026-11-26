@@ -96,3 +96,8 @@ and with the operator's go and a backup first:
   through `5050-tunnel.service`, which replaces the hand-installed host `cloudflared` (use the same
   tunnel token, then stop the old service); and the private firewall closes everything else,
   including the old `caddy-lan` on 8443, so move to `consoleLan` first.
+- **The LuxForge look.** The console shows the LuxForge mark (`web/src/kit/LuxForgeMark.tsx`,
+  also `web/public/favicon.svg`), the name LuxRail in its header and tab titles
+  (`web/src/kit/brand.ts`), and the LuxForge Framework's plum brand scale and page colours
+  (`web/src/kit/luxforge.css`, loaded after openrail's `theme.css`, which stays as upstream wrote
+  it). The install name shown in the console is a setting (Settings > General > Name).

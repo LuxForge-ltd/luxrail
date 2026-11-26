@@ -1,0 +1,44 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+
+/* LuxRail: the LuxForge look, layered over openrail's tokens in theme.css (loaded after it).
+   Colours come from the LuxForge Framework (@luxforge/framework src/styles.css brand scale,
+   50 #F5EEF8 to 950 #1E0E26, and its app shell's page and panel colours). Only the accent and
+   the page surfaces change; status colours and the grey scales stay openrail's, so contrast
+   rules worked out upstream still hold. The accent keeps the name "pink" in the scales because
+   Tailwind classes such as bg-pink-500 are used across the console. */
+:root {
+  /* Framework brand scale, dark theme: light steps on dark surfaces. */
+  --pink-50: #1E0E26; --pink-100: #2D1237; --pink-200: #3C1846; --pink-300: #50205C;
+  --pink-400: #642873; --pink-500: #965AA8; --pink-600: #B296C6; --pink-700: #D0BADC;
+  --pink-800: #E8DAED; --pink-900: #F5EEF8; --pink-950: #FAF6FC;
+
+  --background: #090A0E;   /* Framework app shell, dark page */
+  --secondaryBg: #101318;
+  --surface: #121420;      /* Framework dark panel */
+  --surface-raised: #101318;
+  --surface-hover: #181a28;
+  --surface-input: #181a28;
+  --line: #1F2937;         /* Framework dark border (gray-800) */
+  --tooltip: #1F2937;
+
+  --accent: #783C8C;       /* brand-500 */
+  --accent-hover: #965AA8; /* brand-400 */
+  --accent-text: #B296C6;  /* brand-300 */
+  --accent-muted: #642873; /* brand-600 */
+}
+
+html.light {
+  /* Framework brand scale as published. */
+  --pink-50: #F5EEF8; --pink-100: #E8DAED; --pink-200: #D0BADC; --pink-300: #B296C6;
+  --pink-400: #965AA8; --pink-500: #783C8C; --pink-600: #642873; --pink-700: #50205C;
+  --pink-800: #3C1846; --pink-900: #2D1237; --pink-950: #1E0E26;
+
+  --background: #F9FAFB;   /* Framework app shell, light page (gray-50) */
+  --foreground: #111827;   /* gray-900 */
+  --line: #E5E7EB;         /* gray-200 */
+
+  --accent: #642873;       /* brand-600 */
+  --accent-hover: #50205C; /* brand-700 */
+  --accent-text: #642873;
+  --accent-muted: #965AA8;
+}
