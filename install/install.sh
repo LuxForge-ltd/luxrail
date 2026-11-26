@@ -193,6 +193,7 @@ on_exit() {
 	if [ -n "$UI_ANIM" ]; then printf '%s[?25h' "$ESC"; fi
 	[ -z "${TMP:-}" ] || rm -rf "$TMP"
 	if [ -n "${FIREWALL_UNDO:-}" ]; then firewall_undo; fi
+	if [ -n "${TO_PRIVATE_UNDO:-}" ]; then to_private_undo; fi
 	if [ "$rc" -eq 130 ]; then printf '\n  %sCancelled. Every step is safe to run again, so just start the installer again.%s\n' "$DIM" "$R" >&2; fi
 }
 trap on_exit EXIT
@@ -227,6 +228,11 @@ Flags (each also an environment variable FIFTY_<FLAG>, for example FIFTY_DOMAIN)
   --tunnel-token TOKEN       Cloudflare tunnel token (prefer FIFTY_TUNNEL_TOKEN or the guided
                              setup, so it stays out of your shell history and the sudo log)
   --keep-ssh-from CIDR       with --private: keep SSH, reachable only from this IPv4 range
+  --keep-console-from CIDR   LuxRail, with --private: keep the LAN console (consoleLan in
+                             config.json) reachable from this IPv4 range
+  --to-private               LuxRail: turn this existing normal install into a private one
+                             (implies --private; needs --tunnel-token, and --domain and
+                             --console-domain when the current names are sslip.io or nip.io)
   --no-ssh-hardening         do not turn off SSH passwords and root login
   --no-audit-log             do not install auditd and its rules
   --join URL --token T       join an existing install as a worker host
@@ -272,6 +278,11 @@ PRIVATE=$(env_or PRIVATE)
 TUNNEL_TOKEN=$(env_or TUNNEL_TOKEN)
 unset FIFTY_TUNNEL_TOKEN # no child process needs it
 KEEP_SSH_FROM=$(env_or KEEP_SSH_FROM)
+KEEP_CONSOLE_FROM=$(env_or KEEP_CONSOLE_FROM) # LuxRail
+TO_PRIVATE=""        # LuxRail: --to-private
+TO_PRIVATE_BASE=""
+TO_PRIVATE_CONSOLE=""
+TO_PRIVATE_UNDO=""
 NO_SSH_HARDENING=$(env_or NO_SSH_HARDENING)
 NO_AUDIT_LOG=$(env_or NO_AUDIT_LOG)
 JOIN=$(env_or JOIN)
@@ -312,8 +323,10 @@ while [ "$#" -gt 0 ]; do
 	--no-auto-updates) NO_AUTO_UPDATES=1 ;;
 	--firewall) FIREWALL=1 ;;
 	--private) PRIVATE=1 ;;
+	--to-private) PRIVATE=1; TO_PRIVATE=1 ;;
 	--tunnel-token) need_arg "$@"; TUNNEL_TOKEN=$2; shift ;;
 	--keep-ssh-from) need_arg "$@"; KEEP_SSH_FROM=$2; shift ;;
+	--keep-console-from) need_arg "$@"; KEEP_CONSOLE_FROM=$2; shift ;;
 	--no-ssh-hardening) NO_SSH_HARDENING=1 ;;
 	--no-audit-log) NO_AUDIT_LOG=1 ;;
 	--join) need_arg "$@"; JOIN=$2; shift ;;
@@ -646,7 +659,7 @@ remove_private() {
 		rm -f "$ETC_DIR/ssh-closed"
 	fi
 	systemctl disable --now 5050-firewall.service >/dev/null 2>&1 || true
-	rm -f "$UNIT_DIR/5050-firewall.service" "$UNIT_DIR/docker.service.d/10-5050-firewall.conf" /etc/nftables-5050.conf "$ETC_DIR/private" "$ETC_DIR/keep-ssh-from"
+	rm -f "$UNIT_DIR/5050-firewall.service" "$UNIT_DIR/docker.service.d/10-5050-firewall.conf" /etc/nftables-5050.conf "$ETC_DIR/private" "$ETC_DIR/keep-ssh-from" "$ETC_DIR/keep-console-from"
 	nft delete table inet fifty_filter 2>/dev/null || true
 }
 
@@ -1333,13 +1346,21 @@ check_private() {
 	if [ -f "$ETC_DIR/private" ] || grep -qs '"private": *true' "$cfg"; then PRIVATE=1; fi
 	# The kept SSH range survives a run without the flag, or that run would lock the owner out.
 	if [ -z "$KEEP_SSH_FROM" ] && [ -f "$ETC_DIR/keep-ssh-from" ]; then KEEP_SSH_FROM=$(cat "$ETC_DIR/keep-ssh-from"); fi
+	if [ -z "$KEEP_CONSOLE_FROM" ] && [ -f "$ETC_DIR/keep-console-from" ]; then KEEP_CONSOLE_FROM=$(cat "$ETC_DIR/keep-console-from"); fi
 	if [ -z "$PRIVATE" ]; then
-		[ -z "$KEEP_SSH_FROM$TUNNEL_TOKEN" ] || die "--keep-ssh-from and --tunnel-token only work together with --private."
+		[ -z "$KEEP_SSH_FROM$TUNNEL_TOKEN$KEEP_CONSOLE_FROM" ] || die "--keep-ssh-from, --keep-console-from and --tunnel-token only work together with --private."
 		return 0
 	fi
 	[ -z "$RESTORE" ] || die "--private cannot be combined with --restore yet. Restore first on a normal install, or install fresh with --private."
 	if [ -z "$JOIN" ] && [ -f "$cfg" ] && ! grep -qs '"private": *true' "$cfg"; then
-		die "this server is already installed as a normal host, and turning that into a private host is not supported yet. Install on a fresh server with --private."
+		[ -n "${TO_PRIVATE:-}" ] ||
+			die "this server is already installed as a normal host. To turn it into a private host, run the installer again with --to-private (LuxRail), after taking a backup. Nothing was changed."
+		# Kept here: init_control replaces DOMAIN and CONSOLE_DOMAIN with the
+		# names in config.json.
+		TO_PRIVATE_BASE=$DOMAIN
+		TO_PRIVATE_CONSOLE=$CONSOLE_DOMAIN
+	else
+		TO_PRIVATE=""
 	fi
 	if [ -z "$JOIN" ]; then
 		if [ ! -f "$cfg" ]; then
@@ -1361,6 +1382,10 @@ check_private() {
 				die "a private host with the ingress role needs --tunnel-token, because public traffic reaches it through a tunnel. Nothing was changed."
 			;;
 		esac
+	fi
+	if [ -n "$KEEP_CONSOLE_FROM" ]; then
+		ipv4_cidr "$KEEP_CONSOLE_FROM" || die "--keep-console-from needs an IPv4 range such as 10.0.0.0/16, and $KEEP_CONSOLE_FROM is not one."
+		[ -n "$(console_lan_port)" ] || die "--keep-console-from needs a LAN console: set \"consoleLan\" in $ETC_DIR/config.json first. Nothing was changed."
 	fi
 	if [ -n "$KEEP_SSH_FROM" ]; then
 		ipv4_cidr "$KEEP_SSH_FROM" || die "--keep-ssh-from needs an IPv4 range such as 203.0.113.7/32, and $KEEP_SSH_FROM is not one."
@@ -1433,6 +1458,28 @@ tunnel_undo() {
 	fi
 }
 
+# to_private (LuxRail) marks an existing normal install private with
+# 5050d make-private, which checks everything before it writes, and restarts
+# 5050d so Caddy moves to loopback. Until the tunnel and the console are
+# proven, on_exit undoes it, so a failed run leaves a normal install.
+to_private() {
+	sub "Marking this install private"
+	set -- make-private --config "$ETC_DIR/config.json"
+	[ -z "$TO_PRIVATE_BASE" ] || set -- "$@" --base-domain "$TO_PRIVATE_BASE"
+	[ -z "$TO_PRIVATE_CONSOLE" ] || set -- "$@" --console-domain "$TO_PRIVATE_CONSOLE"
+	run_logged "marking this install private" "$INSTALL_DIR/current/5050d" "$@"
+	TO_PRIVATE_UNDO=1
+	CONSOLE_DOMAIN=$(sed -n 's/.*"consoleDomain": *"\([^"]*\)".*/\1/p' "$ETC_DIR/config.json")
+	DOMAIN=$(sed -n 's/.*"baseDomain": *"\([^"]*\)".*/\1/p' "$ETC_DIR/config.json")
+	systemctl restart 5050d.service
+}
+
+to_private_undo() {
+	"$INSTALL_DIR/current/5050d" make-private --undo --config "$ETC_DIR/config.json" >/dev/null 2>&1 || true
+	systemctl restart 5050d.service >/dev/null 2>&1 || true
+	printf '  %sThis install was set back to a normal (not private) install.%s\n' "$DIM" "$R" >&2
+}
+
 tunnel_connected() { curl -fsS --max-time 3 "http://$TUNNEL_METRICS/ready" >/dev/null 2>&1; }
 
 # console_answers fetches the console by its public name. Only this host's
@@ -1487,9 +1534,16 @@ verify_private() {
 	}
 }
 
+# console_lan_port (LuxRail) prints the port of consoleLan in config.json, or nothing.
+console_lan_port() {
+	sed -n 's/.*"consoleLan": *"[0-9.]*:\([0-9]*\)".*/\1/p' "$ETC_DIR/config.json" 2>/dev/null
+}
+
 private_firewall_conf() {
 	ssh_rule=""
 	[ -z "$KEEP_SSH_FROM" ] || ssh_rule="tcp dport 22 ip saddr $KEEP_SSH_FROM accept"
+	console_rule=""
+	[ -z "$KEEP_CONSOLE_FROM" ] || console_rule="tcp dport $(console_lan_port) ip saddr $KEEP_CONSOLE_FROM accept"
 	# The forward chain matters as much as input: Docker publishes ports by
 	# forwarding, past the input chain. Loading this before Docker keeps the
 	# metadata drop in place whether or not the agent has run yet; the agent
@@ -1517,6 +1571,7 @@ table inet fifty_filter {
 		iifname "f5-*" drop
 		udp dport 51820 ip saddr @wg_peers accept
 		$ssh_rule
+		$console_rule
 		iifname "wg5050" accept
 	}
 	chain forward {
@@ -1567,6 +1622,7 @@ close_ports() {
 	fi
 	FIREWALL_UNDO=""
 	docker_needs_firewall
+	if [ -n "$KEEP_CONSOLE_FROM" ]; then printf '%s\n' "$KEEP_CONSOLE_FROM" >"$ETC_DIR/keep-console-from"; else rm -f "$ETC_DIR/keep-console-from"; fi
 	if [ -n "$KEEP_SSH_FROM" ]; then
 		printf '%s\n' "$KEEP_SSH_FROM" >"$ETC_DIR/keep-ssh-from"
 		if [ -f "$ETC_DIR/ssh-closed" ]; then
@@ -1805,6 +1861,7 @@ if [ -n "$JOIN" ]; then
 fi
 step "Setting up the control plane"
 init_control
+[ -z "${TO_PRIVATE:-}" ] || to_private
 step "Starting services"
 start_control
 if [ -n "$PRIVATE" ]; then
@@ -1814,6 +1871,7 @@ if [ -n "$PRIVATE" ]; then
 	verify_private
 	step "Closing inbound ports"
 	close_ports
+	TO_PRIVATE_UNDO=""
 	print_done
 	print_private
 	exit 0

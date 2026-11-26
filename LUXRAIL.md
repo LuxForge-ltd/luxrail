@@ -76,3 +76,23 @@ and with the operator's go and a backup first:
 3. Clients that pinned `openrail-lan-8443-ca.crt` (the sync and publish scripts on joyeuse, the
    LuxHome Tower) pin the openrail Caddy CA instead (`openrail-trial-ca.crt`; the Tower's bundle
    already holds both).
+- **Switching an existing install to private mode.** openrail's installer refuses to make a normal
+  install private. LuxRail adds `5050d make-private` (sets `"private": true` in `config.json` and,
+  with `--base-domain` and `--console-domain`, replaces sslip.io or nip.io names in `config.json`
+  and `state.db`; it checks everything before writing, and `--undo` reverses the flag) and the
+  installer flag `--to-private`, which runs it, restarts 5050d, starts the tunnel, proves the
+  console answers through it, and only then closes the ports. If any check fails, the run puts the
+  install back as it was. `--keep-console-from CIDR` keeps the LAN console (`consoleLan`)
+  reachable from a range once the private firewall is on, as `--keep-ssh-from` does for SSH.
+  (`cmd/5050d/private.go`, `install/install.sh`)
+
+  ```
+  sudo FIFTY_TUNNEL_TOKEN=... sh install.sh --to-private --release-base <LuxRail release base> \
+    --domain apps.example.com --console-domain console.example.com \
+    --keep-ssh-from 10.0.0.0/16 --keep-console-from 10.0.0.0/16
+  ```
+
+  Before running it on VM 105: take a vzdump and `5050d backup-state`; the console then goes
+  through `5050-tunnel.service`, which replaces the hand-installed host `cloudflared` (use the same
+  tunnel token, then stop the old service); and the private firewall closes everything else,
+  including the old `caddy-lan` on 8443, so move to `consoleLan` first.
