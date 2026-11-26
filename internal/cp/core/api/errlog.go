@@ -3,7 +3,7 @@
 // LuxRail: unexpected errors are logged before they are answered.
 //
 // Purpose: an error the API does not recognise is answered 500 "Something
-// went wrong on the server. The details are in the 5050d log." openrail
+// went wrong on the server. The details are in the 5050d log." LuxRail
 // v0.1.9 wrote that answer without logging anything, so the log held no
 // details. This file logs the cause with the route and a short reference,
 // and puts the same reference in the answer so the two can be matched.
@@ -18,8 +18,8 @@ import (
 	"encoding/hex"
 	"net/http"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // writeErrLogged answers err like writeErr, and when the answer is an

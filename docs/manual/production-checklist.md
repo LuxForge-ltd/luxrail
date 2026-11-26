@@ -1,0 +1,46 @@
+---
+title: Production checklist
+description: Work through this list before you put real traffic on a LuxRail install.
+---
+
+Work through this list before you put real traffic on a LuxRail install.
+
+## Host
+
+1. Use a non-burstable VM size with enough RAM for every service plus about 1 GB for LuxRail itself.
+2. Attach a blank data disk before installing; the installer uses it for all state (`--data-disk auto`). See [Install options](reference/install-options.md).
+3. Keep unattended security updates on (the default). Plan reboots: see [Upgrading and host maintenance](guides/upgrading.md).
+4. Open only the ports you need, with your cloud firewall or `--firewall`. See [Firewall](guides/firewall.md). For no open ports at all, see [Private mode](guides/private-mode.md).
+
+## Backups
+
+1. Store the recovery key from `/etc/5050/recovery-key.txt` in a password manager. Without it, backups cannot be decrypted.
+2. In **Settings**, **Backups**, set an S3-compatible bucket and select **Test bucket**. Use a separate retention key and turn on bucket versioning. See [Backups bucket](guides/backups-bucket.md).
+3. Check that every database's **Backups** tab lists a recent backup.
+4. Copy the control plane's hourly state snapshots off the host; 0.1.0 keeps them on the host's disk only. See [Control plane backup](guides/control-plane-backup.md).
+
+## Domains and HTTPS
+
+1. Use your own domain with a wildcard A record (`--domain`) so names do not depend on your IP. See [Your domains](guides/console-domain.md).
+2. Add custom domains and wait for **Active**. See [Custom domains and HTTPS](guides/custom-domains.md).
+3. Behind Cloudflare, set SSL/TLS mode to Full (strict) and paste Cloudflare's ranges into **Trusted proxies**. See [Cloudflare in front](guides/behind-cloudflare.md).
+
+## Services
+
+1. Set a health check path for every web service. See [Health checks](guides/health-checks.md).
+2. Run 2 replicas for web services that must not drop requests during deploys. See [Replicas and zero-downtime deploys](guides/replicas-zero-downtime.md).
+3. Set memory limits so one service cannot starve the rest.
+4. Turn on **Use all cores** for single-process runtimes such as Node. See [Use all cores](guides/use-all-cores.md).
+5. Put database migrations in a pre-deploy command. See [Pre-deploy migrations](guides/pre-deploy.md).
+
+## People and alerts
+
+1. Set up SMTP before you invite people, so invites, password resets and alerts reach them. See [Email (SMTP)](guides/smtp.md).
+2. Ask everyone to turn on 2FA. **Require two-factor authentication for everyone** in **Settings**, **Members** is stored but not yet enforced at login in 0.1.0. See [Members, roles and 2FA](guides/members-roles-2fa.md).
+3. Add monitors for CPU, memory, disk and 5xx rate. See [Monitors and alerts](guides/monitors.md).
+
+## Resilience
+
+1. Read the [Honest limits](reference/honest-limits.md).
+2. With a second host, join it with `--roles app,ingress` and put both IPs behind DNS failover or a load balancer. See [Add a host](guides/add-a-host.md).
+3. Practise a [restore](guides/restore.md) once on a spare VM, and read what [a lost control host](guides/rebuild-control-host.md) means in 0.1.0.

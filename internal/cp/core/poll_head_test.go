@@ -7,8 +7,8 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/musakkka/openrail/internal/cp/core/github"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/github"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func TestHeadForPublicAndAppRepositories(t *testing.T) {

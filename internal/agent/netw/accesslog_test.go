@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // A line as Caddy 2.11 writes it with the JSON encoder.

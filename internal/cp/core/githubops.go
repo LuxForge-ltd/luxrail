@@ -11,12 +11,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core/auth"
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/github"
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/auth"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/github"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
 )
 
 // GitHubStatus is GET /github.

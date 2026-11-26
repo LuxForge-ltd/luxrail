@@ -14,7 +14,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/upgrade/minisign"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade/minisign"
 )
 
 // Release is one verified release tarball for one architecture.

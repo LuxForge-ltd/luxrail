@@ -1,6 +1,6 @@
 # Code of Conduct
 
-openrail is built by people with different backgrounds and levels of experience. We want taking part to be a good experience for everyone.
+LuxRail is built by people with different backgrounds and levels of experience. We want taking part to be a good experience for everyone.
 
 ## Expected
 

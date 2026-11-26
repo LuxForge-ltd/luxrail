@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Error is a user-facing error.

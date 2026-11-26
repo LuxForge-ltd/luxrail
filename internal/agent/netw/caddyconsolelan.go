@@ -4,7 +4,7 @@
 //
 // Purpose: serves the console on a LAN address of the control host over
 // HTTPS, with a certificate for that IP from Caddy's internal CA. It
-// replaces a hand-made listener: openrail renders Caddy's whole config from
+// replaces a hand-made listener: LuxRail renders Caddy's whole config from
 // state on every change, so anything added through the admin API is lost,
 // while this server is part of the rendered config.
 // Scope: the control host's ingress, only when config.json sets consoleLan.
@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // consoleLANSubjects returns the certificate subject (the IP) of the LAN

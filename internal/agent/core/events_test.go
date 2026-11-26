@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core/engine"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/engine"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func TestDiagnosisSentences(t *testing.T) {

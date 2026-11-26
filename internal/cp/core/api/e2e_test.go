@@ -16,14 +16,14 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core"
-	"github.com/musakkka/openrail/internal/cp/core/auth"
-	"github.com/musakkka/openrail/internal/cp/core/config"
-	"github.com/musakkka/openrail/internal/cp/core/fakeorch"
-	"github.com/musakkka/openrail/internal/cp/core/mail"
-	"github.com/musakkka/openrail/internal/cp/core/store"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/templates"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/auth"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/config"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fakeorch"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/mail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/store"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/templates"
 )
 
 type env struct {

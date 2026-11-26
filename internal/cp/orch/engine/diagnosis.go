@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // The control plane assembles the one-sentence diagnosis of docs/SPEC.md

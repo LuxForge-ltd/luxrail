@@ -22,7 +22,7 @@ package agentapi
 import (
 	"context"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Tools fetches and verifies pinned helper binaries (railpack, wal-g,

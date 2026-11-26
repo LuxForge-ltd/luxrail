@@ -10,8 +10,8 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 const secretAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"

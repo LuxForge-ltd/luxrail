@@ -10,11 +10,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/internal/cp/orch/sched"
-	"github.com/musakkka/openrail/internal/upgrade"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/sched"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Upgrade starts a control plane upgrade (9.16): internal/upgrade resolves

@@ -12,9 +12,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
 )
 
 // Data is the data services implementation returned by New. Besides the

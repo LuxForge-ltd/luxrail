@@ -11,13 +11,13 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/musakkka/openrail/internal/cp/core/changes"
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/ids"
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/compose"
-	"github.com/musakkka/openrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/changes"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/compose"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
 )
 
 // ---------------------------------------------------------------- recovery key
@@ -42,7 +42,7 @@ func ParseRecoveryKey(k string) ([]byte, error) {
 	}
 	b, err := base32.StdEncoding.DecodeString(s)
 	if err != nil || len(b) != 32 {
-		return nil, fail.Validation("recoveryKey", "This is not an openrail recovery key.")
+		return nil, fail.Validation("recoveryKey", "This is not a LuxRail recovery key.")
 	}
 	return b, nil
 }

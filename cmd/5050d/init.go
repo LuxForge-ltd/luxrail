@@ -11,9 +11,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/core"
-	"github.com/musakkka/openrail/internal/cp/core/config"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/config"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // ballastSize is the file deleted to free space when the disk fills (6.4, 6.6).

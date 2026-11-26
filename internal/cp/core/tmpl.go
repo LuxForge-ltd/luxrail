@@ -8,13 +8,13 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/musakkka/openrail/internal/cp/core/changes"
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/ids"
-	"github.com/musakkka/openrail/internal/cp/core/templates"
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/changes"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/templates"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 var catalogOnce struct {

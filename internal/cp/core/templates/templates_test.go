@@ -5,7 +5,7 @@ package templates
 import (
 	"testing"
 
-	builtin "github.com/musakkka/openrail/templates"
+	builtin "github.com/luxforge-ltd/luxrail/templates"
 )
 
 func TestLoadBuiltins(t *testing.T) {

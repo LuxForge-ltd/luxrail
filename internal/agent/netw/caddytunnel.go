@@ -2,7 +2,7 @@
 
 // LuxRail: requests that already arrived over HTTPS are not redirected.
 //
-// Purpose: on :80 openrail answers every acme or internal domain with a 308
+// Purpose: on :80 LuxRail answers every acme or internal domain with a 308
 // to https://. A Cloudflare tunnel (or any proxy that terminates TLS) that
 // sends its traffic to Caddy over plain HTTP therefore loops: the visitor
 // asked for https, the proxy forwards http, Caddy redirects to https, and

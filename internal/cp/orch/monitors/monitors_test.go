@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func TestEvaluateFiresAndRecovers(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Label keys the agent sets. Containers without LabelReplica, LabelJob or

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func rec(msg string, attrs map[string]any) *proto.LogRecord {

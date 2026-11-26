@@ -11,9 +11,9 @@ import (
 
 	"github.com/robfig/cron/v3"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 var serviceNameRe = regexp.MustCompile(`^[a-zA-Z0-9_ -]+$`)
@@ -109,7 +109,7 @@ func Validate(c api.ServiceConfig, hasVolume bool) error {
 		return fail.Validation("source.repo", "A GitHub service needs a repository, as owner/name or a public https URL.")
 	}
 	if c.Source.WaitForCI {
-		return fail.Validation("source.waitForCi", "Wait for CI is not in openrail v0.1. Deploys start when the push arrives.")
+		return fail.Validation("source.waitForCi", "Wait for CI is not in LuxRail. Deploys start when the push arrives.")
 	}
 	if c.Source.RootDir != "" && !strings.HasPrefix(c.Source.RootDir, "/") {
 		return fail.Validation("source.rootDir", "The root directory must start with /.")

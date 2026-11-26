@@ -14,21 +14,21 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core"
-	coreapi "github.com/musakkka/openrail/internal/cp/core/api"
-	"github.com/musakkka/openrail/internal/cp/core/config"
-	"github.com/musakkka/openrail/internal/cp/core/fakeorch"
-	"github.com/musakkka/openrail/internal/cp/core/github"
-	"github.com/musakkka/openrail/internal/cp/core/mail"
-	"github.com/musakkka/openrail/internal/cp/core/store"
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/cp/orch"
-	"github.com/musakkka/openrail/internal/cp/secretbox"
-	"github.com/musakkka/openrail/internal/upgrade"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/version"
-	"github.com/musakkka/openrail/templates"
-	"github.com/musakkka/openrail/web"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core"
+	coreapi "github.com/luxforge-ltd/luxrail/internal/cp/core/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/config"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fakeorch"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/github"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/mail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/store"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch"
+	"github.com/luxforge-ltd/luxrail/internal/cp/secretbox"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/templates"
+	"github.com/luxforge-ltd/luxrail/web"
 )
 
 // plane is an opened control plane: config, key, store and core.
@@ -201,7 +201,7 @@ func openDev(ctx context.Context, dataDir, listen string, log *slog.Logger) (*pl
 	path := filepath.Join(abs, "config.json")
 	f, err := config.Load(path)
 	if err != nil {
-		f = &config.File{DataDir: abs, Listen: listen, InstallName: "openrail dev", PublicIP: "127.0.0.1", BaseDomain: "127-0-0-1.sslip.io",
+		f = &config.File{DataDir: abs, Listen: listen, InstallName: "LuxRail dev", PublicIP: "127.0.0.1", BaseDomain: "127-0-0-1.sslip.io",
 			ConsoleDomain: "console.127-0-0-1.sslip.io", MasterKeyPath: filepath.Join(abs, "master.key"), HostKeyPath: filepath.Join(abs, "host.key"),
 			ConsoleURL: "http://" + listen, Insecure: true, NoUpdateCheck: true}
 		f.Defaults()

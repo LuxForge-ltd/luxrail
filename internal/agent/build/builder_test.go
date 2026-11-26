@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 type fakeTools struct{ path string }
@@ -181,7 +181,7 @@ func TestBuildConfigFile(t *testing.T) {
 	for _, want := range []string{
 		"Using config file railway.json",
 		"Nixpacks config detected, building with Railpack.",
-		"railway.json: sleepApplication is not supported in openrail v0.1 and was ignored.",
+		"railway.json: sleepApplication is not supported in LuxRail and was ignored.",
 		"nixpacks.toml: phases.install is not supported by Railpack and was ignored.",
 	} {
 		if !strings.Contains(out, want) {

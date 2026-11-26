@@ -3,7 +3,7 @@
 # locally, signed with the test key in e2e/keys; luxforge/release/release.ps1
 # runs it for a release, signed with the LuxRail release key.
 version: 2
-project_name: "openrail"
+project_name: "luxrail"
 
 before:
   hooks:
@@ -24,9 +24,9 @@ builds:
     flags: [-trimpath]
     ldflags: &ldflags
       - -s -w
-      - -X github.com/musakkka/openrail/pkg/version.Version=v{{ .Version }}
-      - -X github.com/musakkka/openrail/pkg/version.Commit={{ .ShortCommit }}
-      - -X github.com/musakkka/openrail/pkg/version.Date={{ .Date }}
+      - -X github.com/luxforge-ltd/luxrail/pkg/version.Version=v{{ .Version }}
+      - -X github.com/luxforge-ltd/luxrail/pkg/version.Commit={{ .ShortCommit }}
+      - -X github.com/luxforge-ltd/luxrail/pkg/version.Date={{ .Date }}
   - id: 5050-agent
     main: ./cmd/5050-agent
     binary: 5050-agent
@@ -36,7 +36,7 @@ builds:
     flags: [-trimpath]
     ldflags: *ldflags
   - id: cli-server
-    main: ./cmd/openrail
+    main: ./cmd/luxrail
     binary: "5050"
     env: [CGO_ENABLED=0]
     goos: [linux]
@@ -45,17 +45,17 @@ builds:
     ldflags: *ldflags
   # Hosts already installed link /usr/local/bin/5050 to the 5050 binary and their
   # upgrade step requires it, so server archives carry both names.
-  - id: cli-server-openrail
-    main: ./cmd/openrail
-    binary: "openrail"
+  - id: cli-server-luxrail
+    main: ./cmd/luxrail
+    binary: "luxrail"
     env: [CGO_ENABLED=0]
     goos: [linux]
     goarch: [amd64, arm64]
     flags: [-trimpath]
     ldflags: *ldflags
   - id: cli
-    main: ./cmd/openrail
-    binary: "openrail"
+    main: ./cmd/luxrail
+    binary: "luxrail"
     env: [CGO_ENABLED=0]
     goos: [linux, darwin, windows]
     goarch: [amd64, arm64]
@@ -67,7 +67,7 @@ builds:
 
 archives:
   - id: server
-    ids: [5050d, 5050-agent, cli-server, cli-server-openrail]
+    ids: [5050d, 5050-agent, cli-server, cli-server-luxrail]
     name_template: "5050_{{ .Version }}_linux_{{ .Arch }}"
     formats: [tar.gz]
     files:
@@ -78,7 +78,7 @@ archives:
         strip_parent: true
   - id: cli
     ids: [cli]
-    name_template: "openrail-cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: "luxrail-cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
     formats: [tar.gz]
     format_overrides:
       - goos: windows

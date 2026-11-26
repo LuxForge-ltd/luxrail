@@ -10,13 +10,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/cp/orch/logs"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/logs"
 )
 
 // Retention of control plane files (9.19, 6.4).
 const (
-	uploadKeep   = time.Hour          // `openrail up` sources, after their build
+	uploadKeep   = time.Hour          // `luxrail up` sources, after their build
 	replicaKeep  = 7 * 24 * time.Hour // removed replica rows
 	buildLogKeep = 90 * 24 * time.Hour
 )
@@ -58,7 +58,7 @@ func (o *Orchestrator) janitor(ctx context.Context) {
 	o.cleanBuildLogs(ctx, now)
 }
 
-// cleanUploads deletes `openrail up` tarballs an hour after their build ended.
+// cleanUploads deletes `luxrail up` tarballs an hour after their build ended.
 func (o *Orchestrator) cleanUploads(ctx context.Context, now time.Time) {
 	dir := filepath.Join(o.o.DataDir, "uploads")
 	entries, err := os.ReadDir(dir)

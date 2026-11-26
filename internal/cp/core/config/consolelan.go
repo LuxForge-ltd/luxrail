@@ -39,7 +39,7 @@ func ValidateConsoleLAN(v string) error {
 	}
 	switch n {
 	case 80, 443, 5050, 5051:
-		return fmt.Errorf("the LAN console address %q uses port %d, which openrail already uses; pick another, such as 8443", v, n)
+		return fmt.Errorf("the LAN console address %q uses port %d, which LuxRail already uses; pick another, such as 8443", v, n)
 	}
 	return nil
 }

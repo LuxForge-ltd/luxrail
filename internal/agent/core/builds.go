@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core/logstore"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/logstore"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // startBuild runs a build in the background. It keeps going when the

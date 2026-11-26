@@ -18,7 +18,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/musakkka/openrail/internal/upgrade/minisign"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade/minisign"
 )
 
 func main() {

@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core/statecache"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/statecache"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // maxLinesPerMessage keeps one log_lines message well under the frame cap.

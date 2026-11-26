@@ -8,10 +8,10 @@
 # Steps, all in containers (Docker Desktop):
 #   1. Copy the clean checkout into a Docker volume and tag it (locally) with -Version.
 #   2. Build the console: `make web` in node:24.
-#   3. goreleaser (upstream's .goreleaser.yaml, publishing skipped): 5050d, 5050-agent and the CLI for
+#   3. goreleaser (.goreleaser.yaml, publishing skipped): 5050d, 5050-agent and the CLI for
 #      linux amd64/arm64 (CLI also darwin/windows), tarballs and checksums.txt, then sign checksums.txt.
 #      A real release signs with the secret key from the vault (`luxrail/release-signing-key`), handed
-#      to the container through an environment variable only; a dry run signs with upstream's test key.
+#      to the container through an environment variable only; a dry run signs with the test key in e2e/keys.
 #   4. Verify checksums.txt.minisig against the key embedded in internal/upgrade/release-keys.txt.
 #   5. Push the tag and publish a GitHub Release on LuxForge-ltd/luxrail with the tarballs,
 #      checksums.txt(.minisig), latest.txt, install.sh and install-cli.sh. Installs then use
@@ -84,7 +84,7 @@ try {
 
     Step 'Verify the signature with the embedded key'
     if ($DryRun) {
-        Info 'dry run: signed with upstream test key, so it is checked against that key instead'
+        Info 'dry run: signed with the e2e test key, so it is checked against that key instead'
         Docker-Run run --rm -e GOTOOLCHAIN=auto -v "${vol}:/w" -w /w --entrypoint sh $GoReleaserImage -c `
             'go run ./e2e/signtool verify -p e2e/keys/test.pub -m dist/checksums.txt -x dist/checksums.txt.minisig'
     } else {
@@ -109,7 +109,7 @@ git tag -a $Version -m "LuxRail $Version" $sha
 git push origin "refs/tags/$Version"
 if ($LASTEXITCODE -ne 0) { throw 'pushing the tag failed' }
 $notes = @"
-LuxRail $Version, built from ``$($sha.Substring(0,7))``: openrail with LuxForge's changes, signed with the LuxRail release key.
+LuxRail $Version, built from ``$($sha.Substring(0,7))``, signed with the LuxRail release key.
 
 Install or upgrade with:
 

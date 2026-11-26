@@ -11,9 +11,9 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/musakkka/openrail/internal/cp/orch/fakeconfig"
-	"github.com/musakkka/openrail/internal/cp/secretbox"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/fakeconfig"
+	"github.com/luxforge-ltd/luxrail/internal/cp/secretbox"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func envelope(t *testing.T, typ string, v any) proto.Envelope {

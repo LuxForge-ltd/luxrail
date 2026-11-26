@@ -15,7 +15,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // BackupKeySource is an optional interface of cpapi.Config. Core owns the

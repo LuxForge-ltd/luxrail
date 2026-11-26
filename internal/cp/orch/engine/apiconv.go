@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/internal/cp/orch/sched"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/sched"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // apiDeployment converts a deployment row to the API shape.

@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core/auth"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/auth"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // secOwner sets the install up and returns a signed-in owner client with one

@@ -1,10 +1,10 @@
-# Contributing to openrail
+# Contributing to LuxRail
 
 Thanks for helping. Bug reports, docs fixes, templates and code are all welcome.
 
 ## Before you start
 
-- For a bug, open an issue with the version (`openrail version`, `5050d --version`), the OS, what you did, what you expected and what happened. Include the deployment's diagnosis sentence and log lines, with secrets removed.
+- For a bug, open an issue with the version (`luxrail version`, `5050d --version`), the OS, what you did, what you expected and what happened. Include the deployment's diagnosis sentence and log lines, with secrets removed.
 - For a feature or a larger change, open an issue first so we can agree on the approach.
 - Security issues go through [SECURITY.md](SECURITY.md), not public issues.
 
@@ -26,9 +26,9 @@ make check-public # secret scan, banned words, licence headers
 
 1. Keep each pull request to one change, with tests.
 2. Run `make lint test check-public` before you push.
-3. Every new source file starts with an `SPDX-License-Identifier` line: `MIT` for `cmd/openrail`, `internal/cli`, `pkg/`, `templates/`, `examples/`, `install/` and `site/`; `AGPL-3.0-only` everywhere else. See [LICENSING.md](LICENSING.md).
+3. Every new source file starts with an `SPDX-License-Identifier` line: `MIT` for `cmd/luxrail`, `internal/cli`, `pkg/`, `templates/`, `examples/`, `install/` and `site/`; `AGPL-3.0-only` everywhere else. See [LICENSING.md](LICENSING.md).
 4. The CLI must not import server code (`internal/cp`, `internal/agent`, `internal/upgrade`, `web`).
-5. Update the docs in `site/src/content/docs/` when behaviour changes.
+5. Update the docs in `docs/manual/` when behaviour changes.
 
 ## Writing style
 
@@ -36,7 +36,7 @@ User-facing text (UI, docs, errors) is plain English: short sentences, exact UI 
 
 ## Templates
 
-New templates live in `templates/<id>/template.yaml` with an icon and a golden render test. See [Writing a template](https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/contribute/writing-a-template.md).
+New templates live in `templates/<id>/template.yaml` with an icon and a golden render test. See [Writing a template](https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/contribute/writing-a-template.md).
 
 ## Licence of contributions
 

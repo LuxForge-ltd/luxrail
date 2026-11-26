@@ -8,9 +8,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/manifest"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Result is the effective config of one deployment.
@@ -108,7 +108,7 @@ func applyBuild(r *Result, prefix string, b *manifest.RailwayBuild, loc func(str
 		r.Source["build.railpackVersion"] = loc(prefix + "build.railpackVersion")
 	}
 	if len(b.NixpacksPlan) > 0 && string(b.NixpacksPlan) != "null" {
-		r.Notices = append(r.Notices, fileOf(loc(""))+": nixpacksPlan is not supported in openrail v0.1 and was ignored.")
+		r.Notices = append(r.Notices, fileOf(loc(""))+": nixpacksPlan is not supported in LuxRail and was ignored.")
 	}
 }
 
@@ -165,7 +165,7 @@ func applyDeploy(r *Result, prefix string, d *manifest.RailwayDeploy, loc func(s
 			c.Replicas = sum
 			set("deploy.replicas", "deploy.multiRegionConfig")
 		}
-		r.Notices = append(r.Notices, fmt.Sprintf("%s: multiRegionConfig contributes only its replica count (%d); regions are your hosts in openrail.", file, sum))
+		r.Notices = append(r.Notices, fmt.Sprintf("%s: multiRegionConfig contributes only its replica count (%d); regions are your hosts in LuxRail.", file, sum))
 	} else if d.NumReplicas != nil {
 		c.Replicas = *d.NumReplicas
 		set("deploy.replicas", "deploy.numReplicas")
@@ -192,7 +192,7 @@ func applyDeploy(r *Result, prefix string, d *manifest.RailwayDeploy, loc func(s
 		set("deploy.singleton", "deploy.singleton")
 	}
 	if d.SleepApplication != nil && *d.SleepApplication {
-		r.Notices = append(r.Notices, file+": sleepApplication is not supported in openrail v0.1 and was ignored.")
+		r.Notices = append(r.Notices, file+": sleepApplication is not supported in LuxRail and was ignored.")
 	}
 	if d.Runtime != nil {
 		r.Notices = append(r.Notices, file+": runtime is a Railway setting and was ignored.")

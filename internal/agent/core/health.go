@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core/engine"
-	"github.com/musakkka/openrail/internal/agent/core/logstore"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/engine"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/logstore"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Health check defaults (7.4).
@@ -111,7 +111,7 @@ func httpProbe(ctx context.Context, addr string, s proto.ReplicaSpec) probeResul
 	}
 	req.Host = host
 	req.Header.Set("X-Forwarded-Proto", "https")
-	req.Header.Set("User-Agent", "openrail-healthcheck")
+	req.Header.Set("User-Agent", "luxrail-healthcheck")
 	client := &http.Client{
 		Transport:     &http.Transport{DisableKeepAlives: true, Proxy: nil},
 		CheckRedirect: func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse },

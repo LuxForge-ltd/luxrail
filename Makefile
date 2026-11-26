@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 #
-# openrail build targets (docs/SPEC.md 17.1). `make help` lists them.
+# LuxRail build targets (docs/SPEC.md 17.1). `make help` lists them.
 # Every tool is pinned here; `make tools` installs the Go ones into bin/tools.
 
 SHELL := /bin/bash
@@ -10,7 +10,7 @@ MAKEFLAGS += --no-print-directory
 
 GO ?= go
 NPM ?= npm
-MODULE := github.com/musakkka/openrail
+MODULE := github.com/luxforge-ltd/luxrail
 TOOLS := $(CURDIR)/bin/tools
 
 # Pinned tool versions (each at least two weeks old when pinned).
@@ -29,7 +29,7 @@ LDFLAGS := -s -w \
 	-X $(MODULE)/pkg/version.Commit=$(COMMIT) \
 	-X $(MODULE)/pkg/version.Date=$(DATE)
 
-BINARIES := 5050d 5050-agent openrail
+BINARIES := 5050d 5050-agent LuxRail
 # Go packages of this module. web/node_modules can hold stray Go packages
 # from npm dependencies, so ./... is filtered.
 GO_PKGS = $(shell $(GO) list ./... | grep -v /node_modules/)
@@ -74,15 +74,14 @@ WEB_DEPS := web/node_modules/.package-lock.json
 # ---------------------------------------------------------------- build
 
 .PHONY: deps
-deps: ## Download Go modules and install npm packages for web/ (and site/ when it exists)
+deps: ## Download Go modules and install npm packages for web/
 	$(GO) mod download
 	cd web && $(NPM) ci --no-audit --no-fund
-	@if [ -f site/package-lock.json ]; then cd site && $(NPM) ci --no-audit --no-fund; fi
 
 .PHONY: dist-placeholder
 dist-placeholder: ## Create web/dist/index.html if missing so Go builds without Node
 	@mkdir -p web/dist; if [ ! -f web/dist/index.html ]; then \
-		printf '<!doctype html><meta charset="utf-8"><title>openrail</title><p>The console was not built. Run make web.</p>\n' > web/dist/index.html; \
+		printf '<!doctype html><meta charset="utf-8"><title>LuxRail</title><p>The console was not built. Run make web.</p>\n' > web/dist/index.html; \
 		echo "Wrote placeholder web/dist/index.html"; \
 	fi
 
@@ -92,7 +91,7 @@ web: $(WEB_DEPS) ## Build the console into web/dist and check the P10 size budge
 	sh scripts/web-size.sh
 
 .PHONY: build
-build: dist-placeholder ## Build bin/5050d, bin/5050-agent and bin/openrail for this OS and arch
+build: dist-placeholder ## Build bin/5050d, bin/5050-agent and bin/luxrail for this OS and arch
 	@mkdir -p bin
 	@for b in $(BINARIES); do \
 		if [ -d cmd/$$b ]; then \
@@ -114,11 +113,11 @@ cross: dist-placeholder ## Cross-build linux amd64/arm64 for all binaries; darwi
 			GOOS=linux GOARCH=$$arch CGO_ENABLED=0 $(GO) build -trimpath -ldflags '$(LDFLAGS)' -o bin/linux_$$arch/$$b ./cmd/$$b; \
 		done; \
 	done
-	@if [ -d cmd/openrail ]; then \
+	@if [ -d cmd/luxrail ]; then \
 		for t in darwin/amd64 darwin/arm64 windows/amd64; do \
 			os=$${t%/*}; arch=$${t#*/}; ext=; [ $$os = windows ] && ext=.exe; \
-			echo "$$t openrail"; \
-			GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 $(GO) build -trimpath -ldflags '$(LDFLAGS)' -o bin/$${os}_$$arch/openrail$$ext ./cmd/openrail; \
+			echo "$$t LuxRail"; \
+			GOOS=$$os GOARCH=$$arch CGO_ENABLED=0 $(GO) build -trimpath -ldflags '$(LDFLAGS)' -o bin/$${os}_$$arch/luxrail$$ext ./cmd/luxrail; \
 		done; \
 	fi
 
@@ -211,9 +210,6 @@ dev: dist-placeholder $(WEB_DEPS) ## Run 5050d --dev and Vite (the console alone
 		cd web && $(NPM) run dev:mocks; \
 	fi
 
-.PHONY: site
-site: ## Build the docs site
-	@if [ -d site ]; then cd site && $(NPM) run build; else echo "site/ does not exist yet (WP9)." >&2; exit 1; fi
 
 .PHONY: release-snapshot
 release-snapshot: ## goreleaser snapshot into dist/ (WP6)

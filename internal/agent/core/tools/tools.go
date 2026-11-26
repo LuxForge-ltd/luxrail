@@ -30,8 +30,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/agentapi"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/agentapi"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // MaxDownloadBytes caps one tool download.

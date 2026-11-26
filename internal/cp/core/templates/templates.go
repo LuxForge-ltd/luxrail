@@ -14,8 +14,8 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
 )
 
 // Catalog is the parsed set of templates.

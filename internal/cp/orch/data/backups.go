@@ -13,9 +13,9 @@ import (
 
 	"github.com/robfig/cron/v3"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // staleAfter is how old the last good backup may be before health turns

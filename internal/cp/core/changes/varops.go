@@ -5,8 +5,8 @@ package changes
 import (
 	"sort"
 
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // VarOps is a staged edit of one service's (or the shared) variables.

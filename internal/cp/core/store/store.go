@@ -26,7 +26,7 @@ import (
 
 	"modernc.org/sqlite"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
 )
 
 //go:embed migrations/*.sql

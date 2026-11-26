@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // TestRegistryGCSequencing checks 9.6: pause the build queue, switch the

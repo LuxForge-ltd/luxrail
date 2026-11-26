@@ -28,8 +28,8 @@ import (
 
 	_ "modernc.org/sqlite" // database/sql driver "sqlite"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Retention and resolution (docs/SPEC.md 6.3).

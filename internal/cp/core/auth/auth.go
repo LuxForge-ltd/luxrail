@@ -26,8 +26,8 @@ import (
 	"github.com/pquerna/otp/totp"
 	"golang.org/x/crypto/argon2"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
 )
 
 // Password policy and argon2id parameters (m=64 MiB, t=3, p=2).

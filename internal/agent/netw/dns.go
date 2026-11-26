@@ -17,7 +17,7 @@ import (
 
 	"github.com/miekg/dns"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // DNS answer settings (docs/SPEC.md 8.4).

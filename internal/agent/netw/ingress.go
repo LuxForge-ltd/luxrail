@@ -24,8 +24,8 @@ import (
 	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/api/types/mount"
 
-	"github.com/musakkka/openrail/internal/agent/agentapi"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/agentapi"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // CaddyContainer is the name of the Caddy container on ingress hosts.

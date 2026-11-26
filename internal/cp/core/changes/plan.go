@@ -7,8 +7,8 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Plan actions (cpapi.PlanItem.Action).

@@ -15,9 +15,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/orch/ipam"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/ipam"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Join tokens are single use and valid for one hour (docs/SPEC.md 15).
@@ -333,7 +333,7 @@ func nextMeshIndex(ctx context.Context, tx DB, control bool) (int, error) {
 			return i, nil
 		}
 	}
-	return 0, refuse(http.StatusConflict, api.CodeConflict, fmt.Sprintf("This install already has %d hosts, the most openrail v0.1 supports.", ipam.MaxHosts))
+	return 0, refuse(http.StatusConflict, api.CodeConflict, fmt.Sprintf("This install already has %d hosts, the most LuxRail supports.", ipam.MaxHosts))
 }
 
 func contains(xs []string, s string) bool {

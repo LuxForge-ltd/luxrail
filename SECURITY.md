@@ -15,18 +15,18 @@ Include the version, the affected component (control plane, agent, CLI, installe
 
 ## Supported versions
 
-Security fixes go into the latest release. Upgrade with `openrail upgrade`.
+Security fixes go into the latest release. Upgrade with `luxrail upgrade`.
 
 ## Release signing
 
-Releases are signed with minisign. The installer and `openrail upgrade` verify the signature of `checksums.txt` with the public key embedded in them, then the SHA-256 of the archive.
+Releases are signed with minisign. The installer and `luxrail upgrade` verify the signature of `checksums.txt` with the public key embedded in them, then the SHA-256 of the archive.
 
 Key rotation: a release signed with the current key ships the next key; the release after that is signed with the next key.
 
-If the signing key is ever compromised, we will publish a security advisory, release a new installer that trusts only the new key, and document the upgrade command with the new key, `openrail upgrade --pubkey <new key>`, here.
+If the signing key is ever compromised, we will publish a security advisory, release a new installer that trusts only the new key, and document the upgrade command with the new key, `luxrail upgrade --pubkey <new key>`, here.
 
 ## Scope
 
 In scope: everything in this repository. Out of scope: vulnerabilities in the apps you deploy, in your OS or cloud provider, and denial of service by volume against a single install.
 
-The security model is described in [the security model](https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/reference/security-model.md).
+The security model is described in [the security model](https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/reference/security-model.md).

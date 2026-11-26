@@ -21,7 +21,7 @@ import (
 
 	"github.com/coder/websocket"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // session is one WebSocket connection to the control plane.

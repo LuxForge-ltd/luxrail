@@ -15,12 +15,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core"
-	"github.com/musakkka/openrail/internal/agent/core/engine"
-	"github.com/musakkka/openrail/internal/agent/core/statecache"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
-	"github.com/musakkka/openrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/engine"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/statecache"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
 )
 
 // joinParams are the inputs of join and rejoin.

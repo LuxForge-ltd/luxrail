@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
 )
 
 // blocked are the ranges an outbound request may not reach unless the owner

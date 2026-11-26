@@ -12,7 +12,7 @@ import (
 	"github.com/docker/docker/api/types/network"
 	"github.com/miekg/dns"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func TestNetApplyDockerAndDNS(t *testing.T) {

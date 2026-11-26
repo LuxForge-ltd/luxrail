@@ -19,10 +19,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core"
-	"github.com/musakkka/openrail/internal/cp/core/auth"
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/auth"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // CookieName is the session cookie. On HTTPS it is SecureCookieName instead: the

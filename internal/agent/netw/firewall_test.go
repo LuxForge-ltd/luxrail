@@ -10,7 +10,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func testNets() []proto.Network {

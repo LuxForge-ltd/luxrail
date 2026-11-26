@@ -5,7 +5,7 @@ package engine
 import (
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func TestRanToCompletion(t *testing.T) {

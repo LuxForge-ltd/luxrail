@@ -5,10 +5,10 @@ package api
 import (
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
-// `openrail up --new` creates an upload service with Deploy Now. It has no
+// `luxrail up --new` creates an upload service with Deploy Now. It has no
 // source until the upload arrives, so the create commit must not deploy it
 // (that deployment could only fail with "uploaded source is missing").
 func TestNewUploadServiceDoesNotDeployBeforeTheUpload(t *testing.T) {

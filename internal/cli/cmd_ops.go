@@ -15,8 +15,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
 )
 
 func (a *App) cmdVolume() *cobra.Command {
@@ -341,7 +341,7 @@ func (a *App) cmdConfig() *cobra.Command {
 			return nil
 		},
 	}
-	pull.Flags().StringVar(&file, "file", "openrail.yaml", "output file (- for standard output)")
+	pull.Flags().StringVar(&file, "file", "luxrail.yaml", "output file (- for standard output)")
 	c.AddCommand(pull)
 	return c
 }
@@ -356,7 +356,7 @@ func (a *App) findHost(cmd *cobra.Command, c *Client, ref string) (api.Host, err
 			return h, nil
 		}
 	}
-	return api.Host{}, fmt.Errorf("no host named %q. Run `openrail host list`", ref)
+	return api.Host{}, fmt.Errorf("no host named %q. Run `luxrail host list`", ref)
 }
 
 func (a *App) cmdHost() *cobra.Command {
@@ -559,7 +559,7 @@ func (a *App) cmdVersion() *cobra.Command {
 			if a.JSON {
 				return a.printJSON(out)
 			}
-			a.printf("openrail %s (%s, %s)\n", out["cli"], out["commit"], out["date"])
+			a.printf("LuxRail %s (%s, %s)\n", out["cli"], out["commit"], out["date"])
 			if out["server"] != "" {
 				a.printf("server %s at %s\n", out["server"], out["serverUrl"])
 			}

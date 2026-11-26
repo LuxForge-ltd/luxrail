@@ -15,7 +15,7 @@ import (
 
 	"golang.zx2c4.com/wireguard/wgctrl/wgtypes"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // MeshKeepalive is the WireGuard persistent keepalive, so NAT mappings stay open.

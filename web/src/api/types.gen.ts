@@ -71,7 +71,7 @@ export const LabelSkipped = "Skipped";
 // source: types.go
 /*
 Package api is the REST contract between 5050d and its clients (the web
-console and the openrail CLI). It is frozen for v0.1: a change here is a change
+console and the LuxRail CLI). It is frozen for v0.1: a change here is a change
 to docs/SPEC.md first. JSON field names are camelCase. Timestamps are Unix
 milliseconds (int64). IDs are prefixed strings (see docs/SPEC.md section 6).
 
@@ -1056,7 +1056,7 @@ export interface Variable {
 export interface VariablesResponse {
   variables: Variable[];
   /**
-   * Provided lists the names openrail injects (PORT, FIFTY_*, RAILWAY_* aliases).
+   * Provided lists the names LuxRail injects (PORT, FIFTY_*, RAILWAY_* aliases).
    */
   provided: string[];
   /**
@@ -1525,7 +1525,7 @@ export interface ConnectInfo {
    */
   privateVariable: string;
   publicVariable?: string;
-  cliCommand: string; // "openrail connect Postgres"
+  cliCommand: string; // "luxrail connect Postgres"
 }
 export interface DataTable {
   name: string;

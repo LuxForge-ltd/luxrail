@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Caddy settings (docs/SPEC.md 8.4).

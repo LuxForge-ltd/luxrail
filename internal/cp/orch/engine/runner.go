@@ -10,13 +10,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/cp/orch/data"
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/internal/cp/orch/ipam"
-	"github.com/musakkka/openrail/internal/cp/orch/sched"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/data"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/ipam"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/sched"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // jobTracker matches job_log and job_result messages to waiting callers.

@@ -18,8 +18,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Replica is one container as routing sees it.

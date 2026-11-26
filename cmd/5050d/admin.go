@@ -17,11 +17,11 @@ import (
 
 	"filippo.io/age"
 
-	"github.com/musakkka/openrail/internal/cp/core"
-	"github.com/musakkka/openrail/internal/cp/core/config"
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/upgrade"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/config"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func cmdSetupToken(ctx context.Context, args []string, stdout io.Writer) error {
