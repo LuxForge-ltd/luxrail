@@ -1,12 +1,9 @@
 # LuxRail
 
-LuxRail is LuxForge's maintained fork of [openrail](https://github.com/musakkka/openrail), the
-self-hosted PaaS. It tracks upstream closely and carries a small set of LuxForge changes: fixes we
-need before upstream ships them, LuxForge integration (Cloudflare tunnels, LAN access) and the
-LuxForge look.
+LuxRail is LuxForge's self-hosted PaaS. It began as a fork of openrail v0.1.9 and is now developed
+on its own: it does not follow, merge from or contribute back to openrail.
 
-Upstream's own documentation (`README.md`, `docs/`) applies unless this file says otherwise. Those
-files are left as upstream wrote them, so weekly syncs merge cleanly.
+The documentation in `README.md` and `docs/` applies unless this file says otherwise.
 
 ## Licence
 
@@ -21,10 +18,9 @@ this repository stays public so everyone using a LuxRail install can get its sou
 | `main` | Released LuxRail. It moves only when the operator approves the "Release Dev to main" pull request. |
 | `Dev` | LuxRail: upstream plus LuxForge changes. The integration branch for all work. |
 | `phase-XX-*` | One approved change each, merged into `Dev` by pull request. |
-| `sync/upstream-<date>` | A weekly upstream merge. When it is clean and the tests pass, `Dev` is fast-forwarded to it. |
 
-The other branches copied from upstream when the fork was made are upstream's work in progress and
-are not used here.
+Other branches and the `v0.1.0` to `v0.1.9` tags were copied from openrail when the fork was made
+and are not used.
 
 ## Versions
 
@@ -35,16 +31,9 @@ started from openrail v0.1.9 (`d6fad37`).
 ## Working rules
 
 - Agent and contributor rules: `AGENTS.md` (LuxForge governance, integration branch `Dev`).
-- Keep LuxForge changes small and, where possible, in files of their own, so upstream merges stay
-  cheap. Fixes that are useful to everyone may be offered upstream as pull requests.
-- No GitHub Actions run in this repository: Actions is turned off for it. Builds, tests and
-  releases run on LuxForge devices (Pillars `standards/devices.md`); the weekly sync runs on LuxForge's own LuxRail install. Upstream's workflow files are
-  kept unchanged so merges stay clean; they do not run here.
-- Weekly upstream sync, Fridays at 02:00 UTC, as a cron service on LuxForge's OpenRail/LuxRail
-  install: it merges upstream `main` into a `sync/upstream-<date>` branch from `Dev` and runs the
-  tests. A clean, passing merge fast-forwards `Dev` and leaves a "Release Dev to main" pull request
-  for the operator to approve; conflicts or failing tests leave a pull request into `Dev` instead.
-  See `luxforge/sync/README.md`.
+- No GitHub Actions run in this repository, and it has no workflow files. Builds, tests and
+  releases run on LuxForge devices (Pillars `standards/devices.md`).
+- `main` moves when the operator merges a "Release Dev to main" pull request.
 
 ## How LuxRail behaves differently from openrail
 

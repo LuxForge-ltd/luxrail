@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Release build (docs/SPEC.md 17.2 and 17.3). `make release-snapshot` runs it
-# locally, signed with the test key in e2e/keys; .github/workflows/release.yml
-# runs it on a v* tag, signed with the MINISIGN_KEY secret.
+# locally, signed with the test key in e2e/keys; luxforge/release/release.ps1
+# runs it for a release, signed with the LuxRail release key.
 version: 2
 project_name: "openrail"
 
