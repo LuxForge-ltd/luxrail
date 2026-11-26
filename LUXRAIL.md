@@ -55,3 +55,24 @@ LuxRail at openrail v0.1.9 (`d6fad37`).
   for visitors that used HTTPS) and redirects the rest as before. A tunnel can therefore point at
   `http://<host>:80` with the app's domain as well as straight at the service.
   (`internal/agent/netw/caddytunnel.go`)
+- **A LAN console address.** `"consoleLan": "<IPv4>:<port>"` in `/etc/5050/config.json` (for
+  example `10.10.180.5:8443`) serves the console and API on that address of the control host over
+  HTTPS, with a certificate for the IP from openrail's Caddy internal CA. It is part of the Caddy
+  config openrail renders, so it survives every rebuild, unlike a route added through Caddy's admin
+  API. 5050d refuses to start with a value that is not an IPv4 address and port, or that uses
+  80, 443, 5050 or 5051. Restart 5050d after changing it. Clients that pin a CA pin the internal
+  CA's root, `/var/lib/5050/caddy/data/pki/authorities/local/root.crt`.
+  (`internal/cp/core/config/consolelan.go`, `internal/cp/orch/engine/consolelan.go`,
+  `internal/agent/netw/caddyconsolelan.go`)
+
+### Moving VM 105 from `caddy-lan` to `consoleLan`
+
+VM 105 serves `https://10.10.180.5:8443` from a separate Caddy (`openrail-lan.service`,
+`/etc/caddy-lan/Caddyfile`, its own internal CA). Once VM 105 runs a release with `consoleLan`,
+and with the operator's go and a backup first:
+
+1. Stop and disable `openrail-lan.service`, which holds port 8443.
+2. Add `"consoleLan": "10.10.180.5:8443"` to `/etc/5050/config.json` and restart 5050d.
+3. Clients that pinned `openrail-lan-8443-ca.crt` (the sync and publish scripts on joyeuse, the
+   LuxHome Tower) pin the openrail Caddy CA instead (`openrail-trial-ca.crt`; the Tower's bundle
+   already holds both).

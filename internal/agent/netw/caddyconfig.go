@@ -387,6 +387,7 @@ func renderCaddy(p caddyParams, in proto.Ingress) ([]byte, []error) {
 		policies = append(policies, obj{"subjects": acmeDomains, "issuers": iss})
 		automate = append(automate, acmeDomains...)
 	}
+	internalDomains = append(internalDomains, consoleLANSubjects(in.ConsoleLAN)...) // LuxRail
 	if len(internalDomains) > 0 {
 		policies = append(policies, obj{"subjects": internalDomains, "issuers": []obj{{"module": "internal"}}})
 		automate = append(automate, internalDomains...)
@@ -425,6 +426,11 @@ func renderCaddy(p caddyParams, in proto.Ingress) ([]byte, []error) {
 		errs = append(errs, err)
 	} else if relay != nil {
 		servers["console_relay"] = relay
+	}
+	if lan, err := consoleLANServer(in.ConsoleLAN, delay, logs); err != nil { // LuxRail
+		errs = append(errs, err)
+	} else if lan != nil {
+		servers["console_lan"] = lan
 	}
 	apps := obj{"http": obj{"servers": servers}}
 	if len(tls) > 0 {

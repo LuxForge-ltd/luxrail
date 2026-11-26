@@ -108,6 +108,8 @@ type Options struct {
 	// ACMECA is the ACME directory ingress hosts use: "" (production),
 	// "staging" or a directory URL (--acme-ca at init).
 	ACMECA string
+	// ConsoleLAN is LuxRail's LAN console address, "<IPv4>:<port>" or "".
+	ConsoleLAN string
 	// Git resolves branch heads and commit details (default: smart HTTP and the GitHub API).
 	Git    GitResolver
 	Log    *slog.Logger
