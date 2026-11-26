@@ -35,17 +35,20 @@ list or the log.
    repository `LuxForge-ltd/luxrail`, branch `Dev`, with the config file
    `luxforge/sync/railway.json`. That file builds `luxforge/sync/Dockerfile` from the repository
    root.
-3. **Schedule.** In the service's *Settings > Deploy*, set *Cron Schedule* to `0 2 * * 5` (UTC)
-   and the restart policy to *Never*. These are set on the service, not in `railway.json`:
-   openrail v0.1.9's scheduler and *Run now* only read a service's own schedule, and it refuses a
-   schedule on the service while the config file sets one. (A LuxRail fix will let the file carry
-   it again.)
+3. **Schedule.** Nothing to set: `railway.json` carries the schedule (`0 2 * * 5`, UTC) and the
+   restart policy (`NEVER`), so the console shows both as set by the file. This needs LuxRail
+   `v0.1.9-lf.2` or later, whose scheduler and *Run now* follow a config file's `cronSchedule`
+   (openrail v0.1.9 read only the service's own setting). A schedule or restart policy set on the
+   service itself is overridden by the file; clear them there so the settings page is not
+   misleading, and edit the file to change them.
 4. **Variables.** Add `GH_TOKEN` as a **sealed** variable (paste it from the vault; it is never
    shown again). Optional: `SYNC_ASSIGNEE` (default `30-something-programmer`), `SYNC_TEST_CMD`.
 5. **Deploy**, then use **Run now** once and read the run's log. A first run with nothing new
    upstream ends with "up to date".
 
 On joyeuse, `L:\LuxForge\bin\luxrail-deploy-sync.ps1` does steps 2 to 5 through the OpenRail API.
+Its schedule step (a PATCH of `deploy.cronSchedule` and `deploy.restartPolicy` on the service) is
+not needed any more, and the console refuses it while the file sets those fields ("is set by").
 It asks once for the vault password and is safe to run again.
 
 ## Reading the result
