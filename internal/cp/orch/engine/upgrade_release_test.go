@@ -8,6 +8,8 @@ func TestReleaseVersion(t *testing.T) {
 	cases := map[string]bool{
 		"v0.1.9":                   true,
 		"0.1.9":                    true,
+		"v1.0.0":                   true,
+		"v1.0.0-rc.1":              false,
 		"v0.1.9-lf.1":              true,
 		"v1.20.300-lf.42":          true,
 		"v0.1.9-rc.1":              false,

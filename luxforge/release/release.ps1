@@ -1,7 +1,9 @@
 # release.ps1 -- build, sign and publish a LuxRail release. Run on joyeuse in PowerShell 7, from a
 # clean LuxRail clone at the commit to release (normally the tip of Dev):
-#   pwsh -File luxforge/release/release.ps1 -Version v0.1.9-lf.1 -DryRun   # build + verify, no key, no publish
-#   pwsh -File luxforge/release/release.ps1 -Version v0.1.9-lf.1           # build, sign, verify, publish
+#   pwsh -File luxforge/release/release.ps1 -DryRun   # build + verify, no key, no publish
+#   pwsh -File luxforge/release/release.ps1           # build, sign, verify, publish
+# The release is tagged v<VERSION>, for example v1.0.0, from the VERSION file at the repository root.
+# -Version may be given, but must equal that tag.
 #
 # Steps, all in containers (Docker Desktop):
 #   1. Copy the clean checkout into a Docker volume and tag it (locally) with -Version.
@@ -15,7 +17,7 @@
 #      checksums.txt(.minisig), latest.txt, install.sh and install-cli.sh. Installs then use
 #      --release-base https://github.com/LuxForge-ltd/luxrail/releases/download --version <tag>.
 param(
-    [Parameter(Mandatory)][ValidatePattern('^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$')][string] $Version,
+    [string] $Version,
     [switch] $DryRun,
     [string] $Repo = 'LuxForge-ltd/luxrail',
     [string] $Vault = 'C:\Users\Ben\OneDrive\My Vault\LuxForge.kdbx',
@@ -35,6 +37,10 @@ $root = (git rev-parse --show-toplevel).Trim()
 Set-Location $root
 if (git status --porcelain) { throw 'the working tree is not clean; commit or remove the changes first' }
 $sha = (git rev-parse HEAD).Trim()
+$projectVersion = (Get-Content -LiteralPath VERSION -Raw).Trim()
+if ($projectVersion -notmatch '^[0-9]+\.[0-9]+\.[0-9]+$') { throw "VERSION holds '$projectVersion', not MAJOR.MINOR.PATCH" }
+if (-not $Version) { $Version = "v$projectVersion" }
+if ($Version -cne "v$projectVersion") { throw "-Version $Version does not match VERSION ($projectVersion); releases are tagged v$projectVersion" }
 $key = (Get-Content internal/upgrade/release-keys.txt | Where-Object { $_ -and -not $_.StartsWith('#') } | Select-Object -First 1)
 if (-not $key) { throw 'no release key is embedded; run luxforge/release/new-release-key.ps1 first' }
 if (-not $DryRun -and (git ls-remote --tags origin "refs/tags/$Version")) { throw "tag $Version already exists on origin" }
