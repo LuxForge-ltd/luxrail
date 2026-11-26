@@ -2,7 +2,7 @@
 
 // LuxRail: the LuxForge mark (from the LuxForge website's favicon and Logo), used as the
 // console's logo. The colours are fixed so the mark reads the same in both themes; the hairline
-// in currentColor keeps the ink tile visible on a dark page, as openrail's mark did.
+// in currentColor keeps the ink tile visible on a dark page, as LuxRail's mark did.
 import { PRODUCT_NAME } from "./brand";
 
 /**

@@ -5,7 +5,7 @@ package api
 import (
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Images kept per service (9.19): default 2 on an install that never set it,

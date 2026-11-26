@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // maxAgentBoots is how often a new agent may start without connecting

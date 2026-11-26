@@ -8,15 +8,15 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/internal/cp/orch/logs"
-	"github.com/musakkka/openrail/internal/cp/orch/monitors"
-	"github.com/musakkka/openrail/internal/cp/orch/routes"
-	"github.com/musakkka/openrail/internal/cp/orch/sched"
-	"github.com/musakkka/openrail/internal/cp/orch/usage"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/logs"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/monitors"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/routes"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/sched"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/usage"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // ---------------------------------------------------------------- logs

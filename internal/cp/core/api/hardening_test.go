@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core/auth"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/auth"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // postFrom posts JSON with the headers a request from that address and page has.

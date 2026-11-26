@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 // Package api is the REST contract between 5050d and its clients (the web
-// console and the openrail CLI). It is frozen for v0.1: a change here is a change
+// console and the LuxRail CLI). It is frozen for v0.1: a change here is a change
 // to docs/SPEC.md first. JSON field names are camelCase. Timestamps are Unix
 // milliseconds (int64). IDs are prefixed strings (see docs/SPEC.md section 6).
 //
@@ -910,7 +910,7 @@ type Variable struct {
 
 type VariablesResponse struct {
 	Variables []Variable `json:"variables"`
-	// Provided lists the names openrail injects (PORT, FIFTY_*, RAILWAY_* aliases).
+	// Provided lists the names LuxRail injects (PORT, FIFTY_*, RAILWAY_* aliases).
 	Provided []string `json:"provided"`
 	// Suggested lists names found in .env.example and similar files in the repo.
 	Suggested []string `json:"suggested,omitempty"`
@@ -1355,7 +1355,7 @@ type ConnectInfo struct {
 	// Variables names the variables holding the URLs (for reveal).
 	PrivateVariable string `json:"privateVariable"`
 	PublicVariable  string `json:"publicVariable,omitempty"`
-	CLICommand      string `json:"cliCommand"` // "openrail connect Postgres"
+	CLICommand      string `json:"cliCommand"` // "luxrail connect Postgres"
 }
 
 type DataTable struct {

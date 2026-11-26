@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func TestEmptyListsAsArrays(t *testing.T) {

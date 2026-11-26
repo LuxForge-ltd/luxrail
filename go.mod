@@ -1,4 +1,4 @@
-module github.com/musakkka/openrail
+module github.com/luxforge-ltd/luxrail
 
 go 1.26.0
 

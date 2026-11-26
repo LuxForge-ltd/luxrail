@@ -14,8 +14,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/core/ids"
-	"github.com/musakkka/openrail/internal/cp/secretbox"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/secretbox"
 )
 
 // Default paths on a host.
@@ -70,7 +70,7 @@ func (f *File) Defaults() {
 		f.Listen = DefaultListen
 	}
 	if f.InstallName == "" {
-		f.InstallName = "openrail"
+		f.InstallName = "LuxRail"
 	}
 	if f.BaseDomain == "" && f.PublicIP != "" {
 		f.BaseDomain = SslipDomain(f.PublicIP)

@@ -15,11 +15,11 @@ import (
 	_ "modernc.org/sqlite"
 	"sigs.k8s.io/yaml"
 
-	"github.com/musakkka/openrail/internal/cp/orch/data/fakerunner"
-	"github.com/musakkka/openrail/internal/cp/orch/fakeconfig"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/manifest"
-	"github.com/musakkka/openrail/templates"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/data/fakerunner"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/fakeconfig"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/templates"
 )
 
 var _ Runner = fakerunner.New()

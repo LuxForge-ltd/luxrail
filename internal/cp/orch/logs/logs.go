@@ -29,9 +29,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/logfilter"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/logfilter"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Limits of a query (9.4).

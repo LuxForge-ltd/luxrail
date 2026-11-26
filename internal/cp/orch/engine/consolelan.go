@@ -12,8 +12,8 @@ import (
 	"net"
 	"strconv"
 
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // consoleLAN returns the LAN console listener for host, or nil when none is

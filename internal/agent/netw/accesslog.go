@@ -16,7 +16,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // caddyAccess is one line of Caddy's JSON access log.

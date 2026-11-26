@@ -10,9 +10,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/configfile"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/configfile"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Config as code (docs/SPEC.md 9.20). The builder reads the file with
@@ -75,7 +75,7 @@ func unquoteFields(msg string) string {
 	return quotedField.ReplaceAllString(msg, "$1 $2")
 }
 
-// configNotices are the lines for fields the file sets but openrail
+// configNotices are the lines for fields the file sets but LuxRail
 // ignores, computed with the same merge the control plane runs. The
 // Nixpacks line is left out because the builder logs it itself.
 func configNotices(ov *proto.ConfigOverlay, envName string) []string {

@@ -123,7 +123,7 @@ function AuthFooter() {
           </p>
           <div className="my-1 hidden h-px w-full bg-line md:block" aria-hidden />
           <p className="text-xs leading-[18px] text-fg-3">
-            &copy; {YEAR} openrail contributors. Released under AGPL-3.0-only.
+            &copy; {YEAR} LuxRail contributors. Released under AGPL-3.0-only.
           </p>
         </div>
         {FOOTER_COLUMNS.map((col) => (

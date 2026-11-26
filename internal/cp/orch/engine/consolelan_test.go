@@ -6,7 +6,7 @@ package engine
 import (
 	"testing"
 
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
 )
 
 func TestConsoleLANOnlyOnTheControlHost(t *testing.T) {

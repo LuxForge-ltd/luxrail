@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: AGPL-3.0-only */
 
-/* LuxRail: the LuxForge look, layered over openrail's tokens in theme.css (loaded after it).
+/* LuxRail: the LuxForge look, layered over LuxRail's tokens in theme.css (loaded after it).
    Colours come from the LuxForge Framework (@luxforge/framework src/styles.css brand scale,
    50 #F5EEF8 to 950 #1E0E26, and its app shell's page and panel colours). Only the accent and
-   the page surfaces change; status colours and the grey scales stay openrail's, so contrast
+   the page surfaces change; status colours and the grey scales stay LuxRail's, so contrast
    rules worked out upstream still hold. The accent keeps the name "pink" in the scales because
    Tailwind classes such as bg-pink-500 are used across the console. */
 :root {

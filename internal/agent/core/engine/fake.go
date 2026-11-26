@@ -12,7 +12,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Fake is an in-memory Engine for unit tests. Containers "run" as soon as

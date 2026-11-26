@@ -2,7 +2,7 @@
 
 // LuxRail: 5050d make-private turns an existing install into a private one.
 //
-// Purpose: openrail can only be installed private from scratch; its
+// Purpose: LuxRail can only be installed private from scratch; its
 // installer refuses an existing normal host. A private install needs two
 // things on the control plane's side: "private": true in config.json, and
 // base and console domains that are real names (not sslip.io or nip.io),
@@ -22,9 +22,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/core"
-	"github.com/musakkka/openrail/internal/cp/core/config"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/config"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // makePrivateFlags are the command line of make-private.

@@ -2,9 +2,9 @@
 # from the LuxRail clone, on the branch that will carry the new public key:
 #   pwsh -File luxforge/release/new-release-key.ps1
 #
-# 1. Runs upstream's e2e/scripts/release-key.sh in a golang container. It generates a minisign key
+# 1. Runs e2e/scripts/release-key.sh in a golang container. It generates a minisign key
 #    pair and writes the public key into internal/upgrade/release-keys.txt, install/install.sh and
-#    install/install-cli.sh (replacing upstream's key), so LuxRail builds trust only LuxRail releases.
+#    install/install-cli.sh (replacing the original project's key), so LuxRail builds trust only LuxRail releases.
 # 2. Stores the secret key in the KeePassXC vault as an attachment of `luxrail/release-signing-key`
 #    (the public key goes in the entry's notes), after asking once for the vault password (hidden).
 # 3. Checks the stored copy, then overwrites and deletes the secret key file.

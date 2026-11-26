@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // JobOutcome is a job result together with the dispatch error.
@@ -50,7 +50,7 @@ func caMount() proto.Mount {
 	return proto.Mount{Kind: "asset", Source: caCertsAsset, Target: caCertsTarget, ReadOnly: true}
 }
 
-// volumeName is the Docker volume of an openrail volume (docs/SPEC.md 9.12).
+// volumeName is the Docker volume of a luxrail volume (docs/SPEC.md 9.12).
 func volumeName(volID string) string { return "5050-" + volID }
 
 // runJob dispatches a job and logs its lines at debug level.

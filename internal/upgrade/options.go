@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
-// Package upgrade downloads, verifies and switches openrail releases with
+// Package upgrade downloads, verifies and switches LuxRail releases with
 // automatic rollback (docs/SPEC.md 9.16). The control plane switches through
 // a detached helper process; agents switch themselves and revert when the
 // new binary cannot reach the control plane. README.md explains the layout.
@@ -18,8 +18,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/upgrade/minisign"
-	"github.com/musakkka/openrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade/minisign"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
 )
 
 // Default locations on a host (docs/SPEC.md 4.2 and 6.4).

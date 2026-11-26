@@ -1,9 +1,9 @@
-# Example workflow for an app repository: deploy to openrail on every push
+# Example workflow for an app repository: deploy to LuxRail on every push
 # to main. Copy it to .github/workflows/deploy.yml in your app.
 #
 # Repository settings > Secrets and variables > Actions:
-#   secret   OPENRAIL_TOKEN  an environment token (Project Settings > Tokens)
-#   variable OPENRAIL_URL    the console URL of your install
+#   secret   LUXRAIL_TOKEN  an environment token (Project Settings > Tokens)
+#   variable LUXRAIL_URL    the console URL of your install
 name: deploy
 on:
   push:
@@ -23,8 +23,8 @@ jobs:
       - id: deploy
         uses: LuxForge-ltd/luxrail@v1.0.0
         with:
-          url: ${{ vars.OPENRAIL_URL }}
-          token: ${{ secrets.OPENRAIL_TOKEN }}
+          url: ${{ vars.LUXRAIL_URL }}
+          token: ${{ secrets.LUXRAIL_TOKEN }}
           service: web
       - run: echo "Live at $URL"
         env:

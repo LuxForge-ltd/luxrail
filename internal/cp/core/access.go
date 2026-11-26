@@ -6,9 +6,9 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/store"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/store"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Level is an effective permission level, ordered.

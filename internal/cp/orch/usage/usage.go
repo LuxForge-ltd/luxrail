@@ -7,8 +7,7 @@
 // list prices.
 //
 // The prices are the ones published on Railway's pricing page on the date
-// below; site/data/railway-prices.json (the landing page) must carry the
-// same figures.
+// below.
 package usage
 
 import (
@@ -16,7 +15,7 @@ import (
 	"math"
 	"sort"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Prices are Railway's usage list prices (USD).

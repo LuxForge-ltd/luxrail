@@ -29,8 +29,8 @@ import (
 
 	"github.com/coder/websocket"
 
-	"github.com/musakkka/openrail/internal/cp/orch/ipam"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/ipam"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Handler is what the engine gives the hub.

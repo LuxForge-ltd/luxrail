@@ -39,7 +39,7 @@ export default function Networking() {
 
 type Adding = null | "generate" | "custom" | "tcp";
 
-const NO_TCP_ON_PRIVATE = "TCP proxies cannot work on a private host, because it has no open ports. Use openrail connect to reach this service from your machine.";
+const NO_TCP_ON_PRIVATE = "TCP proxies cannot work on a private host, because it has no open ports. Use luxrail connect to reach this service from your machine.";
 
 function PublicNetworking() {
   const { svc, base } = useSettings();
@@ -299,7 +299,7 @@ function ConnectPrivately() {
   const cards = [
     {
       id: "machine", icon: <Terminal size={16} />, title: "From your machine",
-      body: <>Open a client through an encrypted tunnel with the CLI. Nothing is exposed to the internet.<pre className="mt-2 overflow-x-auto rounded bg-secondaryBg px-3 py-2 font-mono text-caption text-foreground">openrail connect {name.includes(" ") ? `"${name}"` : name}</pre></>,
+      body: <>Open a client through an encrypted tunnel with the CLI. Nothing is exposed to the internet.<pre className="mt-2 overflow-x-auto rounded bg-secondaryBg px-3 py-2 font-mono text-caption text-foreground">luxrail connect {name.includes(" ") ? `"${name}"` : name}</pre></>,
     },
     {
       id: "service", icon: <Waypoints size={16} />, title: "From another service",

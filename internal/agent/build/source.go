@@ -20,13 +20,13 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Source fetching (docs/SPEC.md 8.2 step 1).
 
 const (
-	// maxArchiveBytes is the upload limit for `openrail up` tarballs.
+	// maxArchiveBytes is the upload limit for `luxrail up` tarballs.
 	maxArchiveBytes = 500 << 20
 	// maxExtractedBytes bounds what an archive may expand to.
 	maxExtractedBytes = 4 << 30

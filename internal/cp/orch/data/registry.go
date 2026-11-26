@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Registry retention and garbage collection (docs/SPEC.md 9.6, 6.6, 9.19).

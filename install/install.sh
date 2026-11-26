@@ -1,7 +1,7 @@
 #!/bin/sh
 # SPDX-License-Identifier: MIT
 #
-# openrail installer (docs/SPEC.md section 4).
+# LuxRail installer (docs/SPEC.md section 4).
 #
 #   curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
 #   wget -qO- https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
@@ -142,13 +142,13 @@ die() {
 	step_end fail
 	spin_stop
 	printf '  %s%s error:%s %s\n' "$RED" "$BAD_MARK" "$R" "$*" >&2
-	printf '  %sIt is safe to run the installer again once this is fixed. Flags: --help. Docs: https://github.com/LuxForge-ltd/luxrail/tree/main/site/src/content/docs%s\n' "$DIM" "$R" >&2
+	printf '  %sIt is safe to run the installer again once this is fixed. Flags: --help. Docs: https://github.com/LuxForge-ltd/luxrail/tree/main/docs/manual%s\n' "$DIM" "$R" >&2
 	exit 1
 }
 
 banner() {
 	if [ -z "$UI_COLOR" ]; then
-		printf 'openrail installer\n'
+		printf 'LuxRail installer\n'
 		return 0
 	fi
 	if [ -n "$UI_UTF" ]; then
@@ -163,7 +163,7 @@ banner() {
 			[ -z "$UI_ANIM" ] || sleep 0.06
 		done
 	else
-		printf '\n  %sopenrail%s\n' "$B" "$R"
+		printf '\n  %sluxrail%s\n' "$B" "$R"
 	fi
 	printf '  %sopen-source cloud on your own servers%s\n\n' "$DIM" "$R"
 }
@@ -202,7 +202,7 @@ trap 'exit 143' TERM
 
 usage() {
 	cat <<'EOF'
-Install openrail on this server, join it to an install, or install the CLI.
+Install LuxRail on this server, join it to an install, or install the CLI.
 
   curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh [-s -- FLAGS]
 
@@ -242,8 +242,8 @@ Flags (each also an environment variable FIFTY_<FLAG>, for example FIFTY_DOMAIN)
   --restore s3://bucket/prefix --recovery-key K   rebuild a control host from a bucket
                              (prefer FIFTY_RECOVERY_KEY, which stays out of your shell history)
       --s3-endpoint URL --s3-region R --s3-access-key K --s3-secret-key S
-  --cli                      install only the openrail command line tool
-  --uninstall [--purge] [--yes]   remove openrail (--purge also deletes data)
+  --cli                      install only the LuxRail command line tool
+  --uninstall [--purge] [--yes]   remove LuxRail (--purge also deletes data)
   --force                    continue on an operating system that is not supported
   --yes                      answer yes to every question
   --dry-run                  walk through the installer without changing anything
@@ -598,7 +598,7 @@ get_release() {
 		base=${RELEASE_BASE:-$REPO_RELEASES/download}
 		base=${base%/}/$VERSION
 		name=$(printf '%s' "$name_tpl" | sed "s/@V@/${VERSION#v}/")
-		sub "Downloading openrail $VERSION"
+		sub "Downloading LuxRail $VERSION"
 		fetch "$base/checksums.txt" "$TMP/checksums.txt" || die "cannot download $base/checksums.txt. Does release $VERSION exist?"
 		fetch "$base/checksums.txt.minisig" "$TMP/checksums.txt.minisig" || die "cannot download the release signature."
 		fetch "$base/$name" "$TMP/$name" || die "cannot download $base/$name."
@@ -618,7 +618,7 @@ detect_arch() {
 	case "$(uname -m)" in
 	x86_64 | amd64) echo amd64 ;;
 	aarch64 | arm64) echo arm64 ;;
-	*) die "this processor ($(uname -m)) is not supported; openrail runs on amd64 and arm64." ;;
+	*) die "this processor ($(uname -m)) is not supported; LuxRail runs on amd64 and arm64." ;;
 	esac
 }
 
@@ -626,9 +626,9 @@ install_cli() {
 	os=$(uname -s | tr '[:upper:]' '[:lower:]')
 	case "$os" in linux | darwin) ;; *) die "the CLI installer supports Linux and macOS." ;; esac
 	arch=$(detect_arch)
-	step "Downloading and verifying the openrail CLI"
-	get_release "openrail-cli_@V@_${os}_${arch}.tar.gz"
-	step "Installing the openrail CLI"
+	step "Downloading and verifying the LuxRail CLI"
+	get_release "luxrail-cli_@V@_${os}_${arch}.tar.gz"
+	step "Installing the LuxRail CLI"
 	mkdir -p "$TMP/cli"
 	tar -xzf "$RELEASE_FILE" -C "$TMP/cli"
 	if [ "$(id -u)" = 0 ] || [ -w /usr/local/bin ]; then
@@ -637,11 +637,11 @@ install_cli() {
 		dest=$HOME/.local/bin
 		mkdir -p "$dest"
 	fi
-	cp "$TMP/cli/openrail" "$dest/openrail.new" && chmod 0755 "$dest/openrail.new" && mv "$dest/openrail.new" "$dest/openrail" && ln -sf openrail "$dest/5050"
+	cp "$TMP/cli/luxrail" "$dest/luxrail.new" && chmod 0755 "$dest/luxrail.new" && mv "$dest/luxrail.new" "$dest/luxrail" && ln -sf LuxRail "$dest/5050"
 	step_end ok
 	say ""
-	box "Installed the openrail CLI $VERSION" "Path=$dest/openrail" "Took=$(fmt_time $(($(date +%s) - START_T)))" "Next=openrail login https://<your console>"
-	case ":$PATH:" in *":$dest:"*) ;; *) warn "$dest is not on your PATH yet. Add it to run openrail from anywhere." ;; esac
+	box "Installed the LuxRail CLI $VERSION" "Path=$dest/luxrail" "Took=$(fmt_time $(($(date +%s) - START_T)))" "Next=luxrail login https://<your console>"
+	case ":$PATH:" in *":$dest:"*) ;; *) warn "$dest is not on your PATH yet. Add it to run LuxRail from anywhere." ;; esac
 }
 
 # ------------------------------------------------------------------ uninstall
@@ -669,7 +669,7 @@ uninstall() {
 		confirm "Delete $DATA_DIR, every app container and volume? This cannot be undone." ||
 			die "not purging. Pass --yes to confirm without a question."
 	fi
-	step "Stopping openrail"
+	step "Stopping LuxRail"
 	for u in 5050d 5050-agent 5050-net-restore; do
 		systemctl disable --now "$u.service" >/dev/null 2>&1 || true
 		rm -f "$UNIT_DIR/$u.service"
@@ -680,7 +680,7 @@ uninstall() {
 	if have docker; then
 		docker ps -aq --filter label=5050.infra 2>/dev/null | xargs -r docker rm -f >/dev/null 2>&1 || true
 	fi
-	rm -f /usr/local/bin/5050d /usr/local/bin/5050-agent /usr/local/bin/5050 /usr/local/bin/openrail
+	rm -f /usr/local/bin/5050d /usr/local/bin/5050-agent /usr/local/bin/5050 /usr/local/bin/luxrail
 	rm -rf "$INSTALL_DIR"
 	if [ -n "$PURGE" ]; then
 		step "Deleting data"
@@ -694,11 +694,11 @@ uninstall() {
 		rm -rf "$DATA_DIR" "$ETC_DIR" /etc/sysctl.d/90-5050.conf
 		step_end ok
 		say ""
-		box "openrail was removed" "Data=deleted" "Took=$(fmt_time $(($(date +%s) - START_T)))"
+		box "LuxRail was removed" "Data=deleted" "Took=$(fmt_time $(($(date +%s) - START_T)))"
 	else
 		step_end ok
 		say ""
-		box "openrail was removed" "Kept=app containers, $DATA_DIR, $ETC_DIR" "Delete=run again with --purge" "Took=$(fmt_time $(($(date +%s) - START_T)))"
+		box "LuxRail was removed" "Kept=app containers, $DATA_DIR, $ETC_DIR" "Delete=run again with --purge" "Took=$(fmt_time $(($(date +%s) - START_T)))"
 	fi
 }
 
@@ -723,7 +723,7 @@ preflight() {
 	ubuntu:22.04 | debian:12) warn "$PRETTY_NAME is not tested in this release; continuing." ;;
 	*)
 		if [ -n "$FORCE" ]; then warn "${PRETTY_NAME:-this OS} is not supported; continuing because of --force."
-		else die "${PRETTY_NAME:-this OS} is not supported. openrail v0.1 runs on Ubuntu 24.04 (pass --force to try anyway)."; fi
+		else die "${PRETTY_NAME:-this OS} is not supported. LuxRail runs on Ubuntu 24.04 (pass --force to try anyway)."; fi
 		;;
 	esac
 	have apt-get || die "apt-get is required."
@@ -764,7 +764,7 @@ preflight() {
 
 	# IPv4.
 	if ! ip -4 route show default 2>/dev/null | grep -q default; then
-		die "openrail v0.1 needs a public IPv4 address."
+		die "LuxRail needs a public IPv4 address."
 	fi
 
 	# Host firewalls.
@@ -847,7 +847,7 @@ setup_data_disk() {
 		fi
 	fi
 	if [ -n "$(docker ps -aq 2>/dev/null || true)" ]; then
-		warn "Docker already has containers, so its data stays where it is. Only openrail state moves to $disk."
+		warn "Docker already has containers, so its data stays where it is. Only LuxRail state moves to $disk."
 		KEEP_DOCKER_ROOT=1
 	fi
 	sub "Formatting $disk as the data disk"
@@ -906,7 +906,7 @@ configure_system() {
 	conntrack=$((MEM_MB * 32768 / 1024))
 	[ "$conntrack" -ge 131072 ] || conntrack=131072
 	cat >/etc/sysctl.d/90-5050.conf <<EOF
-# Written by the openrail installer.
+# Written by the LuxRail installer.
 vm.overcommit_memory = 1
 vm.swappiness = 10
 net.core.somaxconn = 4096
@@ -979,7 +979,7 @@ firewall_unit() {
 	systemctl disable 5050-firewall.service >/dev/null 2>&1 || true
 	cat >"$UNIT_DIR/5050-firewall.service" <<'EOF'
 [Unit]
-Description=openrail host firewall
+Description=luxrail host firewall
 DefaultDependencies=no
 Before=network-pre.target shutdown.target
 Wants=network-pre.target
@@ -1002,7 +1002,7 @@ EOF
 docker_needs_firewall() {
 	mkdir -p "$UNIT_DIR/docker.service.d"
 	cat >"$UNIT_DIR/docker.service.d/10-5050-firewall.conf" <<'EOF'
-# Written by the openrail installer.
+# Written by the LuxRail installer.
 [Service]
 ExecStartPre=/bin/sh -c 'nft list table inet fifty_filter >/dev/null 2>&1 || nft -f /etc/nftables-5050.conf'
 EOF
@@ -1049,7 +1049,7 @@ harden_ssh() {
 	if [ -n "$admin" ]; then root=no; else root=prohibit-password; fi
 	f=/etc/ssh/sshd_config.d/10-5050-hardening.conf
 	cat >"$f" <<EOF
-# Written by the openrail installer. Delete this file and reload ssh to undo it.
+# Written by the LuxRail installer. Delete this file and reload ssh to undo it.
 PasswordAuthentication no
 KbdInteractiveAuthentication no
 PermitRootLogin $root
@@ -1104,7 +1104,7 @@ install_binaries() {
 		rm -rf "$rel.tmp"
 		mkdir -p "$rel.tmp"
 		tar -xzf "$RELEASE_FILE" -C "$rel.tmp"
-		for b in 5050d 5050-agent openrail; do
+		for b in 5050d 5050-agent LuxRail; do
 			[ -x "$rel.tmp/$b" ] || die "the release has no $b binary."
 		done
 		echo "$sum" >"$rel.tmp/.sha256"
@@ -1118,7 +1118,7 @@ install_binaries() {
 	ln -sfn "$INSTALL_DIR/current/5050d" /usr/local/bin/5050d
 	ln -sfn "$INSTALL_DIR/agent/5050-agent" /usr/local/bin/5050-agent
 	ln -sfn "$INSTALL_DIR/current/5050" /usr/local/bin/5050
-	ln -sfn "$INSTALL_DIR/current/openrail" /usr/local/bin/openrail
+	ln -sfn "$INSTALL_DIR/current/luxrail" /usr/local/bin/luxrail
 
 	mkdir -p "$ETC_DIR"
 	chown root:root "$ETC_DIR"
@@ -1314,7 +1314,7 @@ summary() {
 	took=$(fmt_time $(($(date +%s) - START_T)))
 	if [ -n "$1" ]; then login="Open the setup link below"; else login="Sign in with your owner account"; fi
 	printf '\n'
-	box "openrail $VERSION is ready." "Console=https://$CONSOLE_DOMAIN" "Login=$login" "Apps=*.${DOMAIN:-your domain}" "Took=$took" "Logs=journalctl -u 5050d -f"
+	box "LuxRail $VERSION is ready." "Console=https://$CONSOLE_DOMAIN" "Login=$login" "Apps=*.${DOMAIN:-your domain}" "Took=$took" "Logs=journalctl -u 5050d -f"
 	printf '\n'
 	if [ -n "$1" ]; then
 		printf '  %sOpen this link to create your account (valid 24 hours, works once):%s\n' "$B" "$R"
@@ -1412,7 +1412,7 @@ install_tunnel() {
 	# The token reaches cloudflared as a credential file, never on its command line.
 	cat >"$UNIT_DIR/5050-tunnel.service" <<EOF
 [Unit]
-Description=openrail Cloudflare tunnel
+Description=LuxRail Cloudflare tunnel
 After=network-online.target
 Wants=network-online.target
 
@@ -1647,14 +1647,14 @@ print_private() {
 		printf '  a new one cannot be opened.\n'
 	fi
 	printf '\n  %sHow to get back in without SSH:%s\n' "$B" "$R"
-	printf '  - Apps: the console shell (a service, then Shell) or openrail ssh opens a shell inside a\n'
+	printf '  - Apps: the console shell (a service, then Shell) or luxrail ssh opens a shell inside a\n'
 	printf '    running service. It does not reach the host itself.\n'
 	printf '  - The host: your cloud provider'"'"'s serial console or run-command, for example\n'
 	printf '    az vm run-command invoke or the AWS and Hetzner web consoles. Test it now.\n'
 	printf '  - To turn SSH back on from there: systemctl unmask ssh.socket ssh.service,\n'
 	printf '    systemctl enable --now ssh, and\n'
 	printf '    nft add rule inet fifty_filter input tcp dport 22 ip saddr YOUR_IP accept\n'
-	printf '\n  Guide: https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/guides/private-mode.md\n\n'
+	printf '\n  Guide: https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/guides/private-mode.md\n\n'
 }
 
 # ------------------------------------------------------------------ join
@@ -1762,10 +1762,10 @@ wizard_mode() {
 	if [ -n "$CLI_ONLY$UNINSTALL$JOIN$RESTORE$DOMAIN$PRIVATE$ARCHIVE$RELEASE_BASE$VERSION" ]; then return 0; fi
 	mode=1
 	choose mode "What would you like to do?" \
-		"Install openrail on this server" \
+		"Install LuxRail on this server" \
 		"Join this server to an existing install (worker host)" \
-		"Install only the openrail command line tool" \
-		"Uninstall openrail from this server"
+		"Install only the LuxRail command line tool" \
+		"Uninstall LuxRail from this server"
 	case "$mode" in
 	2) need_root; wizard_join ;;
 	3) CLI_ONLY=1 ;;
@@ -1789,7 +1789,7 @@ dry_run() {
 		"Installing packages and Docker|Installing base packages|Installing Docker Engine" \
 		"Preparing storage and Docker|Looking for a blank data disk|Writing the Docker settings" \
 		"Tuning the system|Tuning the kernel|Adding a 2 GB swap file" \
-		"Installing openrail $VERSION|Downloading openrail $VERSION|Unpacking $VERSION" \
+		"Installing LuxRail $VERSION|Downloading LuxRail $VERSION|Unpacking $VERSION" \
 		"Setting up the control plane|Initialising the control plane" \
 		"Starting services|Starting the control plane" \
 		"Waiting for the HTTPS certificate|Waiting for the console certificate (6 s of 120)"; do
@@ -1837,7 +1837,7 @@ setup_data_disk
 configure_docker
 step "Tuning the system"
 configure_system
-step "Installing openrail ${VERSION:-}"
+step "Installing LuxRail ${VERSION:-}"
 install_binaries
 if [ -n "$JOIN" ]; then
 	join_host

@@ -14,9 +14,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core/engine"
-	"github.com/musakkka/openrail/internal/agent/core/logstore"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/engine"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/logstore"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // maxParallelCreates bounds pulls and container creations at once.

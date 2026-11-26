@@ -11,7 +11,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/internal/cp/core/config"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/config"
 )
 
 // initInstall makes a normal install in a temporary directory, with the

@@ -21,7 +21,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
 )
 
 // Message is a plain-text email.
@@ -165,7 +165,7 @@ func (a plainAuth) Next(_ []byte, more bool) ([]byte, error) {
 // Render builds the RFC 5322 message.
 func Render(from string, m Message) []byte {
 	var b bytes.Buffer
-	host := "openrail"
+	host := "luxrail"
 	if a, err := mail.ParseAddress(from); err == nil {
 		if i := strings.LastIndexByte(a.Address, '@'); i >= 0 {
 			host = a.Address[i+1:]

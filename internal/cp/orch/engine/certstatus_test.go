@@ -9,9 +9,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/internal/cp/orch/fakeconfig"
-	"github.com/musakkka/openrail/internal/cp/secretbox"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/fakeconfig"
+	"github.com/luxforge-ltd/luxrail/internal/cp/secretbox"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // The ACME primary's cert_status reports reach DomainCertStatus: an error

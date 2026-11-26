@@ -13,8 +13,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func TestUnexpectedErrorsAreLoggedWithAReference(t *testing.T) {

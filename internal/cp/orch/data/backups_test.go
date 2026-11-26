@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func TestBackupRecipesPerTemplate(t *testing.T) {

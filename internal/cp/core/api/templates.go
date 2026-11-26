@@ -7,9 +7,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 var connectKinds = map[string][3]string{
@@ -26,7 +26,7 @@ func connectInfoFor(svc api.Service, env map[string]string) (api.ConnectInfo, er
 	if !ok {
 		return api.ConnectInfo{}, fail.Validation("service", "%s is not a database service.", svc.Config.Name)
 	}
-	ci := api.ConnectInfo{Client: k[0], PrivateVariable: k[1], PrivateURL: vars.MaskURL(env[k[1]]), CLICommand: "openrail connect " + quoteName(svc.Config.Name)}
+	ci := api.ConnectInfo{Client: k[0], PrivateVariable: k[1], PrivateURL: vars.MaskURL(env[k[1]]), CLICommand: "luxrail connect " + quoteName(svc.Config.Name)}
 	if svc.Config.Net.PublicAccess || len(svc.TCPProxies) > 0 {
 		ci.PublicVariable, ci.PublicURL = k[2], vars.MaskURL(env[k[2]])
 	}

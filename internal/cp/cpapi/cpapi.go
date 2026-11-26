@@ -42,8 +42,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // ---------------------------------------------------------------- shared types
@@ -112,7 +112,7 @@ type DeployInput struct {
 	Trigger   string // see api.Deployment.Trigger
 	Actor     string
 	Message   string
-	// Exactly one source selector: Commit (git), UploadPath (openrail up tarball
+	// Exactly one source selector: Commit (git), UploadPath (luxrail up tarball
 	// on local disk, moved into the orchestrator's data dir), or neither
 	// (image services, or "latest" which the orchestrator resolves with
 	// git ls-remote / the GitHub API).

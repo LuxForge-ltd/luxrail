@@ -34,10 +34,10 @@ type Link struct {
 	Service     string `json:"service,omitempty"`
 }
 
-// configPath honours OPENRAIL_CONFIG or FIFTY_CONFIG (tests, CI) and XDG_CONFIG_HOME. A login saved
+// configPath honours LUXRAIL_CONFIG or FIFTY_CONFIG (tests, CI) and XDG_CONFIG_HOME. A login saved
 // under the old 5050 directory is still used until a new one exists.
 func configPath() (string, error) {
-	for _, k := range []string{"OPENRAIL_CONFIG", "FIFTY_CONFIG"} {
+	for _, k := range []string{"LUXRAIL_CONFIG", "FIFTY_CONFIG"} {
 		if p := os.Getenv(k); p != "" {
 			return p, nil
 		}
@@ -50,7 +50,7 @@ func configPath() (string, error) {
 		}
 		base = filepath.Join(home, ".config")
 	}
-	p := filepath.Join(base, "openrail", "config.json")
+	p := filepath.Join(base, "luxrail", "config.json")
 	if old := filepath.Join(base, "5050", "config.json"); !fileExists(p) && fileExists(old) {
 		return old, nil
 	}

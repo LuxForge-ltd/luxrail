@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 
-// Command 5050-agent runs on every openrail host. It joins the install,
+// Command 5050-agent runs on every luxrail host. It joins the install,
 // keeps a connection to the control plane and makes the host run what the
 // control plane wants (docs/SPEC.md 7 and 8.1).
 //
@@ -27,16 +27,16 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/build"
-	"github.com/musakkka/openrail/internal/agent/core"
-	"github.com/musakkka/openrail/internal/agent/core/statecache"
-	"github.com/musakkka/openrail/internal/agent/core/tools"
-	"github.com/musakkka/openrail/internal/agent/netw"
-	"github.com/musakkka/openrail/internal/upgrade"
-	"github.com/musakkka/openrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/internal/agent/build"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/statecache"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/tools"
+	"github.com/luxforge-ltd/luxrail/internal/agent/netw"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
 )
 
-const usage = `5050-agent runs on every openrail host.
+const usage = `5050-agent runs on every luxrail host.
 
 Usage:
   5050-agent join --url URL --token TOKEN [flags]   join this host to an install

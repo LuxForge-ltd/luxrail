@@ -9,12 +9,12 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/musakkka/openrail/internal/cp/core/auth"
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/ids"
-	"github.com/musakkka/openrail/internal/cp/core/store"
-	"github.com/musakkka/openrail/internal/cp/core/webhooks"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/auth"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/store"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/webhooks"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 var hookEvents = map[string]bool{

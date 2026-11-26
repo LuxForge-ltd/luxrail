@@ -12,12 +12,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/internal/cp/orch/ipam"
-	"github.com/musakkka/openrail/internal/cp/orch/sched"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/ipam"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/sched"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // Deploy steps, in order (9.1).
@@ -580,7 +580,7 @@ func (o *Orchestrator) build(ctx context.Context, d *depRow, snap cpapi.ServiceS
 	case "upload":
 		id := uploadID(d.UploadPath)
 		if id == "" {
-			return errorf("The uploaded source of this deployment is missing. Run openrail up again.")
+			return errorf("The uploaded source of this deployment is missing. Run luxrail up again.")
 		}
 		job.TarballURL = strings.TrimSuffix(o.o.PublicURL, "/") + "/api/agent/v1/uploads/" + id
 	}

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // WAL guard thresholds (docs/SPEC.md 9.13): pg_wal above 1 GB, or a segment

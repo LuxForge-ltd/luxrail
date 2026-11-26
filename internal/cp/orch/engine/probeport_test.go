@@ -5,10 +5,10 @@ package engine
 import (
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
-// A worker created by `openrail up` without a port must not wait for a TCP
+// A worker created by `luxrail up` without a port must not wait for a TCP
 // answer; anything with a port, a domain or a health path is probed.
 func TestProbePort(t *testing.T) {
 	var cfg api.ServiceConfig

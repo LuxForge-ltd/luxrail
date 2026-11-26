@@ -18,7 +18,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func main() {

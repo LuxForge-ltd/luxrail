@@ -11,11 +11,11 @@ import (
 	"io/fs"
 	"log/slog"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/internal/cp/orch/engine"
-	"github.com/musakkka/openrail/internal/cp/secretbox"
-	"github.com/musakkka/openrail/internal/upgrade"
-	"github.com/musakkka/openrail/templates"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/engine"
+	"github.com/luxforge-ltd/luxrail/internal/cp/secretbox"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade"
+	"github.com/luxforge-ltd/luxrail/templates"
 )
 
 type Options struct {

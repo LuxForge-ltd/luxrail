@@ -34,7 +34,7 @@ function pgConfig(): ServiceConfig {
     kind: "database",
     template: "postgres",
     templateVersion: "17",
-    source: { type: "image", image: "ghcr.io/openrail/postgres:17" },
+    source: { type: "image", image: "ghcr.io/luxrail/postgres:17" },
     build: {},
     deploy: { placement: { roles: ["data"] }, replicas: 1, restartPolicy: "on_failure", restartMaxRetries: 10, memoryReservationMb: 512 },
     networking: { port: 5432, privateName: "postgres", publicAccess: false },

@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/orch/hub"
-	"github.com/musakkka/openrail/internal/cp/orch/routes"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/hub"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/routes"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // NetworkChanged recomputes routes, TCP proxies, DNS and egress after

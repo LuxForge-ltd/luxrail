@@ -24,16 +24,16 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/agentapi"
-	"github.com/musakkka/openrail/internal/agent/assets"
-	"github.com/musakkka/openrail/internal/agent/core/engine"
-	"github.com/musakkka/openrail/internal/agent/core/logstore"
-	"github.com/musakkka/openrail/internal/agent/core/sample"
-	"github.com/musakkka/openrail/internal/agent/core/statecache"
-	"github.com/musakkka/openrail/internal/agent/core/tools"
-	"github.com/musakkka/openrail/internal/upgrade"
-	"github.com/musakkka/openrail/pkg/proto"
-	"github.com/musakkka/openrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/internal/agent/agentapi"
+	"github.com/luxforge-ltd/luxrail/internal/agent/assets"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/engine"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/logstore"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/sample"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/statecache"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/tools"
+	"github.com/luxforge-ltd/luxrail/internal/upgrade"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
 )
 
 // Options configures the runtime. The first block is the constructor shape

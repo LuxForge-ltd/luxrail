@@ -17,7 +17,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 
 	_ "modernc.org/sqlite" // read the migration tables of state.db
 )

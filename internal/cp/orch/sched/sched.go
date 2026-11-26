@@ -26,8 +26,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/orch/ipam"
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/internal/cp/orch/ipam"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // Host states (o_hosts.state).

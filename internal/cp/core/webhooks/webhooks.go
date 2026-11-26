@@ -24,12 +24,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/core/fail"
-	"github.com/musakkka/openrail/internal/cp/core/ids"
-	"github.com/musakkka/openrail/internal/cp/core/store"
-	"github.com/musakkka/openrail/internal/cp/secretbox"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/version"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/fail"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/ids"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/store"
+	"github.com/luxforge-ltd/luxrail/internal/cp/secretbox"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/version"
 )
 
 // Timeout is the per-attempt deadline.
@@ -264,7 +264,7 @@ func (d *Dispatcher) post(ctx context.Context, url, secret, event string, body [
 		return 0, fail.Sentence("The webhook URL is not valid: " + err.Error() + ".")
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("User-Agent", "openrail-webhook/"+version.Version)
+	req.Header.Set("User-Agent", "luxrail-webhook/"+version.Version)
 	req.Header.Set("X-5050-Event", event)
 	if secret != "" {
 		req.Header.Set("X-5050-Signature", Sign(secret, body))
@@ -289,7 +289,7 @@ func (d *Dispatcher) Test(ctx context.Context, url, secret string, body Body) ap
 		body.Timestamp = d.now().UnixMilli()
 	}
 	if body.Details == nil {
-		body.Details = map[string]any{"message": "This is a test delivery from openrail."}
+		body.Details = map[string]any{"message": "This is a test delivery from LuxRail."}
 	}
 	b, _ := json.Marshal(body)
 	code, err := d.post(ctx, url, secret, "test", b)

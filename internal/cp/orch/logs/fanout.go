@@ -12,10 +12,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/logfilter"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/logfilter"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // ---------------------------------------------------------------- host tail (o_host_logs)

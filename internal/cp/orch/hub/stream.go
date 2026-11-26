@@ -9,7 +9,7 @@ import (
 	"io"
 	"sync"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // streamBuffer is how many bytes a stream buffers from the agent before the

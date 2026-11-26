@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: MIT
 #
-# Minimal image with the openrail CLI, for CI systems that run steps in
+# Minimal image with the LuxRail CLI, for CI systems that run steps in
 # containers. Build from the repository root:
 #
-#   docker build -f packaging/docker/Dockerfile.cli --build-arg VERSION=v0.1.0 -t openrail-cli .
-#   docker run --rm -e FIFTY_URL -e FIFTY_TOKEN -v "$PWD:/work" openrail-cli up --ci -s web
+#   docker build -f packaging/docker/Dockerfile.cli --build-arg VERSION=v0.1.0 -t luxrail-cli .
+#   docker run --rm -e FIFTY_URL -e FIFTY_TOKEN -v "$PWD:/work" luxrail-cli up --ci -s web
 #
 # The binary comes from the signed GitHub release (install/install-cli.sh
 # checks the minisign signature and the SHA-256). The image also answers to
@@ -25,21 +25,21 @@ RUN if [ "$VERSION" = latest ]; then VERSION=""; fi && \
     FIFTY_VERSION="$VERSION" FIFTY_REPO="$REPO" FIFTY_RELEASE_BASE="$RELEASE_BASE" \
     FIFTY_RELEASE_PUBKEY="$RELEASE_PUBKEY" FIFTY_INSECURE_SKIP_VERIFY="$INSECURE_SKIP_VERIFY" \
     sh /tmp/install-cli.sh --dir /out --quiet && \
-    /out/openrail version
+    /out/luxrail version
 
 FROM alpine:3.22.2
 ARG VERSION=latest
-LABEL org.opencontainers.image.title="openrail CLI" \
-      org.opencontainers.image.description="Command-line client for openrail" \
+LABEL org.opencontainers.image.title="LuxRail CLI" \
+      org.opencontainers.image.description="Command-line client for LuxRail" \
       org.opencontainers.image.source="https://github.com/LuxForge-ltd/luxrail" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="$VERSION"
-COPY --from=fetch /out/openrail /usr/local/bin/openrail
-RUN ln -s openrail /usr/local/bin/railway && \
+COPY --from=fetch /out/luxrail /usr/local/bin/luxrail
+RUN ln -s LuxRail /usr/local/bin/railway && \
     adduser -D -H -u 10001 fifty && \
     mkdir -p /work && chown fifty /work
-ENV OPENRAIL_CONFIG=/tmp/openrail/config.json
+ENV LUXRAIL_CONFIG=/tmp/luxrail/config.json
 USER fifty
 WORKDIR /work
-ENTRYPOINT ["openrail"]
+ENTRYPOINT ["luxrail"]
 CMD ["--help"]

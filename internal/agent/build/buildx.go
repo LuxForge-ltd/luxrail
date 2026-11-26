@@ -13,7 +13,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // buildTarget is where a buildx build pushes, as BuildKit sees it.

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func TestConsoleLAN(t *testing.T) {
@@ -77,7 +77,7 @@ func TestConsoleLAN(t *testing.T) {
 		t.Error("the IP's certificate is not from the internal CA")
 	}
 
-	// Without the setting the config is exactly openrail's.
+	// Without the setting the config is exactly LuxRail's.
 	plain, _ := renderCaddy(testParams, testIngress())
 	in.ConsoleLAN = nil
 	again, _ := renderCaddy(testParams, in)

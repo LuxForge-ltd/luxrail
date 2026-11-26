@@ -1,172 +1,172 @@
 railway login
-  -> openrail login
+  -> luxrail login
 railway login --browserless
-  -> openrail login --browserless
+  -> luxrail login --browserless
 railway logout
-  -> openrail logout
+  -> luxrail logout
 railway whoami
-  -> openrail whoami
+  -> luxrail whoami
 railway init
-  -> openrail init
+  -> luxrail init
 railway init --name my-app
-  -> openrail init --name my-app
+  -> luxrail init --name my-app
 railway init -n my-app --workspace acme
-  -> openrail init -n my-app
+  -> luxrail init -n my-app
 railway link
-  -> openrail link
+  -> luxrail link
 railway link --project my-app --environment staging --service web
-  -> openrail link --project my-app --environment staging --service web
+  -> luxrail link --project my-app --environment staging --service web
 railway link -p my-app -t team1
-  -> openrail link -p my-app
+  -> luxrail link -p my-app
 railway unlink
-  -> openrail unlink
+  -> luxrail unlink
 railway status
-  -> openrail status
+  -> luxrail status
 railway list
-  -> openrail list
+  -> luxrail list
 railway open
-  -> openrail open
+  -> luxrail open
 railway up
-  -> openrail up
+  -> luxrail up
 railway up --detach
-  -> openrail up --detach
+  -> luxrail up --detach
 railway up -c
-  -> openrail up -c
+  -> luxrail up -c
 railway up --service web
-  -> openrail up --service web
+  -> luxrail up --service web
 railway up ./api --path-as-root
-  -> openrail up ./api --path-as-root
+  -> luxrail up ./api --path-as-root
 railway up --no-gitignore --verbose
-  -> openrail up --no-gitignore
+  -> luxrail up --no-gitignore
 railway redeploy -y
-  -> openrail redeploy -y
+  -> luxrail redeploy -y
 railway restart --service web -y
-  -> openrail restart --service web -y
+  -> luxrail restart --service web -y
 railway down -y
-  -> openrail down -y
+  -> luxrail down -y
 railway deploy -t postgres
-  -> openrail deploy -t postgres
+  -> luxrail deploy -t postgres
 railway deploy --template umami -v ADMIN=me
-  -> openrail deploy --template umami -v ADMIN=me
+  -> luxrail deploy --template umami -v ADMIN=me
 railway add -d postgres
-  -> openrail add -d postgres
+  -> luxrail add -d postgres
 railway add --database redis
-  -> openrail add --database redis
+  -> luxrail add --database redis
 railway add --repo owner/repo
-  -> openrail add --repo owner/repo
+  -> luxrail add --repo owner/repo
 railway add -i nginx:1.27
-  -> openrail add --image nginx:1.27
+  -> luxrail add --image nginx:1.27
 railway add --service worker
-  -> openrail add --empty worker
+  -> luxrail add --empty worker
 railway add --service web --variables PORT=8080
-  -> openrail add --empty web --variable PORT=8080
+  -> luxrail add --empty web --variable PORT=8080
 railway logs
-  -> openrail logs
+  -> luxrail logs
 railway logs --build
-  -> openrail logs --build
+  -> luxrail logs --build
 railway logs -d
-  -> openrail logs
+  -> luxrail logs
 railway logs --deployment
-  -> openrail logs
+  -> luxrail logs
 railway logs --json -n 100
-  -> openrail logs --json -n 100
+  -> luxrail logs --json -n 100
 railway logs --filter @level:error --since 1h
-  -> openrail logs --filter @level:error --since 1h
+  -> luxrail logs --filter @level:error --since 1h
 railway logs --http --status 500
-  -> openrail logs --http --status 500
+  -> luxrail logs --http --status 500
 railway variables
-  -> openrail variables list
+  -> luxrail variables list
 railway variables --kv
-  -> openrail variables list --kv
+  -> luxrail variables list --kv
 railway variables -k
-  -> openrail variables list --kv
+  -> luxrail variables list --kv
 railway variables --set KEY=value
-  -> openrail variables set KEY=value
+  -> luxrail variables set KEY=value
 railway variables --set A=1 --set B=2 --skip-deploys
-  -> openrail variables set A=1 B=2 --skip-deploys
+  -> luxrail variables set A=1 B=2 --skip-deploys
 railway variables --set=A=1
-  -> openrail variables set A=1
+  -> luxrail variables set A=1
 railway variables --set-from-stdin KEY
-  -> openrail variables set KEY --stdin
+  -> luxrail variables set KEY --stdin
 railway variables --service api --json
-  -> openrail variables list --service api --json
+  -> luxrail variables list --service api --json
 railway variable set KEY=value
-  -> openrail variables set KEY=value
+  -> luxrail variables set KEY=value
 railway variable list -k
-  -> openrail variables list --kv
+  -> luxrail variables list --kv
 railway variable delete KEY
-  -> openrail variables delete KEY
+  -> luxrail variables delete KEY
 railway run npm start
-  -> openrail run npm start
+  -> luxrail run npm start
 railway run -- npm run migrate
-  -> openrail run -- npm run migrate
+  -> luxrail run -- npm run migrate
 railway shell
-  -> openrail shell
+  -> luxrail shell
 railway shell --silent
-  -> openrail shell --silent
+  -> luxrail shell --silent
 railway ssh
-  -> openrail ssh
+  -> luxrail ssh
 railway ssh -s web ls -la
-  -> openrail ssh -s web -- ls -la
+  -> luxrail ssh -s web -- ls -la
 railway ssh -- ls
-  -> openrail ssh -- ls
+  -> luxrail ssh -- ls
 railway connect
-  -> openrail connect
+  -> luxrail connect
 railway connect Postgres
-  -> openrail connect Postgres
+  -> luxrail connect Postgres
 railway domain
-  -> openrail domain
+  -> luxrail domain
 railway domain -p 3000
-  -> openrail domain --port 3000
+  -> luxrail domain --port 3000
 railway domain example.com --port 8080
-  -> openrail domain example.com --port 8080
+  -> luxrail domain example.com --port 8080
 railway environment
-  -> openrail environment
+  -> luxrail environment
 railway environment staging
-  -> openrail environment staging
+  -> luxrail environment staging
 railway environment new staging
-  -> openrail environment new staging
+  -> luxrail environment new staging
 railway environment new pr-1 -d production
-  -> openrail environment new pr-1 --duplicate production
+  -> luxrail environment new pr-1 --duplicate production
 railway environment delete staging
-  -> openrail environment delete staging
+  -> luxrail environment delete staging
 railway service
-  -> openrail service
+  -> luxrail service
 railway service web
-  -> openrail service web
+  -> luxrail service web
 railway service status --all
-  -> openrail service status --all
+  -> luxrail service status --all
 railway volume list
-  -> openrail volume list
+  -> luxrail volume list
 railway volume add --mount-path /data
-  -> openrail volume add --mount /data
+  -> luxrail volume add --mount /data
 railway volume add -m /data
-  -> openrail volume add --mount /data
+  -> luxrail volume add --mount /data
 railway volume delete
-  -> openrail volume delete
+  -> luxrail volume delete
 railway volume update --name x
-  -> railway volume update is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway volume update is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway scale 3
-  -> openrail scale 3
+  -> luxrail scale 3
 railway scale --us-west2=3
-  -> railway scale with regions is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway scale with regions is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway completion zsh
-  -> openrail completion zsh
+  -> luxrail completion zsh
 railway --version
-  -> openrail version
+  -> luxrail version
 railway -V
-  -> openrail version
+  -> luxrail version
 railway docs
-  -> railway docs is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway docs is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway dev
-  -> railway dev is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway dev is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway functions list
-  -> railway functions is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway functions is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway starship
-  -> railway starship is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway starship is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway upgrade
-  -> railway upgrade is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway upgrade is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway deployment list
-  -> railway deployment is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway deployment is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md
 railway bucket create
-  -> railway bucket is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
+  -> railway bucket is not available in LuxRail. See https://github.com/LuxForge-ltd/luxrail/blob/main/docs/manual/coming-from-railway.md

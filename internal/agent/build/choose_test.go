@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/manifest"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 func strp(s string) *string { return &s }

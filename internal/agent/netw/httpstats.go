@@ -8,7 +8,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // maxLatencySamples bounds memory per service and window; beyond it the

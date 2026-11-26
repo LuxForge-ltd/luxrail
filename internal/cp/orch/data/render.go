@@ -10,9 +10,9 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/manifest"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/manifest"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // maxFileBytes is the limit of one rendered file (proto.FileSpec).

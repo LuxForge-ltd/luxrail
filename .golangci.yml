@@ -58,7 +58,7 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/musakkka/openrail
+        - github.com/luxforge-ltd/luxrail
   exclusions:
     paths:
       - web/node_modules

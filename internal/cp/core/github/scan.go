@@ -16,9 +16,9 @@ import (
 
 	"sigs.k8s.io/yaml"
 
-	"github.com/musakkka/openrail/internal/cp/core/vars"
-	"github.com/musakkka/openrail/pkg/api"
-	"github.com/musakkka/openrail/pkg/configfile"
+	"github.com/luxforge-ltd/luxrail/internal/cp/core/vars"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/configfile"
 )
 
 // RepoFS is a read-only view of a repository at one commit.

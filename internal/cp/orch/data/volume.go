@@ -7,8 +7,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/musakkka/openrail/internal/cp/cpapi"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/cp/cpapi"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // WipeVolume stops the service, empties its volume and starts it again

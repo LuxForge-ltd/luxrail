@@ -7,7 +7,6 @@ web/dist/*
 bin/
 *.db
 .env
-/site/.astro/
 .dev/
 e2e/out/
 .release/

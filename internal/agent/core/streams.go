@@ -12,8 +12,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/musakkka/openrail/internal/agent/core/engine"
-	"github.com/musakkka/openrail/pkg/proto"
+	"github.com/luxforge-ltd/luxrail/internal/agent/core/engine"
+	"github.com/luxforge-ltd/luxrail/pkg/proto"
 )
 
 // maxPending is how much output a detached exec session keeps for reattach.
@@ -296,7 +296,7 @@ func (a *Agent) openExec(ctx context.Context, s *session, reqID string, o proto.
 	}()
 }
 
-// openTCP opens a tunnel to a replica port (openrail connect). Only addresses
+// openTCP opens a tunnel to a replica port (luxrail connect). Only addresses
 // inside the pod range are allowed, so the agent never becomes a proxy to
 // the host or the internet.
 func (a *Agent) openTCP(ctx context.Context, s *session, reqID string, o proto.TCPOpen) {

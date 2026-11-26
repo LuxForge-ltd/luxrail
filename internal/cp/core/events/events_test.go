@@ -5,7 +5,7 @@ package events
 import (
 	"testing"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 func TestRouting(t *testing.T) {

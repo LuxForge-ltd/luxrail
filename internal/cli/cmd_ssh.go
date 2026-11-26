@@ -15,7 +15,7 @@ import (
 	"github.com/coder/websocket"
 	"github.com/spf13/cobra"
 
-	"github.com/musakkka/openrail/pkg/api"
+	"github.com/luxforge-ltd/luxrail/pkg/api"
 )
 
 // stty runs stty against the terminal on stdin (Unix only).

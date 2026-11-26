@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
 #
-# Runs `openrail up` for the "Deploy with openrail" action (action.yml at the
+# Runs `luxrail up` for the "Deploy with LuxRail" action (action.yml at the
 # repository root). Inputs arrive as INPUT_* variables, the instance and
-# token as OPENRAIL_URL and OPENRAIL_TOKEN. Writes the outputs url and
+# token as LUXRAIL_URL and LUXRAIL_TOKEN. Writes the outputs url and
 # deployment-id to $GITHUB_OUTPUT. Exits with the CLI's exit code.
 
 set -euo pipefail
@@ -11,17 +11,17 @@ set -euo pipefail
 err() { printf '::error::%s\n' "$*" >&2; exit 1; }
 truthy() { case "$1" in true | True | TRUE | yes | 1 | on) return 0 ;; esac; return 1; }
 
-[ -n "${OPENRAIL_TOKEN:-}" ] || err "The token input is empty. Store an environment token as a secret and pass it as token."
-[ -n "${OPENRAIL_URL:-}" ] || err "The url input is empty. Pass the console URL of your openrail install."
-case "$OPENRAIL_URL" in http://* | https://*) ;; *) err "url must start with https:// (got $OPENRAIL_URL)." ;; esac
-printf '::add-mask::%s\n' "$OPENRAIL_TOKEN"
+[ -n "${LUXRAIL_TOKEN:-}" ] || err "The token input is empty. Store an environment token as a secret and pass it as token."
+[ -n "${LUXRAIL_URL:-}" ] || err "The url input is empty. Pass the console URL of your LuxRail install."
+case "$LUXRAIL_URL" in http://* | https://*) ;; *) err "url must start with https:// (got $LUXRAIL_URL)." ;; esac
+printf '::add-mask::%s\n' "$LUXRAIL_TOKEN"
 
 # Keep the CLI's config out of the runner's home directory.
 tmp=${RUNNER_TEMP:-$(mktemp -d)}
-export OPENRAIL_CONFIG="$tmp/openrail-cli/config.json"
-mkdir -p "$(dirname "$OPENRAIL_CONFIG")"
+export LUXRAIL_CONFIG="$tmp/luxrail-cli/config.json"
+mkdir -p "$(dirname "$LUXRAIL_CONFIG")"
 
-bin=${FIFTY_BIN:-openrail}
+bin=${FIFTY_BIN:-luxrail}
 args=(up --yes)
 [ -n "${INPUT_PROJECT:-}" ] && args+=(--project "$INPUT_PROJECT")
 [ -n "${INPUT_ENVIRONMENT:-}" ] && args+=(--environment "$INPUT_ENVIRONMENT")
@@ -60,8 +60,8 @@ if [ -n "${INPUT_ARGS:-}" ]; then
 fi
 [ -n "${INPUT_PATH:-}" ] && args+=("$INPUT_PATH")
 
-log="$tmp/openrail-up.log"
-printf 'openrail'
+log="$tmp/luxrail-up.log"
+printf 'luxrail'
 printf ' %q' "${args[@]}"
 printf '\n'
 set +e
@@ -81,7 +81,7 @@ fi
 } >>"$out"
 
 if [ "$code" -ne 0 ]; then
-	printf '::error::openrail up failed with exit code %s. The log above has the diagnosis.\n' "$code" >&2
+	printf '::error::luxrail up failed with exit code %s. The log above has the diagnosis.\n' "$code" >&2
 	exit "$code"
 fi
 if [ -n "$url" ] && [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
