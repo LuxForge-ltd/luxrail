@@ -29,7 +29,7 @@ func openBrowser(u string) error {
 }
 
 func (a *App) cmdLogin() *cobra.Command {
-	var token string
+	var token, caFile string
 	var browserless bool
 	c := &cobra.Command{
 		Use:   "login [URL]",
@@ -65,6 +65,17 @@ func (a *App) cmdLogin() *cobra.Command {
 			}
 			ctx := cmd.Context()
 			cl := newClient(u, "")
+			var ca []byte
+			if caFile != "" {
+				if ca, err = readCAFile(caFile); err != nil {
+					return err
+				}
+			} else if ca, err = a.caFor(cfg, u); err != nil {
+				return err
+			}
+			if err := cl.TrustCA(ca); err != nil {
+				return err
+			}
 			if token == "" {
 				token = a.env("FIFTY_TOKEN")
 			}
@@ -82,6 +93,9 @@ func (a *App) cmdLogin() *cobra.Command {
 				return err
 			}
 			cfg.Instances[u] = token
+			if len(ca) > 0 {
+				cfg.CAs[u] = string(ca)
+			}
 			cfg.Default = u
 			if err := cfg.Save(); err != nil {
 				return err
@@ -95,6 +109,7 @@ func (a *App) cmdLogin() *cobra.Command {
 	}
 	c.Flags().StringVar(&token, "token", "", "API token (for headless machines)")
 	c.Flags().BoolVar(&browserless, "browserless", false, "print the link instead of opening a browser")
+	c.Flags().StringVar(&caFile, "ca-file", "", "PEM CA certificate to trust for this install (its own CA, such as Caddy's internal CA); kept with the login")
 	return c
 }
 
@@ -151,6 +166,7 @@ func (a *App) cmdLogout() *cobra.Command {
 			_ = c.Do(cmd.Context(), "POST", "/auth/logout", nil, nil)
 			cfg, _ := a.config()
 			delete(cfg.Instances, c.Base)
+			delete(cfg.CAs, c.Base)
 			if cfg.Default == c.Base {
 				cfg.Default = ""
 			}

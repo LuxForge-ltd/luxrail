@@ -2111,11 +2111,11 @@ Install: `curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/dow
 `railway` binary is already on `PATH`), or the release archives for macOS, Linux and Windows
 (Windows builds are labelled experimental).
 
-Config: `~/.config/5050/config.json` (0600) holds instances (`url -> token`) and links
+Config: `~/.config/luxrail/config.json` (0600) holds instances (`url -> token`), the CA certificates trusted for an instance (`url -> PEM`, from `luxrail login --ca-file`; `LUXRAIL_CA_FILE` overrides for one run) and links
 (`absolute dir -> {instance, project, environment, service}`). `LUXRAIL_URL` and `LUXRAIL_TOKEN`
 override for CI; `RAILWAY_TOKEN` and `RAILWAY_API_TOKEN` are read too when the binary runs as
 `railway`. Every command accepts `-p/--project`, `-e/--environment`, `-s/--service`, `--json`,
-`-y/--yes`. Exit code non-zero on failure. Output is plain text without colour when not a TTY.
+`-y/--yes`. `luxrail ssh` uses raw terminal mode and forwards size changes on macOS, Linux and Windows. Exit code non-zero on failure. Output is plain text without colour when not a TTY.
 Interactive pickers are numbered prompts.
 
 **`railway` alias**: the same binary installed as a `railway` symlink. When `argv[0]` is
