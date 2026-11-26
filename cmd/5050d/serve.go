@@ -90,7 +90,7 @@ func newOrch(p *plane) (cpapi.Orchestrator, error) {
 		DB: p.st.Shared, Config: p.c, DataDir: p.file.DataDir,
 		PublicURL: p.c.ConsoleURL(context.Background()), LocalURL: "http://" + p.file.Listen,
 		PodCIDR: p.file.PodCIDR, MeshCIDR: p.file.MeshCIDR, Box: p.box, MasterKeyPath: p.file.MasterKeyPath,
-		Templates: templates.FS, ACMECA: p.file.ACMECA, Log: p.log,
+		Templates: templates.FS, ACMECA: p.file.ACMECA, ConsoleLAN: p.file.ConsoleLAN, Log: p.log,
 		Upgrade: upgrade.Options{ReleaseBase: p.file.ReleaseBase, LatestURL: p.file.LatestURL, DataDir: p.file.DataDir},
 	})
 }

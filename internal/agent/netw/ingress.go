@@ -301,6 +301,12 @@ func (g *Ingress) Apply(ctx context.Context, in proto.Ingress, tcp []proto.TCPPr
 		g.o.Logger.Warn("the console relay waits for the mesh address", "listen", in.ConsoleRelay.Listen)
 		in.ConsoleRelay = nil
 	}
+	if in.ConsoleLAN != nil && !g.hasAddr(in.ConsoleLAN.Listen) {
+		// LuxRail: as for the relay, a listener on an address this host does
+		// not have would make Caddy refuse the whole config.
+		g.o.Logger.Warn("the LAN console address is not on this host, so the LAN console is not served", "listen", in.ConsoleLAN.Listen)
+		in.ConsoleLAN = nil
+	}
 	cfg, rerrs := renderCaddy(g.params, in)
 	errs = append(errs, rerrs...)
 	routes, _ := normalizeRoutes(in)

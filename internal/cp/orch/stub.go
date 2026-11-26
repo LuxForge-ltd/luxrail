@@ -45,7 +45,9 @@ type Options struct {
 	Upgrade upgrade.Options
 	// ACMECA is "" (production), "staging" or an ACME directory URL.
 	ACMECA string
-	Log    *slog.Logger
+	// ConsoleLAN is LuxRail's LAN console address (config.json consoleLan).
+	ConsoleLAN string
+	Log        *slog.Logger
 }
 
 // New builds the orchestrator. Call Start on the result to run it.
@@ -93,6 +95,8 @@ func New(o Options) (cpapi.Orchestrator, error) {
 		Upgrade:   up,
 		ACMECA:    o.ACMECA,
 		Log:       o.Log,
+
+		ConsoleLAN: o.ConsoleLAN,
 	})
 	if err != nil {
 		return nil, err

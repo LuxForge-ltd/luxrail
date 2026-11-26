@@ -416,6 +416,15 @@ type Ingress struct {
 	// Private: a Cloudflare tunnel terminates TLS. Caddy serves plain HTTP on
 	// loopback only, orders no certificates and runs no TCP proxies.
 	Private bool `json:"private,omitempty"`
+	// ConsoleLAN (LuxRail) serves the console on a LAN address of the control
+	// host over HTTPS with a certificate from Caddy's internal CA.
+	ConsoleLAN *ConsoleLAN `json:"consoleLan,omitempty"`
+}
+
+// ConsoleLAN is LuxRail's LAN console listener on the control host.
+type ConsoleLAN struct {
+	Listen string `json:"listen"` // "10.10.180.5:8443": an IPv4 address of the host and a port
+	Target string `json:"target"` // "127.0.0.1:5050", where 5050d listens
 }
 
 type Route struct {

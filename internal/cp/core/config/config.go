@@ -57,6 +57,8 @@ type File struct {
 	ConsoleURL string `json:"consoleUrl,omitempty"`
 	// Insecure serves cookies without the Secure flag (plain HTTP, development only).
 	Insecure bool `json:"insecure,omitempty"`
+	// ConsoleLAN is LuxRail's LAN console address, "<IPv4>:<port>" (see consolelan.go).
+	ConsoleLAN string `json:"consoleLan,omitempty"`
 }
 
 // Defaults fills empty fields.
@@ -115,6 +117,9 @@ func (f *File) Validate() error {
 	}
 	if _, _, err := net.SplitHostPort(f.Listen); err != nil {
 		return fmt.Errorf("the listen address %q must be host:port", f.Listen)
+	}
+	if err := ValidateConsoleLAN(f.ConsoleLAN); err != nil {
+		return err
 	}
 	for _, c := range []string{f.PodCIDR, f.MeshCIDR} {
 		if _, _, err := net.ParseCIDR(c); err != nil {

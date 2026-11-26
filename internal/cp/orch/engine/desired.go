@@ -425,6 +425,7 @@ func (o *Orchestrator) ingressFor(ctx context.Context, host hub.HostRow, members
 		}
 		ing.Upstreams = append(ing.Upstreams, proto.UpstreamSet{Name: consoleUpstream, IPs: []string{ip}})
 	}
+	ing.ConsoleLAN = o.consoleLAN(host)
 	return ing, nil
 }
 
