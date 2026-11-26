@@ -17,6 +17,7 @@ import {
   BrandTile, Button, EmptyState, ErrorLine, SearchButton, SegmentedControl, Select, VDivider, cx, plural, readPref, writePref,
 } from "../../kit";
 import { DashboardBanners } from "./Banners";
+import { tabTitle } from "../../kit/brand";
 import { LimitDialog, type Limit } from "./LimitDialog";
 import { CardSkeleton, ProjectCard, ProjectRow, RowSkeleton } from "./ProjectCard";
 import { PREF, SORTS, arrange, isSort, isView, sortProjects, toggleIn, type Sort, type View } from "./model";
@@ -53,7 +54,7 @@ export default function Dashboard() {
   const projects = useLoad(() => mocksReady.then(() => api.projects(sort)), [sort]);
   const hosts = useLoad<Host[] | undefined>(() => (admin ? mocksReady.then(() => api.hosts()).catch(() => undefined) : Promise.resolve(undefined)), [admin]);
 
-  useEffect(() => { document.title = "Projects | openrail"; return () => { document.title = "openrail"; }; }, []);
+  useEffect(() => { document.title = tabTitle("Projects"); return () => { document.title = tabTitle(""); }; }, []);
 
   // keep favourites in step with the palette's star command and other tabs
   useEffect(() => {
