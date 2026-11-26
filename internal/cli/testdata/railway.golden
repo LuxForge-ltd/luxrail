@@ -145,11 +145,11 @@ railway volume add -m /data
 railway volume delete
   -> openrail volume delete
 railway volume update --name x
-  -> railway volume update is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway volume update is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway scale 3
   -> openrail scale 3
 railway scale --us-west2=3
-  -> railway scale with regions is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway scale with regions is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway completion zsh
   -> openrail completion zsh
 railway --version
@@ -157,16 +157,16 @@ railway --version
 railway -V
   -> openrail version
 railway docs
-  -> railway docs is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway docs is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway dev
-  -> railway dev is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway dev is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway functions list
-  -> railway functions is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway functions is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway starship
-  -> railway starship is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway starship is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway upgrade
-  -> railway upgrade is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway upgrade is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway deployment list
-  -> railway deployment is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway deployment is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md
 railway bucket create
-  -> railway bucket is not available in openrail. See openrail.app/docs/coming-from-railway
+  -> railway bucket is not available in openrail. See https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/coming-from-railway.md

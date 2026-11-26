@@ -3,9 +3,9 @@
 #
 # openrail installer (docs/SPEC.md section 4).
 #
-#   curl -fsSL https://openrail.app/install.sh | sudo sh
-#   wget -qO- https://openrail.app/install.sh | sudo sh
-#   curl -fsSL https://openrail.app/install.sh | sh -s -- --cli
+#   curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
+#   wget -qO- https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
+#   curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sh -s -- --cli
 #
 # Piped, it asks nothing. Run from a terminal (sh install.sh) it walks you
 # through the choices. Every choice is also a flag and an environment
@@ -19,7 +19,7 @@ set -eu
 # holds the same keys; e2e/scripts/release-key.sh writes both.
 RELEASE_PUBKEYS="RWQYfmJdUyy+FfNgnWslB9GLZIxhs6N3kQs3ZrCNTAlON3GPB84mwgqY"
 
-REPO_RELEASES="https://github.com/musakkka/openrail/releases"
+REPO_RELEASES="https://github.com/LuxForge-ltd/luxrail/releases"
 INSTALL_DIR=/opt/5050
 ETC_DIR=/etc/5050
 DATA_DIR=/var/lib/5050
@@ -142,7 +142,7 @@ die() {
 	step_end fail
 	spin_stop
 	printf '  %s%s error:%s %s\n' "$RED" "$BAD_MARK" "$R" "$*" >&2
-	printf '  %sIt is safe to run the installer again once this is fixed. Flags: --help. Docs: https://openrail.app/docs%s\n' "$DIM" "$R" >&2
+	printf '  %sIt is safe to run the installer again once this is fixed. Flags: --help. Docs: https://github.com/LuxForge-ltd/luxrail/tree/main/site/src/content/docs%s\n' "$DIM" "$R" >&2
 	exit 1
 }
 
@@ -204,7 +204,7 @@ usage() {
 	cat <<'EOF'
 Install openrail on this server, join it to an install, or install the CLI.
 
-  curl -fsSL https://openrail.app/install.sh | sudo sh [-s -- FLAGS]
+  curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh [-s -- FLAGS]
 
 Flags (each also an environment variable FIFTY_<FLAG>, for example FIFTY_DOMAIN):
   --version vX.Y.Z           release to install (default: latest)
@@ -705,7 +705,7 @@ uninstall() {
 # ------------------------------------------------------------------ preflight
 
 preflight() {
-	[ "$(id -u)" = 0 ] || die "run the installer as root: curl -fsSL https://openrail.app/install.sh | sudo sh"
+	[ "$(id -u)" = 0 ] || die "run the installer as root: curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh"
 	[ "$(uname -s)" = Linux ] || die "the server installer runs on Linux. For the CLI use --cli."
 	ARCH=$(detect_arch)
 	[ -d /run/systemd/system ] || die "systemd is required."
@@ -1329,7 +1329,7 @@ summary() {
 		printf '  Recovery key saved to %s (0600). Move it off this machine and delete the file.\n\n' "$RECOVERY_KEY_FILE"
 	fi
 	printf '  %sNext%s: deploy something from the console, or install the CLI on your laptop:\n' "$B" "$R"
-	printf '  %scurl -fsSL https://openrail.app/install.sh | sh -s -- --cli%s\n\n' "$CYN" "$R"
+	printf '  %scurl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sh -s -- --cli%s\n\n' "$CYN" "$R"
 }
 
 # ------------------------------------------------------------------ private host
@@ -1654,7 +1654,7 @@ print_private() {
 	printf '  - To turn SSH back on from there: systemctl unmask ssh.socket ssh.service,\n'
 	printf '    systemctl enable --now ssh, and\n'
 	printf '    nft add rule inet fifty_filter input tcp dport 22 ip saddr YOUR_IP accept\n'
-	printf '\n  Guide: https://openrail.app/docs/guides/private-mode\n\n'
+	printf '\n  Guide: https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/guides/private-mode.md\n\n'
 }
 
 # ------------------------------------------------------------------ join

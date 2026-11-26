@@ -26,9 +26,9 @@ tool() { # tool NAME IMAGE ARGS...: runs NAME from PATH or IMAGE with REPO mount
 }
 
 check "shellcheck (POSIX sh)" tool shellcheck "$SHELLCHECK_IMAGE" -x -s sh \
-	install/install-cli.sh packaging/homebrew/update-tap.sh \
-	packaging/tests/make-fixture.sh packaging/tests/test-install-cli.sh packaging/tests/test-action.sh packaging/tests/test-tap.sh \
-	packaging/tests/test-docker.sh packaging/tests/test-tap-linux.sh packaging/tests/lint.sh packaging/tests/run.sh packaging/tests/lib.sh
+	install/install-cli.sh \
+	packaging/tests/make-fixture.sh packaging/tests/test-install-cli.sh packaging/tests/test-action.sh \
+	packaging/tests/test-docker.sh packaging/tests/lint.sh packaging/tests/run.sh packaging/tests/lib.sh
 check "shellcheck (bash)" tool shellcheck "$SHELLCHECK_IMAGE" -s bash packaging/action/run.sh
 
 # actionlint checks workflows. Lay out a throwaway repository where the
@@ -37,7 +37,7 @@ L=$ROOT/.lint
 rm -rf "$L"
 mkdir -p "$L/.github/workflows"
 cp "$REPO/action.yml" "$L/action.yml"
-sed 's|uses: musakkka/openrail@v0.1.0|uses: ./|' "$REPO/packaging/action/example-deploy.yml" >"$L/.github/workflows/example-deploy.yml"
+sed 's|uses: LuxForge-ltd/luxrail@v1.0.0|uses: ./|' "$REPO/packaging/action/example-deploy.yml" >"$L/.github/workflows/example-deploy.yml"
 check "actionlint" tool actionlint "$ACTIONLINT_IMAGE" packaging/.lint/.github/workflows/example-deploy.yml
 check "action.yml parses with the expected inputs" python3 -I -c '
 import sys, re

@@ -3,8 +3,8 @@
 #
 # Installs the openrail command line tool only (no server, no root needed).
 #
-#   curl -fsSL https://openrail.app/install-cli.sh | sh
-#   curl -fsSL https://openrail.app/install-cli.sh | sh -s -- --version v0.1.0 --dir ~/bin
+#   curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install-cli.sh | sh
+#   curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install-cli.sh | sh -s -- --version v0.1.0 --dir ~/bin
 #
 # It downloads openrail-cli_<version>_<os>_<arch>.tar.gz from a GitHub release,
 # checks the minisign signature of checksums.txt and the SHA-256 of the
@@ -18,7 +18,7 @@ set -eu
 # and internal/upgrade/release-keys.txt. e2e/scripts/release-key.sh writes it.
 RELEASE_PUBKEYS="RWQYfmJdUyy+FfNgnWslB9GLZIxhs6N3kQs3ZrCNTAlON3GPB84mwgqY"
 
-DEFAULT_REPO="musakkka/openrail"
+DEFAULT_REPO="LuxForge-ltd/luxrail"
 
 # ------------------------------------------------------------------ output
 # Colour and animation only on a terminal. NO_COLOR, TERM=dumb or --no-color
@@ -131,7 +131,7 @@ die() {
 	step_end fail
 	spin_stop
 	printf '  %s%s error:%s %s\n' "$RED" "$BAD_MARK" "$R" "$*" >&2
-	printf '  %sIt is safe to run the installer again once this is fixed. Flags: --help. Docs: https://openrail.app/docs%s\n' "$DIM" "$R" >&2
+	printf '  %sIt is safe to run the installer again once this is fixed. Flags: --help. Docs: https://github.com/LuxForge-ltd/luxrail/tree/main/site/src/content/docs%s\n' "$DIM" "$R" >&2
 	exit 1
 }
 
@@ -191,13 +191,13 @@ usage() {
 	cat <<'EOF'
 Install the openrail command line tool.
 
-  curl -fsSL https://openrail.app/install-cli.sh | sh [-s -- FLAGS]
+  curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install-cli.sh | sh [-s -- FLAGS]
 
 Flags (each also an environment variable FIFTY_<FLAG>, for example FIFTY_VERSION):
   --version vX.Y.Z         release to install (default: latest)
   --dir PATH               where to put the binary (default /usr/local/bin when
                            writable, else ~/.local/bin)
-  --repo OWNER/NAME        GitHub repository to download from (default musakkka/openrail)
+  --repo OWNER/NAME        GitHub repository to download from (default LuxForge-ltd/luxrail)
   --release-base URL       download from URL/<version>/ instead of GitHub
   --release-pubkey KEY     minisign public key to check the release with
   --archive PATH           install from a local openrail-cli tarball (checksums.txt and

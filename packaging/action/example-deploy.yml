@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
       - id: deploy
-        uses: musakkka/openrail@v0.1.0
+        uses: LuxForge-ltd/luxrail@v1.0.0
         with:
           url: ${{ vars.OPENRAIL_URL }}
           token: ${{ secrets.OPENRAIL_TOKEN }}

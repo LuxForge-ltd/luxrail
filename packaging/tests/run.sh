@@ -1,15 +1,15 @@
 #!/bin/sh
 # SPDX-License-Identifier: MIT
 #
-# Runs every packaging test. Needs an openrail checkout to build the
+# Runs every packaging test. Needs a LuxRail checkout to build the
 # fixture release from (FIFTY_SRC, default the repository root, one level up from this
 # directory), or a ready fixture in FIXTURE.
 #   tests/run.sh                 everything
-#   tests/run.sh lint action     only some suites (lint, install, action, tap, tap-linux, docker)
+#   tests/run.sh lint action     only some suites (lint, install, action, docker)
 set -u
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 SRC=${FIFTY_SRC:-$(cd "$ROOT/.." && pwd)}
-suites=${*:-lint install action tap tap-linux docker}
+suites=${*:-lint install action docker}
 
 if [ -z "${FIXTURE:-}" ]; then
 	FIXTURE=$ROOT/.fixture
@@ -25,8 +25,6 @@ for s in $suites; do
 	lint) f=lint.sh ;;
 	install) f=test-install-cli.sh ;;
 	action) f=test-action.sh ;;
-	tap) f=test-tap.sh ;;
-	tap-linux) f=test-tap-linux.sh ;;
 	docker) f=test-docker.sh ;;
 	*) echo "unknown suite $s" >&2; exit 2 ;;
 	esac

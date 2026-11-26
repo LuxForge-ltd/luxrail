@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 [Unit]
 Description=openrail control plane
-Documentation=https://openrail.app/docs
+Documentation=https://github.com/LuxForge-ltd/luxrail
 After=network-online.target docker.service
 Wants=network-online.target
 

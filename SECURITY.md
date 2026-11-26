@@ -29,4 +29,4 @@ If the signing key is ever compromised, we will publish a security advisory, rel
 
 In scope: everything in this repository. Out of scope: vulnerabilities in the apps you deploy, in your OS or cloud provider, and denial of service by volume against a single install.
 
-The security model is described at [openrail.app/docs/reference/security-model](https://openrail.app/docs/reference/security-model/).
+The security model is described in [the security model](https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/reference/security-model.md).

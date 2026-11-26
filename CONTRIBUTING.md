@@ -36,7 +36,7 @@ User-facing text (UI, docs, errors) is plain English: short sentences, exact UI 
 
 ## Templates
 
-New templates live in `templates/<id>/template.yaml` with an icon and a golden render test. See [Writing a template](https://openrail.app/docs/contribute/writing-a-template/).
+New templates live in `templates/<id>/template.yaml` with an icon and a golden render test. See [Writing a template](https://github.com/LuxForge-ltd/luxrail/blob/main/site/src/content/docs/contribute/writing-a-template.md).
 
 ## Licence of contributions
 

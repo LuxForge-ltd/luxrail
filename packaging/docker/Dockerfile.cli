@@ -12,7 +12,7 @@
 
 FROM alpine:3.22.2 AS fetch
 ARG VERSION=latest
-ARG REPO=musakkka/openrail
+ARG REPO=LuxForge-ltd/luxrail
 ARG RELEASE_BASE=""
 ARG RELEASE_PUBKEY=""
 ARG INSECURE_SKIP_VERIFY=""
@@ -31,7 +31,7 @@ FROM alpine:3.22.2
 ARG VERSION=latest
 LABEL org.opencontainers.image.title="openrail CLI" \
       org.opencontainers.image.description="Command-line client for openrail" \
-      org.opencontainers.image.source="https://github.com/musakkka/openrail" \
+      org.opencontainers.image.source="https://github.com/LuxForge-ltd/luxrail" \
       org.opencontainers.image.licenses="MIT" \
       org.opencontainers.image.version="$VERSION"
 COPY --from=fetch /out/openrail /usr/local/bin/openrail

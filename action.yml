@@ -6,7 +6,7 @@
 # Project Settings > Tokens and store it as a repository secret.
 #
 #   - uses: actions/checkout@v4.2.2
-#   - uses: musakkka/openrail@v0.1.0
+#   - uses: LuxForge-ltd/luxrail@v0.1.0
 #     with:
 #       url: https://console.example.com
 #       token: ${{ secrets.OPENRAIL_TOKEN }}
@@ -72,7 +72,7 @@ inputs:
   cli-repo:
     description: GitHub repository the CLI release is downloaded from.
     required: false
-    default: musakkka/openrail
+    default: LuxForge-ltd/luxrail
 
 outputs:
   url:
