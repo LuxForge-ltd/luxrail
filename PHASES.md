@@ -16,6 +16,20 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - 2026-11-24 18:51 UTC, Ben (same thread): "go luxrail 01, sync friday 02:00, upstream yes". The weekly upstream sync runs Fridays at 02:00 UTC, and fixes that are useful to everyone are also offered upstream as pull requests.
 - 2026-11-24 18:55 UTC, Ben (same thread), on how the sync works: "Create a new branch, ensure merges work - push to Dev. Leave a task for me in the morning to approve push to main"; run it "on Savathun, via an OpenRail deployment - we can keep an eye on it then"; conflicts as a draft pull request: "ok". So a clean, tested upstream merge is pushed to `Dev` by the job itself (a standing authorisation for that job only), `main` moves only when Ben approves the "Release Dev to main" pull request, and the job runs as a cron service on the OpenRail install on VM 105 (Savathun) rather than on a build device. The phase numbers after 02 move up by one: builds and signed releases become phase 03.
 
+### The LuxRail backlog, phases 08 to 15
+
+- 2026-11-26 10:57 UTC, Ben (LuxRail project thread "Build the whole LuxRail backlog"): "just make a plan to build it all, open pr, merge into dev, then tell me when it is done". This approves the plan below, opening each phase's pull request into `Dev`, and merging each of them into `Dev` in turn, without asking again. It does not cover `main`, releases, upgrading or deploying to VM 105, Cloudflare changes, deletes, Tower changes, opening pull requests upstream, or the Pillars `devices.md` change: those still need Ben's typed go.
+- The plan, one phase each, every one branched from the latest `Dev` after the previous merge:
+  - 08 `phase-08-empty-list-responses`: empty lists are answered as `[]` instead of `null`, so the Members and API tokens pages stop hanging.
+  - 09 `phase-09-unexpected-error-logging`: an unexpected error answered 500 is logged with its route and a reference, as the answer promises.
+  - 10 `phase-10-flaky-upgrade-test`: make `TestAgentUpgradeAndRevert` deterministic.
+  - 11 `phase-11-sync-schedule-config`: the weekly sync's schedule and restart policy move back into `luxforge/sync/railway.json`.
+  - 12 `phase-12-tunnelled-host-redirects`: no forced 308 to HTTPS for domains that reach the install through a Cloudflare tunnel.
+  - 13 `phase-13-lan-console-listener`: a configured LAN address for the console, rendered into Caddy so it survives rebuilds, replacing the hand-made `:8443` listener.
+  - 14 `phase-14-private-mode-switch`: a supported way to switch an existing install to private mode.
+  - 15 `phase-15-luxforge-console-theme`: the LuxForge look in the console (logo, tab title, colours).
+- The phase 05 fixes are prepared for upstream as patches with a pull request text; submitting them waits for Ben.
+
 ## Phases
 
 | Phase | Branch | Status | Version | Pull request | Commit approval |
@@ -27,6 +41,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 05 | `phase-05-agent-cron-fixes` | Merged | 0.0.5 | see pull requests | Plan approved by Ben, 2026-11-25 19:56 UTC ("go luxrail 05", option A of the 15:06 UTC proposal: agents roll forward for -lf tags, and the config-file cron fix); commit and merge approved by Ben, 2026-11-25 20:29 UTC ("commit and merge luxrail 05") |
 | 06 | `phase-06-private-repo-polling` | Merged | 0.0.6 | see pull requests | Plan approved by Ben, 2026-11-25 20:38 UTC ("go luxrail 06", option a) of the 20:35 UTC proposal: poll private repositories); commit and merge approved by Ben, 2026-11-25 20:50 UTC ("commit and merge luxrail 06") |
 | 07 | `phase-07-deploy-latest-actions` | Merged | 0.0.7 | see pull requests | Plan approved by Ben, 2026-11-25 22:02 UTC ("go luxrail 07", the plan sent at 21:30 UTC); commit and merge approved by Ben, 2026-11-25 22:06 UTC ("commit and merge luxrail 07") |
+| 08 | `phase-08-empty-list-responses` | Merged | 0.0.8 | see pull requests | Plan, commit and merge approved by Ben, 2026-11-26 10:57 UTC ("just make a plan to build it all, open pr, merge into dev, then tell me when it is done") |
 
 ## Handoff Notes
 
@@ -47,3 +62,4 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - Phase 06 (found 2026-11-25: PetCare's private repo had three merges at 20:00 UTC that never deployed): openrail polled only public repositories; private ones rely on GitHub App webhooks, which cannot reach a console on the LAN or behind Cloudflare Access. `pollPublicRepos` (`internal/cp/core/support.go`) now also reads the head of a repository the GitHub App reads, through the API with the App's read-only token for that one repository (`GitHubCloneToken` + `CommitInfo`), and deploys with the commit's details when it moves. The webhook push handler (`githubops.go`) records the commit it deployed in `github_polls`, so polling does not deploy it again. The first poll of a service only records its head (as before), so a commit already waiting when this release is installed still needs one manual deploy. Tests: `TestHeadForPublicAndAppRepositories`, `TestHeadForUnreadableRepositories`; `internal/cp/core`, `internal/cp/core/api`, `internal/cp/core/github` pass; `go build ./...`, `go vet`, gofmt clean (joyeuse, Docker).
 - 2026-11-25 21:19-21:25 UTC: VM 105 upgraded to `v0.1.9-lf.2` (phases 05 and 06, released by Ben 21:19): the agent rolled forward by itself to lf.2 at 21:23, and the poller began tracking PetCare's private `api` and `web` at `08c7101`. Ben then deployed both by hand (command palette) at 21:43, SUCCESS. The 14:54 vzdump was deleted at Ben's request (22:02); the 21:20 one is kept.
 - Phase 07 (Ben, 21:29: the console has no visible "deploy latest" on the Deployments tab or a service's right-click menu; it only appeared on the "no active deployment" card and in the command palette): `web/src/features/deployment/latest.ts` holds the shared label, toast and `ref: "latest"` request; the Deployments tab shows a "Deploy latest commit" button (or "Pull and redeploy image") above the active deployment, and a service's canvas right-click menu starts with the same action (editors only, not for a service staged for deletion). Checks on joyeuse (node:24): `tsc --noEmit` and eslint clean, vitest 125 of 125 (4 new), `make web` 248 KB gzipped.
+- Phase 08 (Members and API tokens pages stuck loading): a handler returning a nil slice (`store.All` over no rows) was encoded as `null`, which the console reads as not loaded. `internal/cp/core/api/emptylist.go` turns a nil top-level slice into `[]` just before the answer is written (`server.go`). Tests: `TestEmptyListsAsArrays`, `TestEmptyListPagesAnswerArrays` (GET `/tokens` answered `null` before the fix); `internal/cp/core/...` pass.

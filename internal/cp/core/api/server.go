@@ -199,7 +199,7 @@ func (s *Server) wrap(rt api.Route, h handler) http.Handler {
 			w.Header().Set("Content-Type", v.ctype)
 			_, _ = w.Write(v.data)
 		default:
-			writeJSON(w, http.StatusOK, out)
+			writeJSON(w, http.StatusOK, emptyListsAsArrays(out))
 		}
 	})
 }
