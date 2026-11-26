@@ -41,6 +41,8 @@ Usage:
   5050d restore-state --from FILE --recovery-key KEY [flags]
   5050d rotate-master-key                   not available in this release
   5050d upgrade [--version vX.Y.Z]          upgrade this install
+  5050d make-private [--base-domain D --console-domain D] [--undo]
+                                            mark an existing install private (LuxRail)
   5050d version                             print the version
 
 Every command takes --config (default /etc/5050/config.json, or FIFTY_CONFIG).
@@ -79,6 +81,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = errors.New("rotate-master-key is not available in this release; keep the current recovery key safe")
 	case "upgrade":
 		err = cmdUpgrade(ctx, rest, stdout)
+	case "make-private":
+		err = cmdMakePrivate(ctx, rest, stdout)
 	case "upgrade-helper":
 		return upgrade.HelperMain(rest, stderr)
 	case "version", "--version", "-v":
