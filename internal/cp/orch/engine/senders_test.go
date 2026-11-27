@@ -29,7 +29,7 @@ func envelope(t *testing.T, typ string, v any) proto.Envelope {
 // let another host set an image digest, and only the ACME primary sends certs.
 func TestHostMessagesAreCheckedAgainstTheSender(t *testing.T) {
 	dir := t.TempDir()
-	db, err := sql.Open("sqlite", "file:"+filepath.Join(dir, "state.db")+"?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)")
+	db, err := sql.Open("sqlite", "file:"+filepath.Join(dir, "state.db")+"?_pragma=journal_mode(WAL)&_pragma=busy_timeout(5000)&_pragma=foreign_keys(1)&_txlock=immediate")
 	if err != nil {
 		t.Fatal(err)
 	}

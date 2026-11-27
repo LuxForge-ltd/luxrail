@@ -69,11 +69,13 @@ func Migrate(ctx context.Context, db *sql.DB) error {
 	return nil
 }
 
-// OpenDB opens a SQLite database with the pragmas of docs/SPEC.md 6.5. 5050d
+// OpenDB opens a SQLite database with the pragmas of docs/SPEC.md 6.5, and
+// starts write transactions with BEGIN IMMEDIATE (as core's store does) so
+// concurrent writers wait on busy_timeout instead of failing with SQLITE_BUSY. 5050d
 // gets its handle from core; tests and tools use this.
 func OpenDB(path string) (*sql.DB, error) {
 	dsn := "file:" + path + "?_pragma=journal_mode(WAL)&_pragma=synchronous(NORMAL)&_pragma=busy_timeout(5000)" +
-		"&_pragma=foreign_keys(1)&_pragma=wal_autocheckpoint(1000)"
+		"&_pragma=foreign_keys(1)&_pragma=wal_autocheckpoint(1000)&_txlock=immediate"
 	db, err := sql.Open("sqlite", dsn)
 	if err != nil {
 		return nil, err
