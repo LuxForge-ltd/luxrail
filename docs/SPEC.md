@@ -1924,6 +1924,8 @@ newest first.
 | GET | `/healthz` (no prefix) | 200 "ok" when the process runs | - |
 | GET | `/readyz` (no prefix) | `{version, ready, readOnly, checks{db,migrations,hub,agents}}` | - (localhost gets details) |
 | GET | `/version` | `{version, commit, date}` | - |
+| GET | `/cli` | `CLIInfo{version, available, downloads[{os, arch, file, path}]}`: the CLI of the server's own version (LuxRail) | V |
+| GET | `/cli/download/{os}/{arch}` | the CLI archive from the release, checked against its signed checksums; `X-Checksum-Sha256` carries the checksum (LuxRail) | V |
 | GET | `/setup` | `SetupStatus` | - |
 | POST | `/setup` | `SetupRequest` -> `Me` (sets cookie) | - (token) |
 | POST | `/auth/login` | `LoginRequest` -> `Me` or `{needTotp: true, ticket}` | - |

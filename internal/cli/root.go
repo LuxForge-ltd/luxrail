@@ -22,6 +22,12 @@ import (
 func Main() int {
 	a := &App{In: os.Stdin, Out: os.Stdout, Err: os.Stderr}
 	name := strings.TrimSuffix(filepath.Base(os.Args[0]), ".exe")
+	removeOldBinary()
+	if name != "railway" && a.autoUpdate(os.Args[1:]) {
+		if exe, err := a.updater().exe(); err == nil {
+			return rerun(exe, os.Args[1:])
+		}
+	}
 	return a.Run(name, os.Args[1:])
 }
 
@@ -120,7 +126,7 @@ func (a *App) Root() *cobra.Command {
 		a.cmdLogs(), a.cmdVariables(), a.cmdRun(), a.cmdShell(), a.cmdSSH(), a.cmdConnect(),
 		a.cmdDomain(), a.cmdTCPProxy(), a.cmdEnvironment(), a.cmdService(), a.cmdScale(),
 		a.cmdVolume(), a.cmdCron(), a.cmdMetrics(), a.cmdUsage(), a.cmdConfig(),
-		a.cmdHost(), a.cmdUpgrade(), a.cmdAlias(), a.cmdCompletion(root), a.cmdVersion(),
+		a.cmdHost(), a.cmdUpgrade(), a.cmdAlias(), a.cmdCompletion(root), a.cmdVersion(), a.cmdSelfUpdate(),
 	)
 	return root
 }

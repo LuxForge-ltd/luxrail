@@ -77,6 +77,11 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "then carry on with the rest of the build", read as the clean-up phase offered earlier that day (gofmt in one test, and the `TestJoinAndConnect` SQLITE_BUSY flake). The reading was stated to him at about 17:00 UTC. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
   - 28 `phase-28-test-formatting-fixes`: `consoleip_test.go` is gofmt-clean; the engine tests and `engine.OpenDB` start write transactions with BEGIN IMMEDIATE, as core's store does, so concurrent writers wait instead of failing with SQLITE_BUSY.
 
+### The CLI from the console and a CLI that updates itself, phase 29
+
+- 2026-11-27 20:19 UTC, Ben (LuxRail project thread "Make the LuxRail CLI update itself"): "upgrade the cli - in fact, make it so that the cli can auto-update itself when launched AND you can download it from the website itself - put it on the user menu "Install CLI"". The design was posted in the same thread at about 20:22 UTC (server hands out the CLI of its own version from the signed release; CLI checks at most once an hour and replaces itself; `luxrail self-update`; `LUXRAIL_NO_UPDATE=1`). Commit, pull request and merge approved by Ben at 21:00 UTC in the same thread ("commit and merge 29").
+  - 29 `phase-29-cli-self-update`: `GET /cli` and `/cli/download/{os}/{arch}`; the CLI's self-update and `self-update` command; the user menu's Install CLI window; manual, SPEC and LUXRAIL.md.
+
 ### A trial Tower on LuxRail, phase 25
 
 - 2026-11-26 12:02 UTC, Ben (Tower project thread "Deploy Tower in LuxRail for trial"): "go ahead - and lets add a Tower deployment in LuxRail so we can see how it behaves". At 13:11 UTC Ben chose "Approve, UI on a LuxRail domain" on the plan's decision card in that thread, approving the plan with the web frontend reached through LuxRail's domain. At 21:44 UTC he chose "Commit and open the PR" on the commit card (sent as phase 21; it is phase 25 because phases 21 to 24 merged first, and keeps its branch name `phase-22-tower-trial-service` because its pull request, #23, was already open). Merging needs his word; creating the service on VM 105 needs his separate go.
@@ -112,7 +117,8 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 24 | `phase-24-private-console-tls` | Merged | 1.0.8 | #27 | Plan approved by Ben, 2026-11-27 14:11 UTC ("just fix it do whatever you need to"); commit, pull request and merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 27 | `phase-27-members-row-layout` | Merged | 1.0.9 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("apply that fix you mentioned"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
 | 28 | `phase-28-test-formatting-fixes` | Merged | 1.0.10 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("carry on with the rest of the build"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
-| 25 | `phase-22-tower-trial-service` | Pull request open | 1.0.11 | #23 | Plan approved by Ben, 2026-11-26 12:02 and 13:11 UTC; commit and pull request approved by Ben, 2026-11-26 21:44 UTC (see Approved Plans); merge not yet approved |
+| 29 | `phase-29-cli-self-update` | Merged | 1.0.11 | see pull requests | Plan approved by Ben, 2026-11-27 20:19 UTC ("make it so that the cli can auto-update itself when launched AND you can download it from the website itself"); commit, pull request and merge approved 21:00 UTC ("commit and merge 29") |
+| 25 | `phase-22-tower-trial-service` | Pull request open | 1.0.12 | #23 | Plan approved by Ben, 2026-11-26 12:02 and 13:11 UTC; commit and pull request approved by Ben, 2026-11-26 21:44 UTC (see Approved Plans); merge not yet approved |
 
 ## Handoff Notes
 

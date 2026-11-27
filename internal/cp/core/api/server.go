@@ -67,6 +67,8 @@ type Server struct {
 	C   *core.Core
 	Web fs.FS // the built console (web.Dist sub "dist"); nil serves no SPA
 	Log *slog.Logger
+	// CLI hands out the luxrail CLI (nil: none, as on a development server).
+	CLI *CLIDist
 
 	mux          *http.ServeMux
 	login        *auth.Limiter // per address and account
@@ -267,7 +269,7 @@ func (s *Server) authorize(x *Ctx) error {
 	}
 	if x.A.TokenScope == "environment" {
 		if envID == "" || envID != x.A.TokenEnv {
-			anywhere := x.Route.Method == http.MethodGet && (x.Route.Path == "/me" || x.Route.Path == "/install" || x.Route.Path == "/version")
+			anywhere := x.Route.Method == http.MethodGet && (x.Route.Path == "/me" || x.Route.Path == "/install" || x.Route.Path == "/version" || strings.HasPrefix(x.Route.Path, "/cli"))
 			if !anywhere {
 				return fail.Forbidden("This token only works for its environment.")
 			}

@@ -50,6 +50,12 @@ func Resolve(ctx context.Context, o Options, version string) (Release, error) {
 		}
 		version = strings.TrimSpace(string(b))
 	}
+	return resolveFile(ctx, o, keys, version, func(v string) string { return ServerTarball(v, o.Arch) })
+}
+
+// resolveFile downloads the signed checksums of version, verifies them
+// against keys and returns the release file that name gives for it.
+func resolveFile(ctx context.Context, o Options, keys []minisign.PublicKey, version string, name func(string) string) (Release, error) {
 	if !strings.HasPrefix(version, "v") {
 		version = "v" + version
 	}
@@ -68,12 +74,12 @@ func Resolve(ctx context.Context, o Options, version string) (Release, error) {
 	if _, _, err := minisign.Verify(keys, sums, sig); err != nil {
 		return Release{}, fmt.Errorf("the checksums of %s failed signature verification, so nothing was installed: %w", version, err)
 	}
-	name := ServerTarball(version, o.Arch)
-	sum, err := lookupChecksum(sums, name)
+	file := name(version)
+	sum, err := lookupChecksum(sums, file)
 	if err != nil {
 		return Release{}, fmt.Errorf("release %s: %w", version, err)
 	}
-	return Release{Version: version, URL: base + name, SHA256: sum}, nil
+	return Release{Version: version, URL: base + file, SHA256: sum}, nil
 }
 
 // lookupChecksum finds name in a checksums.txt ("<sha256>  <file>" lines).

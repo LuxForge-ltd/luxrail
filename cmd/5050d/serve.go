@@ -159,7 +159,12 @@ func cmdServe(ctx context.Context, args []string, stdout io.Writer) error {
 	if err != nil {
 		webFS = nil
 	}
-	srv := &http.Server{Addr: p.file.Listen, Handler: coreapi.New(p.c, webFS, log),
+	h := coreapi.New(p.c, webFS, log)
+	if !*dev {
+		h.CLI = &coreapi.CLIDist{Version: version.Version,
+			Opts: upgrade.Options{ReleaseBase: p.file.ReleaseBase, LatestURL: p.file.LatestURL, DataDir: p.file.DataDir}}
+	}
+	srv := &http.Server{Addr: p.file.Listen, Handler: h,
 		ReadHeaderTimeout: 10 * time.Second, IdleTimeout: 120 * time.Second}
 	go func() {
 		<-ctx.Done()

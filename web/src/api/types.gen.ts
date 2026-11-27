@@ -181,6 +181,27 @@ export interface VersionInfo {
   date: string;
 }
 /**
+ * CLIInfo is GET /cli: the luxrail CLI this server hands out, which is always
+ * the build of the server's own version. Available is false when the server
+ * cannot hand one out (a development build).
+ */
+export interface CLIInfo {
+  version: string;
+  available: boolean;
+  downloads: CLIDownload[];
+}
+/**
+ * CLIDownload is one platform's CLI archive. Path is the download URL path on
+ * this server, /api/v1/cli/download/<os>/<arch>. The response carries the
+ * archive's SHA-256 (from the release's signed checksums) in X-Checksum-Sha256.
+ */
+export interface CLIDownload {
+  os: string;
+  arch: string;
+  file: string;
+  path: string;
+}
+/**
  * Role is an install role. Project grants use ProjectRole.
  */
 export type Role = string;
