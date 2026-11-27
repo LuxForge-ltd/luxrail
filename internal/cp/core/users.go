@@ -580,7 +580,7 @@ func (c *Core) Forgot(ctx context.Context, email string) error {
 func (c *Core) newResetLink(ctx context.Context, userID string) (string, error) {
 	t := auth.NewToken(32)
 	err := c.st.Exec(ctx, `INSERT INTO password_resets (token_hash, user_id, expires_at) VALUES (?, ?, ?)`, auth.HashToken(t), userID, c.Now()+ResetTTL)
-	return c.ConsoleURL(ctx) + "/reset?token=" + t, err
+	return c.LinkURL(ctx) + "/reset?token=" + t, err
 }
 
 // ResetLink prints a one-time reset link for `5050d reset-password`.
@@ -665,7 +665,7 @@ func (c *Core) sendVerification(ctx context.Context, u api.User) {
 		return
 	}
 	in, _ := c.installRow(ctx, c.st.Reader)
-	subj, text := mail.Verify(in.Name, c.ConsoleURL(ctx)+"/verify-email?token="+t)
+	subj, text := mail.Verify(in.Name, c.LinkURL(ctx)+"/verify-email?token="+t)
 	if err := c.mailer(s).Send(ctx, mail.Message{To: []string{u.Email}, Subject: subj, Text: text}); err != nil {
 		c.log.Warn("cannot send a verification email", "err", err)
 	}
@@ -771,7 +771,7 @@ func (c *Core) CLIAuthStart(ctx context.Context) (api.CLIAuthStart, error) {
 	exp := c.now().Add(CLIAuthTTL).UnixMilli()
 	err := c.st.Exec(ctx, `INSERT INTO cli_auth (code, poll_hash, status, expires_at, created_at) VALUES (?, ?, 'pending', ?, ?)`,
 		code, auth.HashToken(poll), exp, c.Now())
-	return api.CLIAuthStart{Code: code, VerifyURL: c.ConsoleURL(ctx) + "/cli-auth?code=" + code, PollToken: poll, ExpiresAt: exp, Interval: 2}, err
+	return api.CLIAuthStart{Code: code, VerifyURL: c.LinkURL(ctx) + "/cli-auth?code=" + code, PollToken: poll, ExpiresAt: exp, Interval: 2}, err
 }
 
 // CLIAuthApprove approves a code for the signed-in user.
@@ -899,7 +899,7 @@ func (c *Core) CreateInvite(ctx context.Context, a Actor, req api.CreateInviteRe
 	tok := auth.NewToken(24)
 	inv := api.Invite{ID: ids.New(ids.Invite), Role: req.Role, Email: email, ProjectID: req.ProjectID, MaxUses: maxUses,
 		ExpiresAt: c.Now() + int64(hours)*hour, CreatedAt: c.Now()}
-	inv.URL = c.ConsoleURL(ctx) + "/invite/" + tok
+	inv.URL = c.LinkURL(ctx) + "/invite/" + tok
 	err := c.st.Exec(ctx, `INSERT INTO invites (id, role, project_id, email, token_hash, max_uses, expires_at, created_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		inv.ID, string(inv.Role), nullStr(inv.ProjectID), nullStr(email), auth.HashToken(tok), inv.MaxUses, inv.ExpiresAt, inv.CreatedAt, a.UserID)
 	if err != nil {

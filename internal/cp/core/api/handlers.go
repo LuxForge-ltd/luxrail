@@ -658,5 +658,5 @@ func (s *Server) upload(x *Ctx) (any, error) {
 		return nil, err
 	}
 	x.Target = d.ID
-	return api.UploadResponse{DeploymentID: d.ID, LogsURL: s.C.ConsoleURL(x.R.Context()) + "/project/" + s.C.EnvProject(x.R.Context(), x.p("eid")) + "/service/" + x.p("sid") + "?environment=" + x.p("eid") + "&deployment=" + d.ID}, nil
+	return api.UploadResponse{DeploymentID: d.ID, LogsURL: s.C.LinkURL(x.R.Context()) + "/project/" + s.C.EnvProject(x.R.Context(), x.p("eid")) + "/service/" + x.p("sid") + "?environment=" + x.p("eid") + "&deployment=" + d.ID}, nil
 }
