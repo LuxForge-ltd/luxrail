@@ -67,6 +67,11 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - 2026-11-27 14:16 UTC, Ben (same thread): "commit and merge 25 26 27" and "upgrade", answering the message sent at about 14:15 UTC that asked for exactly those words. This approves the phase 24 commit and pull request, merging pull requests #25 (phase 22), #26 (phase 23) and #27 (phase 24) into `Dev` in that order, and upgrading VM 105 to the release Ben cuts from that `Dev` (backup first), then replacing `consoleUrl` with `linkUrl` in its `config.json`.
   - 24 `phase-24-private-console-tls`: names that can only point at a private address, and bare IPs, use Caddy's internal CA; a private console name is also served on its bare IP; a `linkUrl` setting for the links LuxRail hands out.
 
+### Members list rows that show who each member is, phase 27
+
+- 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "done, check it then apply that fix you mentioned then carry on with the rest of the build", answering the message sent at about 16:50 UTC that explained the role picker on Settings → Members hides each member's name and email and offered a small phase to fix it. Phase number 27 leaves 25 and 26 for the two open pull requests that still carry phase 22. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
+  - 27 `phase-27-members-row-layout`: a field select keeps a width its caller gives it, so the Members role picker stays narrow and names and emails show again.
+
 ## Phases
 
 | Phase | Branch | Status | Version | Pull request | Commit approval |
@@ -95,6 +100,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 22 | `phase-22-rewrite-project-readme` | Merged | 1.0.6 | #25 | Plan approved by Ben, 2026-11-27 13:06 UTC ("go"); commit and pull request approved by Ben, 13:49 UTC ("commit"); merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 23 | `phase-23-member-email-change` | Merged | 1.0.7 | #26 | Plan approved by Ben, 2026-11-27 13:19 and 13:23 UTC (scope "Owner and admins", see Approved Plans); commit and pull request approved by Ben, 13:49 UTC ("commit"); merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 24 | `phase-24-private-console-tls` | Merged | 1.0.8 | #27 | Plan approved by Ben, 2026-11-27 14:11 UTC ("just fix it do whatever you need to"); commit, pull request and merge approved 14:16 UTC ("commit and merge 25 26 27") |
+| 27 | `phase-27-members-row-layout` | Merged | 1.0.9 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("apply that fix you mentioned"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
 
 ## Handoff Notes
 
