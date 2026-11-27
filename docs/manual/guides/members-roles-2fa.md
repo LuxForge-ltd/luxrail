@@ -59,6 +59,15 @@ sudo 5050d reset-2fa --email them@example.com
 
 At least 10 characters. **Forgot password** on the login page sends a reset link by email. Without SMTP, run `sudo 5050d reset-password --email you@example.com` on the control host for a one-time link.
 
+## Change a member's email
+
+Owners and Admins can change anyone's email address, except that only the owner can change the owner's.
+
+1. In **Settings**, **Members**, open the person's **More** menu (or your own row's) and select **Change email**.
+2. Enter the **New email** and select **Change email**.
+
+The new address must not be used by another account. It is marked as not verified (a verification link is sent when SMTP is set), the person signs in with it from then on, and reset or verification links sent to the old address stop working. Their sessions and API tokens keep working. The audit log records the old and the new address.
+
 ## Transfer ownership
 
 1. In **Settings**, **Members**, open the person's **More** menu and select **Transfer ownership**.

@@ -4,6 +4,7 @@ import { useState } from "react";
 import type * as T from "../../api/types.gen";
 import { Button, Confirm, Empty, Menu, Modal } from "../../ui/kit";
 import { v1 } from "../settings/client";
+import { canChangeEmail } from "./email";
 import { checkInvite, hasErrors, inviteBody, type InviteForm } from "../settings/forms";
 import { CopyField, Field, Input, Loading, Notice, SaveRow, Section, Select, Toggle, fmtDate, optimistic, useAction, useLoad } from "../settings/ui";
 
@@ -16,10 +17,12 @@ export default function MembersSettings({ me, install, onInstall }: { me: T.User
   const [inviting, setInviting] = useState(false);
   const [transfer, setTransfer] = useState<T.User | null>(null);
   const [remove, setRemove] = useState<T.User | null>(null);
+  const [emailOf, setEmailOf] = useState<T.User | null>(null);
   const [err, setErr] = useState<string | null>(null);
   if (!members.data || !invites.data) return <Loading error={members.error || invites.error} />;
   const list = members.data;
   const isOwner = me.role === "owner";
+  const emailItem = (u: T.User) => (canChangeEmail(me, u) ? [{ label: "Change email", onClick: () => setEmailOf(u) }] : []);
   const update = (u: T.User, b: T.UpdateMemberRequest) =>
     optimistic(list, list.map((x) => (x.id === u.id ? { ...x, ...b } as T.User : x)), members.setData, () => v1.updateMember(u.id, b), setErr);
   return (
@@ -35,11 +38,17 @@ export default function MembersSettings({ me, install, onInstall }: { me: T.User
                 <div className="font-medium truncate">{u.name || u.email}{u.id === me.id && <span className="text-gray-500 font-normal"> (you)</span>}</div>
                 <div className="text-xs text-gray-500 truncate">{u.email}{u.totpEnabled ? " · 2FA on" : ""}{u.disabled ? " · disabled" : ""}{!u.emailVerified ? " · email not verified" : ""}</div>
               </div>
-              {u.role === "owner" || u.id === me.id ? <span className="text-sm text-gray-600 w-28 text-right">{roleLabel(u.role)}</span> : (
+              {u.role === "owner" || u.id === me.id ? (
+                <>
+                  <span className="text-sm text-gray-600 w-28 text-right">{roleLabel(u.role)}</span>
+                  {canChangeEmail(me, u) && <Menu trigger={<Button variant="ghost" aria-label={`Actions for ${u.email}`}>More</Button>} items={emailItem(u)} />}
+                </>
+              ) : (
                 <>
                   <Select aria-label={`Role for ${u.email}`} className="w-28 h-9" value={u.role} options={ROLE_OPTIONS} onChange={(e) => update(u, { role: e.target.value })} />
                   <Menu trigger={<Button variant="ghost" aria-label={`Actions for ${u.email}`}>More</Button>} items={[
                     { label: u.disabled ? "Enable" : "Disable", onClick: () => update(u, { disabled: !u.disabled }) },
+                    ...emailItem(u),
                     ...(isOwner && u.role === "admin" ? [{ label: "Transfer ownership", onClick: () => setTransfer(u) }] : []),
                     { label: "Remove", danger: true, onClick: () => setRemove(u) },
                   ]} />
@@ -67,6 +76,7 @@ export default function MembersSettings({ me, install, onInstall }: { me: T.User
       </Section>
       {inviting && <InviteModal smtp={install.smtpReady} onClose={() => setInviting(false)} onCreated={(i) => invites.setData([i, ...(invites.data || [])])} />}
       {transfer && <TransferModal user={transfer} totp={me.totpEnabled} onClose={() => setTransfer(null)} onDone={members.reload} />}
+      {emailOf && <EmailModal user={emailOf} onClose={() => setEmailOf(null)} onDone={(n) => members.setData(list.map((x) => (x.id === n.id ? n : x)))} />}
       {remove && <Confirm title="Remove member" danger confirm="Remove" body={<>Remove <b>{remove.email}</b> from this install? Their sessions and tokens stop working.</>}
         onClose={() => setRemove(null)} onConfirm={async () => { await v1.removeMember(remove.id); members.setData(list.filter((x) => x.id !== remove.id)); }} />}
     </>
@@ -119,6 +129,20 @@ function TransferModal({ user, totp, onClose, onDone }: { user: T.User; totp: bo
         <Field label="Your password"><Input type="password" value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="current-password" /></Field>
         {totp && <Field label="Two-factor code"><Input inputMode="numeric" value={code} onChange={(e) => setCode(e.target.value)} autoComplete="one-time-code" /></Field>}
         <SaveRow {...a} saved={false} disabled={!pw || (totp && !code)} label="Transfer ownership" />
+      </form>
+    </Modal>
+  );
+}
+
+function EmailModal({ user, onClose, onDone }: { user: T.User; onClose: () => void; onDone: (u: T.User) => void }) {
+  const [email, setEmail] = useState("");
+  const a = useAction();
+  return (
+    <Modal title="Change email" onClose={onClose}>
+      <form className="pb-4" noValidate onSubmit={async (e) => { e.preventDefault(); const u = await a.run(() => v1.updateMember(user.id, { email: email.trim() })); if (u) { onDone(u); onClose(); } }}>
+        <p className="mb-3">Change the sign-in address of <b>{user.email}</b>. The new address starts unverified, and links sent to the old one stop working.</p>
+        <Field label="New email"><Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" /></Field>
+        <SaveRow {...a} saved={false} disabled={!email.trim()} label="Change email" />
       </form>
     </Modal>
   );

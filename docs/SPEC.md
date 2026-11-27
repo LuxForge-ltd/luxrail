@@ -1948,7 +1948,7 @@ newest first.
 | DELETE | `/invites/{id}` | -> 204 | A |
 | GET | `/invites/{token}` | `InvitePreview` | - |
 | POST | `/invites/accept` | `{token, email, name, password}` -> `Me` | - |
-| PATCH, DELETE | `/members/{id}` | `{role}` -> `User` | A (owner changes: O) |
+| PATCH, DELETE | `/members/{id}` | `{role?, disabled?, email?}` -> `User` | A (owner changes: O) |
 | POST | `/members/{id}/transfer-ownership` | `{password, code?}` -> 204 | O |
 | GET | `/audit?before=&limit=` | `Page[AuditEntry]` | A |
 
