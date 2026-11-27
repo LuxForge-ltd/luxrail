@@ -60,6 +60,8 @@ func (s *Server) table() map[string]handler {
 	add("GET /version", func(x *Ctx) (any, error) {
 		return api.VersionInfo{Version: version.Version, Commit: version.Commit, Date: version.Date}, nil
 	})
+	add("GET /cli", s.cliInfo)
+	add("GET /cli/download/{os}/{arch}", s.cliDownload)
 	add("GET /setup", func(x *Ctx) (any, error) { return c.SetupStatus(ctxOf(x)) })
 	add("POST /setup", func(x *Ctx) (any, error) {
 		if !s.login.Allow("setup|" + auth.LimitKey(x.A.IP)) {

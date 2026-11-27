@@ -8,7 +8,7 @@ import { createContext, Suspense, useCallback, useContext, useEffect, useMemo, u
 import { createPortal } from "react-dom";
 import { Link, NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
-  ArrowUpRight, BookOpen, ChevronDown, CircleArrowUp, LayoutGrid, LayoutTemplate, LogOut, MessageSquare, MessagesSquare,
+  ArrowUpRight, BookOpen, ChevronDown, CircleArrowUp, LayoutGrid, SquareTerminal, LayoutTemplate, LogOut, MessageSquare, MessagesSquare,
   Moon, MoreHorizontal, MoreVertical, Plus, Server, Settings, Sun, UserRound, Users,
 } from "lucide-react";
 import { api } from "../api/client";
@@ -18,6 +18,7 @@ import {
 } from "../kit";
 import { Bell } from "../features/activity/Bell";
 import { Palette } from "../features/palette/Palette";
+import { InstallCLI } from "../features/cli/InstallCLI";
 import { isAdmin, useMe, useSession } from "./session";
 
 import { LINKS, REPO_URL } from "./links";
@@ -153,9 +154,11 @@ export function UserMenu({ variant = "row", collapsed, placement }: { variant?: 
   const { setMe } = useSession();
   const nav = useNavigate();
   const [theme, setThemeState] = useState(resolvedTheme());
+  const [installCLI, setInstallCLI] = useState(false);
   const go = (to: string, close: () => void) => { close(); nav(to); };
   const roleLabel = { owner: "Owner", admin: "Admin", member: "Member", viewer: "Viewer" }[me.user.role as string] || me.user.role;
   return (
+    <>
     <Popover width={280} align={variant === "avatar" ? "right" : "left"} placement={placement ?? (variant === "row" ? "top" : "bottom")}
       wrapperClassName={variant === "row" && !collapsed ? "w-full" : undefined}
       trigger={(open) => variant === "row" && !collapsed ? (
@@ -183,6 +186,7 @@ export function UserMenu({ variant = "row", collapsed, placement }: { variant?: 
             <MenuItem icon={<UserRound />} onClick={() => go("/account/profile", close)}>Account settings</MenuItem>
             <MenuItem icon={<Settings />} onClick={() => go("/settings/general", close)}>Install settings</MenuItem>
             <MenuItem icon={<Server />} onClick={() => go("/settings/hosts", close)}>Hosts</MenuItem>
+            <MenuItem icon={<SquareTerminal />} onClick={() => { close(); setInstallCLI(true); }}>Install CLI</MenuItem>
           </div>
           <MenuSeparator />
           <MenuItem icon={<Avatar name={me.install.name} size={20} />} active onClick={() => go("/", close)}>{me.install.name}</MenuItem>
@@ -203,6 +207,8 @@ export function UserMenu({ variant = "row", collapsed, placement }: { variant?: 
         </>
       )}
     </Popover>
+    {installCLI && <InstallCLI onClose={() => setInstallCLI(false)} />}
+    </>
   );
 }
 

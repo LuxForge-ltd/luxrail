@@ -69,6 +69,15 @@ the same number, `v<VERSION>`, starting at `v1.0.0` (see `luxforge/release/READM
   that works from anywhere. Unlike `consoleUrl`, it leaves the console's name in Caddy alone.
   5050d refuses to start with a value that is not `https://` and a host. Restart 5050d after
   changing it. (`internal/cp/core/config/linkurl.go`)
+- **The CLI from the console, and a CLI that updates itself.** `GET /api/v1/cli` and
+  `/api/v1/cli/download/{os}/{arch}` hand out the CLI of the server's own version: 5050d downloads
+  the archive from the release once, checks it against the signed checksums, keeps it under
+  `<dataDir>/cli/<version>/` and serves it to any signed-in user. The user menu's **Install CLI**
+  window uses them. The CLI checks the server's version at most once an hour when it runs a
+  command, and when the server is newer it replaces itself with the server's build (checking the
+  SHA-256 the server sends) and runs the command again. `luxrail self-update` does it now and
+  `LUXRAIL_NO_UPDATE=1` turns it off. (`internal/upgrade/cli.go`, `internal/cp/core/api/clidist.go`,
+  `internal/cli/selfupdate.go`, `web/src/features/cli/`)
 
 ### Moving VM 105 from `caddy-lan` to `consoleLan`
 

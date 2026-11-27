@@ -65,6 +65,7 @@ const svc = (eid: string, sid: string) => `/environments/${enc(eid)}/services/${
 export const api = {
   // 11.1 system and auth
   version: () => request<{ version: string; commit: string; date: string }>("/version"),
+  cli: () => request<T.CLIInfo>("/cli"),
   setupStatus: () => request<T.SetupStatus>("/setup"),
   setup: (b: T.SetupRequest) => request<T.Me>("/setup", { body: b }),
   login: (b: T.LoginRequest) => request<T.LoginResponse>("/auth/login", { body: b }),
