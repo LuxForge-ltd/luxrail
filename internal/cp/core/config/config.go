@@ -59,6 +59,8 @@ type File struct {
 	Insecure bool `json:"insecure,omitempty"`
 	// ConsoleLAN is LuxRail's LAN console address, "<IPv4>:<port>" (see consolelan.go).
 	ConsoleLAN string `json:"consoleLan,omitempty"`
+	// LinkURL is the address put in links LuxRail hands out (see linkurl.go).
+	LinkURL string `json:"linkUrl,omitempty"`
 }
 
 // Defaults fills empty fields.
@@ -119,6 +121,9 @@ func (f *File) Validate() error {
 		return fmt.Errorf("the listen address %q must be host:port", f.Listen)
 	}
 	if err := ValidateConsoleLAN(f.ConsoleLAN); err != nil {
+		return err
+	}
+	if err := ValidateLinkURL(f.LinkURL); err != nil {
 		return err
 	}
 	for _, c := range []string{f.PodCIDR, f.MeshCIDR} {

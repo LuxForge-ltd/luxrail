@@ -330,6 +330,16 @@ func (c *Core) ConsoleURL(ctx context.Context) string {
 	return "https://" + s.ConsoleDomain
 }
 
+// LinkURL is the address links handed out start with (CLI login, invites,
+// resets, verification and notification emails): config.json's linkUrl
+// when set, otherwise the console's address.
+func (c *Core) LinkURL(ctx context.Context) string {
+	if b := c.file.LinkBase(); b != "" {
+		return b
+	}
+	return c.ConsoleURL(ctx)
+}
+
 // ConsoleHosts are the host names the console answers on (the current one and,
 // for 24 hours after a change, the old one).
 func (c *Core) ConsoleHosts(ctx context.Context) []string {

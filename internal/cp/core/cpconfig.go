@@ -668,7 +668,7 @@ func (c *Core) Notify(ctx context.Context, n cpapi.Notice) error {
 	if len(emails) > 0 {
 		sm, err := c.smtpSettings(ctx, c.st.Reader)
 		if err == nil && sm.Host != "" {
-			subj, text := mail.Notice(in.Name, n.Text, c.ConsoleURL(ctx)+link)
+			subj, text := mail.Notice(in.Name, n.Text, c.LinkURL(ctx)+link)
 			go func(to []string) {
 				if err := c.mailer(sm).Send(context.WithoutCancel(ctx), mail.Message{To: uniq(to), Subject: subj, Text: text}); err != nil {
 					c.log.Warn("cannot send a notification email", "err", err)

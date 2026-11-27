@@ -407,6 +407,9 @@ func (o *Orchestrator) ingressFor(ctx context.Context, host hub.HostRow, members
 		if old := strings.ToLower(inst.OldConsoleDomain); old != "" && old != d && inst.OldConsoleUntil > o.now().UnixMilli() {
 			ing.Routes = append(ing.Routes, proto.Route{Domain: old, UpstreamName: consoleUpstream, Port: consolePort(o.o.LocalURL), TLS: routes.TLSMode(old)})
 		}
+		if r := consoleIPRoute(d, consolePort(o.o.LocalURL)); r != nil { // LuxRail
+			ing.Routes = append(ing.Routes, *r)
+		}
 		ip := "127.0.0.1"
 		if host.MeshIndex != 1 {
 			ip = o.plan.MeshAddr(1).String()

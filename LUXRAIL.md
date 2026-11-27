@@ -54,13 +54,29 @@ the same number, `v<VERSION>`, starting at `v1.0.0` (see `luxforge/release/READM
   (`internal/cp/core/config/consolelan.go`, `internal/cp/orch/engine/consolelan.go`,
   `internal/agent/netw/caddyconsolelan.go`)
 
+- **Private console names and IPs use the internal CA.** A wildcard DNS name such as
+  `console.10-10-180-5.sslip.io` (sslip.io or nip.io) that can only point at a private, loopback
+  or link-local IPv4 address, and a bare IP, get a certificate from LuxRail's Caddy internal CA
+  instead of ACME, which could never issue one. When the console's own name is such a name, the
+  console is also served on that bare IP (`https://10.10.180.5`) with an internal certificate.
+  Both are part of the Caddy config LuxRail renders, so a reboot or agent restart no longer drops
+  them, as it did the routes once added by hand with the `caddy_ip_site.py` and
+  `caddy_console_split.py` helpers. (`internal/cp/orch/routes/privateip.go`,
+  `internal/cp/orch/engine/consoleip.go`)
+- **A link address.** `"linkUrl": "https://luxrail.example.com"` in `/etc/5050/config.json` makes
+  the links LuxRail hands out (CLI login approval, invites, password resets, email verification,
+  notification emails and upload log links) start with that address, for example a tunnel name
+  that works from anywhere. Unlike `consoleUrl`, it leaves the console's name in Caddy alone.
+  5050d refuses to start with a value that is not `https://` and a host. Restart 5050d after
+  changing it. (`internal/cp/core/config/linkurl.go`)
+
 ### Moving VM 105 from `caddy-lan` to `consoleLan`
 
-VM 105 serves `https://10.10.180.5:8443` from a separate Caddy (`openrail-lan.service`,
+VM 105 serves `https://10.10.180.5:8443` from a separate Caddy (`luxrail-lan.service`,
 `/etc/caddy-lan/Caddyfile`, its own internal CA). Once VM 105 runs a release with `consoleLan`,
 and with the operator's go and a backup first:
 
-1. Stop and disable `openrail-lan.service`, which holds port 8443.
+1. Stop and disable `luxrail-lan.service`, which holds port 8443.
 2. Add `"consoleLan": "10.10.180.5:8443"` to `/etc/5050/config.json` and restart 5050d.
 3. Clients that pinned `openrail-lan-8443-ca.crt` (the sync and publish scripts on joyeuse, the
    LuxHome Tower) pin LuxRail's Caddy CA instead (`openrail-trial-ca.crt`; the Tower's bundle
