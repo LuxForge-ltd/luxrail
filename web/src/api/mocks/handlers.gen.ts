@@ -10,6 +10,8 @@ export const routes: { method: string; path: string; stream: string }[] = [
   { method: "GET", path: "/healthz", stream: "" },
   { method: "GET", path: "/readyz", stream: "" },
   { method: "GET", path: "/api/v1/version", stream: "" },
+  { method: "GET", path: "/api/v1/cli", stream: "" },
+  { method: "GET", path: "/api/v1/cli/download/{os}/{arch}", stream: "" },
   { method: "GET", path: "/api/v1/setup", stream: "" },
   { method: "POST", path: "/api/v1/setup", stream: "" },
   { method: "POST", path: "/api/v1/auth/login", stream: "" },
@@ -201,6 +203,19 @@ export const handlers: RequestHandler[] = [
     "date": "example",
     "version": "v0.1.0"
   } satisfies T.VersionInfo)),
+  http.get("*/api/v1/cli", () => HttpResponse.json({
+    "available": true,
+    "downloads": [
+      {
+        "arch": "example",
+        "file": "example",
+        "os": "example",
+        "path": "example"
+      }
+    ],
+    "version": "v0.1.0"
+  } satisfies T.CLIInfo)),
+  http.get("*/api/v1/cli/download/:os/:arch", () => new HttpResponse("ok", { headers: { "content-type": "application/octet-stream" } })),
   http.get("*/api/v1/setup", () => HttpResponse.json({
     "needsSetup": true,
     "version": "v0.1.0"

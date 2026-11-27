@@ -8,7 +8,9 @@ Install the `luxrail` CLI on your laptop or in CI, log in to your console, and o
 
 ## Install
 
-On macOS or Linux:
+The easiest way is from your console: open the user menu, choose **Install CLI**, and download the build for your system. The server hands out the CLI of its own version, and the window shows the commands to put it on your `PATH` and log in.
+
+Or, on macOS or Linux:
 
 ```sh
 curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sh -s -- --cli
@@ -116,7 +118,14 @@ This adds a `railway` command next to `luxrail`, unless a real `railway` binary 
 
 ## Upgrade the CLI
 
-Run the install command again. It replaces the binary in place.
+The CLI keeps itself at the version of the server it talks to. When you run a command while logged in, it asks the server for its version, at most once an hour. If the server is newer, it downloads the server's CLI build, checks it against the checksum from the release's signed checksums, replaces itself and runs your command again with the new version. It never goes back to an older version, and development builds never update themselves.
+
+- `luxrail self-update` updates now (`luxrail self-update --check` only says whether an update is available). `luxrail update` does the same.
+- `LUXRAIL_NO_UPDATE=1` turns the automatic update off.
+- On Windows the old binary is kept as `luxrail.exe.old` while the command runs and removed the next time.
+- If the CLI is in a folder you cannot write to, such as `/usr/local/bin` without root, it says so and runs the command with the version you have. Run `sudo luxrail self-update`, or install it under `~/.local/bin`.
+
+Running the install command again also replaces the binary in place.
 
 ## What success looks like
 

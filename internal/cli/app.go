@@ -37,6 +37,7 @@ type App struct {
 
 	cfg    *Config
 	reader *bufio.Reader
+	upd    updater
 }
 
 // Target is a resolved project, environment and (optionally) service.

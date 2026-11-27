@@ -77,6 +77,11 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "then carry on with the rest of the build", read as the clean-up phase offered earlier that day (gofmt in one test, and the `TestJoinAndConnect` SQLITE_BUSY flake). The reading was stated to him at about 17:00 UTC. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
   - 28 `phase-28-test-formatting-fixes`: `consoleip_test.go` is gofmt-clean; the engine tests and `engine.OpenDB` start write transactions with BEGIN IMMEDIATE, as core's store does, so concurrent writers wait instead of failing with SQLITE_BUSY.
 
+### The CLI from the console and a CLI that updates itself, phase 29
+
+- 2026-11-27 20:19 UTC, Ben (LuxRail project thread "Make the LuxRail CLI update itself"): "upgrade the cli - in fact, make it so that the cli can auto-update itself when launched AND you can download it from the website itself - put it on the user menu "Install CLI"". The design was posted in the same thread at about 20:22 UTC (server hands out the CLI of its own version from the signed release; CLI checks at most once an hour and replaces itself; `luxrail self-update`; `LUXRAIL_NO_UPDATE=1`). Commit, pull request and merge approved by Ben at 21:00 UTC in the same thread ("commit and merge 29").
+  - 29 `phase-29-cli-self-update`: `GET /cli` and `/cli/download/{os}/{arch}`; the CLI's self-update and `self-update` command; the user menu's Install CLI window; manual, SPEC and LUXRAIL.md.
+
 ## Phases
 
 | Phase | Branch | Status | Version | Pull request | Commit approval |
@@ -107,6 +112,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 24 | `phase-24-private-console-tls` | Merged | 1.0.8 | #27 | Plan approved by Ben, 2026-11-27 14:11 UTC ("just fix it do whatever you need to"); commit, pull request and merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 27 | `phase-27-members-row-layout` | Merged | 1.0.9 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("apply that fix you mentioned"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
 | 28 | `phase-28-test-formatting-fixes` | Merged | 1.0.10 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("carry on with the rest of the build"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
+| 29 | `phase-29-cli-self-update` | Merged | 1.0.11 | see pull requests | Plan approved by Ben, 2026-11-27 20:19 UTC ("make it so that the cli can auto-update itself when launched AND you can download it from the website itself"); commit, pull request and merge approved 21:00 UTC ("commit and merge 29") |
 
 ## Handoff Notes
 

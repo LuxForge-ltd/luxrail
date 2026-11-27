@@ -47,7 +47,7 @@ luxrail up --new
 | [metrics](metrics.md), [usage](usage.md) | Resource use |
 | [config](config.md) | Export settings to a file |
 | [host](host.md), [upgrade](upgrade.md) | Admin: hosts and upgrades |
-| [alias](alias.md), [completion](completion.md), [version](version.md) | The CLI itself |
+| [alias](alias.md), [completion](completion.md), [version](version.md), [self-update](../guides/cli-setup.md#upgrade-the-cli) | The CLI itself |
 
 ## Next steps
 

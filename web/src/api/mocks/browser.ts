@@ -25,7 +25,15 @@ function healthy(path: string, pick: (body: Record<string, any>) => Record<strin
   });
 }
 
-const overrides = [healthy("me", (b) => b.install), healthy("install", (b) => b)];
+/** The Install CLI window wants real platform names rather than "example". */
+const cliDemo = http.get("*/api/v1/cli", () => HttpResponse.json({
+  version: "v0.1.0", available: true,
+  downloads: [["windows", "amd64"], ["darwin", "arm64"], ["darwin", "amd64"], ["linux", "amd64"], ["linux", "arm64"]].map(([os, arch]) => ({
+    os, arch, file: `luxrail-cli_0.1.0_${os}_${arch}${os === "windows" ? ".zip" : ".tar.gz"}`, path: `/api/v1/cli/download/${os}/${arch}`,
+  })),
+}));
+
+const overrides = [healthy("me", (b) => b.install), healthy("install", (b) => b), cliDemo];
 
 export const worker = setupWorker(...overrides, ...canvasHandlers, ...handlers, ...wsHandlers);
 

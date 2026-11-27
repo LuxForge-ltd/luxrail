@@ -56,6 +56,8 @@ var Routes = []Route{
 	{Method: "GET", Path: "/healthz", NoPrefix: true, Role: Public, Resp: Text("text/plain")},
 	{Method: "GET", Path: "/readyz", NoPrefix: true, Role: Public, Resp: Readyz{}},
 	{Method: "GET", Path: "/version", Role: Public, Resp: VersionInfo{}},
+	{Method: "GET", Path: "/cli", Role: Viewer, Resp: CLIInfo{}},
+	{Method: "GET", Path: "/cli/download/{os}/{arch}", Role: Viewer, Resp: Text("application/octet-stream")},
 	{Method: "GET", Path: "/setup", Role: Public, Resp: SetupStatus{}},
 	{Method: "POST", Path: "/setup", Role: Public, Req: SetupRequest{}, Resp: Me{}, Audit: "setup.complete"},
 	{Method: "POST", Path: "/auth/login", Role: Public, Req: LoginRequest{}, Resp: LoginResponse{}, Audit: "auth.login"},

@@ -93,6 +93,25 @@ type VersionInfo struct {
 	Date    string `json:"date"`
 }
 
+// CLIInfo is GET /cli: the luxrail CLI this server hands out, which is always
+// the build of the server's own version. Available is false when the server
+// cannot hand one out (a development build).
+type CLIInfo struct {
+	Version   string        `json:"version"`
+	Available bool          `json:"available"`
+	Downloads []CLIDownload `json:"downloads"`
+}
+
+// CLIDownload is one platform's CLI archive. Path is the download URL path on
+// this server, /api/v1/cli/download/<os>/<arch>. The response carries the
+// archive's SHA-256 (from the release's signed checksums) in X-Checksum-Sha256.
+type CLIDownload struct {
+	OS   string `json:"os"`
+	Arch string `json:"arch"`
+	File string `json:"file"`
+	Path string `json:"path"`
+}
+
 // ---------------------------------------------------------------- auth, users, tokens
 
 // Role is an install role. Project grants use ProjectRole.
