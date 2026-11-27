@@ -76,6 +76,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 19 | `phase-19-rename-to-luxrail` | Merged | 1.0.3 | see pull requests | Plan approved by Ben, 2026-11-26 11:39 and 11:40 UTC; scope chosen by Ben 11:54 UTC; commit and merge under his 10:57 UTC approval (see Approved Plans) |
 | 20 | `phase-20-service-website-link` | Merged | 1.0.4 | see pull requests | Plan approved by Ben, 2026-11-26 12:05 UTC; commit and merge under his 10:57 UTC approval (see Approved Plans) |
 | 21 | `phase-21-windows-cli-support` | Merged | 1.0.5 | see pull requests | Plan approved by Ben, 2026-11-26 19:57 UTC ("happy with that plan"); commit, pull request and merge approved by Ben, 2026-11-26 21:25 UTC ("yes, and merge", answering the commit and merge questions sent at 20:30 UTC in the same thread) |
+| 22 | `phase-22-sync-agent-governance` | PR open, awaiting operator merge | 1.0.6 | opened by Sync-RepoGovernance.ps1 | Ben, 2026-11-26, plan "Approve, run all" (LuxDBDiagram session "LuxForge Delivery work board rollout"), recorded in Pillars PHASES.md under Approved Plan: Centralised Work Management; sync run 2026-11-27 13:26 UTC |
 
 ## Handoff Notes
 
