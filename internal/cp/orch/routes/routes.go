@@ -100,6 +100,9 @@ func TLSMode(domain string) string {
 			return "internal"
 		}
 	}
+	if net.ParseIP(d) != nil || PrivateIPName(d) != "" { // LuxRail: see privateip.go
+		return "internal"
+	}
 	return "acme"
 }
 

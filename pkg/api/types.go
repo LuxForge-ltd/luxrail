@@ -320,8 +320,9 @@ type AcceptInviteRequest struct {
 }
 
 type UpdateMemberRequest struct {
-	Role     *Role `json:"role,omitempty"`
-	Disabled *bool `json:"disabled,omitempty"`
+	Role     *Role   `json:"role,omitempty"`
+	Disabled *bool   `json:"disabled,omitempty"`
+	Email    *string `json:"email,omitempty"` // owner and admins; only the owner changes the owner's
 }
 
 type TransferOwnershipRequest struct {

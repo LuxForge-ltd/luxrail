@@ -1,34 +1,42 @@
 # LuxRail
 
-Railway's developer experience on servers you own.
+LuxRail is LuxForge's self-hosted application platform. Install it on a Linux server you own and it becomes a place to run your apps: deploy services from GitHub, Docker images or a local folder, add databases in one click, wire them together with variables, and read logs, metrics and deploy history from a web console or the `luxrail` CLI.
 
-One command turns any Linux VM into a canvas of services with git deploys, databases, logs and rollbacks. Open source. No per-seat, per-minute or per-server fees.
+It gives you the workflow of a hosted platform such as Railway on your own hardware, with no per-seat, per-minute or per-server fees. LuxRail is built and maintained by LuxForge Ltd.
+
+## How it works
+
+- **The control plane** (`5050d`) runs on one host. It holds your projects, environments and variables, serves the console and the API, and plans every deploy.
+- **A host agent** (`5050-agent`) runs on every server. It builds images with BuildKit, runs containers, configures Caddy for HTTPS and joins hosts over WireGuard. Agents dial out to the control plane, so no management port is opened.
+- **The console and the CLI** talk to the same API. Changes are staged per environment and shown as a diff before they deploy.
+- **Releases are signed**, and an upgrade reverts itself if the new version does not come up healthy.
+
+See the [architecture reference](docs/manual/reference/architecture.md) for the full picture.
+
+## What it does
+
+- **Deploys your code**: GitHub repositories (Railpack or Dockerfile) with push-to-deploy, Docker images, or a folder with `luxrail up`.
+- **Runs your databases**: Postgres, MySQL, Redis and MongoDB in one click, backups to any S3-compatible bucket, and point-in-time restore for Postgres.
+- **Connects services**: variable references such as `${{Postgres.DATABASE_URL}}` and `${{shared.KEY}}`, and private networking between services.
+- **Serves the web**: custom domains with automatic HTTPS, TCP proxies, health checks, zero-downtime deploys and rollbacks that restore variables.
+- **Runs scheduled jobs**: cron services with a schedule in the console or in `railway.json`.
+- **Keeps watch**: logs with filters, 30 days of metrics, monitors and alerts.
+- **Grows with you**: add a server with one command, run replicas across hosts, and use every core with one process per vCPU.
+- **Moves you off Railway**: `luxrail import railway`, `railway.json` support and a `railway` CLI alias.
+
+Read the [honest limits](docs/manual/reference/honest-limits.md) before you rely on it: one control host, each database on one host, IPv4 only, and Ubuntu 24.04 as the tested system.
+
+## Install
+
+On a fresh Linux server:
 
 ```sh
 curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh
 ```
 
-Or with wget: `wget -qO- https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sudo sh`. Piped, the installer asks nothing; run from a terminal, it offers a guided setup. Every answer is also a flag or a `FIFTY_*` environment variable. The same script is at [`install/install.sh`](install/install.sh).
+Piped like this, the installer asks nothing. Run from a terminal, it offers a guided setup. Every answer is also a flag or a `FIFTY_*` environment variable (see [install options](docs/manual/reference/install-options.md)). The script is also in [`install/install.sh`](install/install.sh).
 
-Docs: the [user manual](docs/manual/quick-start.md) and [`LUXRAIL.md`](LUXRAIL.md).
-
-## Features
-
-- **Canvas, environments and staged changes**: the Railway workflow, with a diff before every deploy.
-- **Deploy anything**: GitHub repos (Railpack or Dockerfile), Docker images, or a directory with `luxrail up`.
-- **Databases in one click**: Postgres, MySQL, Redis and MongoDB, with Railway's variable names.
-- **Variables with references**: `${{Postgres.DATABASE_URL}}` and `${{shared.KEY}}`, the same syntax as Railway.
-- **Backups to any S3-compatible bucket**: point-in-time restore for Postgres, restore to a copy, promote.
-- **Zero-downtime deploys** for services without a volume, health checks, and rollbacks that restore variables.
-- **More hosts with one command**: agents dial out, so no inbound management port; replicas across hosts; private networking over WireGuard.
-- **Use all cores**: run one process per vCPU, with Node cluster mode built in.
-- **Custom domains with automatic HTTPS**, TCP proxies, logs with Railway's filter syntax, metrics for 30 days, monitors and alerts.
-- **Move from Railway**: `luxrail import railway`, `railway.json` honoured, and a `railway` CLI alias.
-- **Self-reverting upgrades** and control plane state streamed to your bucket.
-
-Read the [honest limits](docs/manual/reference/honest-limits.md) before you rely on it: one control host, databases on one host each, IPv4 only, Ubuntu 24.04 tested.
-
-## CLI
+The CLI, on your own machine:
 
 ```sh
 curl -fsSL https://github.com/LuxForge-ltd/luxrail/releases/latest/download/install.sh | sh -s -- --cli
@@ -36,7 +44,16 @@ luxrail login https://console.example.com
 luxrail up --new
 ```
 
-See the [CLI reference](docs/manual/cli/overview.md).
+If the console uses its own certificate authority, pass it once with `luxrail login URL --ca-file FILE`. This matters most on Windows, where the CLI only reads the Windows certificate store.
+
+## Documentation
+
+- [Quick start](docs/manual/quick-start.md) and [basics](docs/manual/basics.md)
+- [Guides](docs/manual/guides/install.md): deploying, databases, domains, backups, upgrades and more
+- [CLI reference](docs/manual/cli/overview.md)
+- [Production checklist](docs/manual/production-checklist.md)
+- [Coming from Railway](docs/manual/coming-from-railway.md)
+- [`LUXRAIL.md`](LUXRAIL.md): branches, versions, releases and LuxForge's own changes
 
 ## Repository
 
@@ -53,12 +70,12 @@ See the [CLI reference](docs/manual/cli/overview.md).
 | `luxforge/` | Release tooling |
 | `e2e/`, `examples/` | End-to-end tests and sample apps |
 
-Build from source: see [CONTRIBUTING.md](CONTRIBUTING.md).
+To build from source, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-The server and console are [AGPL-3.0-only](LICENSE). The CLI, `pkg/`, `templates/`, `examples/`, `install/` and `docs/manual/` are MIT. See [LICENSING.md](LICENSING.md).
-
-LuxRail is maintained by LuxForge Ltd. It is a modified version of openrail by The openrail authors, forked from openrail v0.1.9 on 2026-11-24 and changed by LuxForge Ltd since then; their copyright notices are kept in the licence files.
+The server and console are [AGPL-3.0-only](LICENSE). The CLI, `pkg/`, `templates/`, `examples/`, `install/` and `docs/manual/` are MIT. See [LICENSING.md](LICENSING.md) for the details and the copyright notices.
 
 Security issues: see [SECURITY.md](SECURITY.md). LuxRail is an independent project and is not affiliated with Railway.
+
+<sub>Sourced and forked from [openrail](https://github.com/musakkka/openrail) v0.1.9.</sub>

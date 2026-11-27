@@ -580,7 +580,7 @@ func (c *Core) Forgot(ctx context.Context, email string) error {
 func (c *Core) newResetLink(ctx context.Context, userID string) (string, error) {
 	t := auth.NewToken(32)
 	err := c.st.Exec(ctx, `INSERT INTO password_resets (token_hash, user_id, expires_at) VALUES (?, ?, ?)`, auth.HashToken(t), userID, c.Now()+ResetTTL)
-	return c.ConsoleURL(ctx) + "/reset?token=" + t, err
+	return c.LinkURL(ctx) + "/reset?token=" + t, err
 }
 
 // ResetLink prints a one-time reset link for `5050d reset-password`.
@@ -665,7 +665,7 @@ func (c *Core) sendVerification(ctx context.Context, u api.User) {
 		return
 	}
 	in, _ := c.installRow(ctx, c.st.Reader)
-	subj, text := mail.Verify(in.Name, c.ConsoleURL(ctx)+"/verify-email?token="+t)
+	subj, text := mail.Verify(in.Name, c.LinkURL(ctx)+"/verify-email?token="+t)
 	if err := c.mailer(s).Send(ctx, mail.Message{To: []string{u.Email}, Subject: subj, Text: text}); err != nil {
 		c.log.Warn("cannot send a verification email", "err", err)
 	}
@@ -771,7 +771,7 @@ func (c *Core) CLIAuthStart(ctx context.Context) (api.CLIAuthStart, error) {
 	exp := c.now().Add(CLIAuthTTL).UnixMilli()
 	err := c.st.Exec(ctx, `INSERT INTO cli_auth (code, poll_hash, status, expires_at, created_at) VALUES (?, ?, 'pending', ?, ?)`,
 		code, auth.HashToken(poll), exp, c.Now())
-	return api.CLIAuthStart{Code: code, VerifyURL: c.ConsoleURL(ctx) + "/cli-auth?code=" + code, PollToken: poll, ExpiresAt: exp, Interval: 2}, err
+	return api.CLIAuthStart{Code: code, VerifyURL: c.LinkURL(ctx) + "/cli-auth?code=" + code, PollToken: poll, ExpiresAt: exp, Interval: 2}, err
 }
 
 // CLIAuthApprove approves a code for the signed-in user.
@@ -899,7 +899,7 @@ func (c *Core) CreateInvite(ctx context.Context, a Actor, req api.CreateInviteRe
 	tok := auth.NewToken(24)
 	inv := api.Invite{ID: ids.New(ids.Invite), Role: req.Role, Email: email, ProjectID: req.ProjectID, MaxUses: maxUses,
 		ExpiresAt: c.Now() + int64(hours)*hour, CreatedAt: c.Now()}
-	inv.URL = c.ConsoleURL(ctx) + "/invite/" + tok
+	inv.URL = c.LinkURL(ctx) + "/invite/" + tok
 	err := c.st.Exec(ctx, `INSERT INTO invites (id, role, project_id, email, token_hash, max_uses, expires_at, created_at, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		inv.ID, string(inv.Role), nullStr(inv.ProjectID), nullStr(email), auth.HashToken(tok), inv.MaxUses, inv.ExpiresAt, inv.CreatedAt, a.UserID)
 	if err != nil {
@@ -1091,8 +1091,9 @@ func (c *Core) grantOnly(ctx context.Context, tx *sql.Tx, userID string, role ap
 	return nil
 }
 
-// UpdateMember changes a role or disables a user.
+// UpdateMember changes a role, disables a user or changes their email.
 func (c *Core) UpdateMember(ctx context.Context, a Actor, id string, req api.UpdateMemberRequest) (api.User, error) {
+	emailChanged := false
 	err := c.st.Write(ctx, func(tx *sql.Tx) error {
 		row, err := c.userByID(ctx, tx, id)
 		if err != nil {
@@ -1128,12 +1129,54 @@ func (c *Core) UpdateMember(ctx context.Context, a Actor, id string, req api.Upd
 				}
 			}
 		}
+		if req.Email != nil {
+			changed, err := c.changeEmail(ctx, tx, row, *req.Email)
+			if err != nil {
+				return err
+			}
+			emailChanged = changed
+		}
 		return nil
 	})
 	if err != nil {
 		return api.User{}, err
 	}
-	return c.User(ctx, id)
+	u, err := c.User(ctx, id)
+	if err == nil && emailChanged {
+		c.sendVerification(ctx, u)
+	}
+	return u, err
+}
+
+// changeEmail gives a user a new address inside the caller's transaction.
+// The address must be valid and not used by another account. A new address
+// is unverified, and password reset and verification links sent to the old
+// one stop working, so the old mailbox cannot take the account back.
+// It reports whether the address changed; the same address is a no-op.
+func (c *Core) changeEmail(ctx context.Context, tx *sql.Tx, row userRow, raw string) (bool, error) {
+	email := normEmail(raw)
+	if !validEmail(email) {
+		return false, fail.Validation("email", "Enter a valid email address.")
+	}
+	if email == normEmail(row.Email) {
+		return false, nil
+	}
+	var n int
+	if err := tx.QueryRowContext(ctx, `SELECT count(*) FROM users WHERE email = ? AND id != ?`, email, row.ID).Scan(&n); err != nil {
+		return false, err
+	}
+	if n > 0 {
+		return false, fail.Conflict("Another account already uses %s.", email)
+	}
+	if _, err := tx.ExecContext(ctx, `UPDATE users SET email = ?, email_verified_at = NULL WHERE id = ?`, email, row.ID); err != nil {
+		return false, err
+	}
+	for _, q := range []string{`DELETE FROM password_resets WHERE user_id = ?`, `DELETE FROM email_verifications WHERE user_id = ?`} {
+		if _, err := tx.ExecContext(ctx, q, row.ID); err != nil {
+			return false, err
+		}
+	}
+	return true, nil
 }
 
 // DeleteMember removes a user, their sessions, tokens and grants.

@@ -284,6 +284,12 @@ func (s *Server) table() map[string]handler {
 		if err != nil {
 			return nil, err
 		}
+		if req.Email != nil {
+			// The audit entry keeps both addresses: the users table only keeps the new one.
+			if u, err := c.User(ctxOf(x), x.p("id")); err == nil {
+				x.Detail = "email " + u.Email + " to " + core.NormEmail(*req.Email)
+			}
+		}
 		return c.UpdateMember(ctxOf(x), x.A, x.p("id"), req)
 	})
 	add("DELETE /members/{id}", func(x *Ctx) (any, error) { return nil, c.DeleteMember(ctxOf(x), x.A, x.p("id")) })
@@ -652,5 +658,5 @@ func (s *Server) upload(x *Ctx) (any, error) {
 		return nil, err
 	}
 	x.Target = d.ID
-	return api.UploadResponse{DeploymentID: d.ID, LogsURL: s.C.ConsoleURL(x.R.Context()) + "/project/" + s.C.EnvProject(x.R.Context(), x.p("eid")) + "/service/" + x.p("sid") + "?environment=" + x.p("eid") + "&deployment=" + d.ID}, nil
+	return api.UploadResponse{DeploymentID: d.ID, LogsURL: s.C.LinkURL(x.R.Context()) + "/project/" + s.C.EnvProject(x.R.Context(), x.p("eid")) + "/service/" + x.p("sid") + "?environment=" + x.p("eid") + "&deployment=" + d.ID}, nil
 }
