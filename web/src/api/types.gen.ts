@@ -401,6 +401,7 @@ export interface AcceptInviteRequest {
 export interface UpdateMemberRequest {
   role?: Role;
   disabled?: boolean;
+  email?: string; // owner and admins; only the owner changes the owner's
 }
 export interface TransferOwnershipRequest {
   password: string;

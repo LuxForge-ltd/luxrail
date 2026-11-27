@@ -284,6 +284,12 @@ func (s *Server) table() map[string]handler {
 		if err != nil {
 			return nil, err
 		}
+		if req.Email != nil {
+			// The audit entry keeps both addresses: the users table only keeps the new one.
+			if u, err := c.User(ctxOf(x), x.p("id")); err == nil {
+				x.Detail = "email " + u.Email + " to " + core.NormEmail(*req.Email)
+			}
+		}
 		return c.UpdateMember(ctxOf(x), x.A, x.p("id"), req)
 	})
 	add("DELETE /members/{id}", func(x *Ctx) (any, error) { return nil, c.DeleteMember(ctxOf(x), x.A, x.p("id")) })
