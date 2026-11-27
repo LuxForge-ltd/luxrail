@@ -72,6 +72,11 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "done, check it then apply that fix you mentioned then carry on with the rest of the build", answering the message sent at about 16:50 UTC that explained the role picker on Settings → Members hides each member's name and email and offered a small phase to fix it. Phase number 27 leaves 25 and 26 for the two open pull requests that still carry phase 22. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
   - 27 `phase-27-members-row-layout`: a field select keeps a width its caller gives it, so the Members role picker stays narrow and names and emails show again.
 
+### Test clean-up, phase 28
+
+- 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "then carry on with the rest of the build", read as the clean-up phase offered earlier that day (gofmt in one test, and the `TestJoinAndConnect` SQLITE_BUSY flake). The reading was stated to him at about 17:00 UTC. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
+  - 28 `phase-28-test-formatting-fixes`: `consoleip_test.go` is gofmt-clean; the engine tests and `engine.OpenDB` start write transactions with BEGIN IMMEDIATE, as core's store does, so concurrent writers wait instead of failing with SQLITE_BUSY.
+
 ## Phases
 
 | Phase | Branch | Status | Version | Pull request | Commit approval |
@@ -101,6 +106,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 23 | `phase-23-member-email-change` | Merged | 1.0.7 | #26 | Plan approved by Ben, 2026-11-27 13:19 and 13:23 UTC (scope "Owner and admins", see Approved Plans); commit and pull request approved by Ben, 13:49 UTC ("commit"); merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 24 | `phase-24-private-console-tls` | Merged | 1.0.8 | #27 | Plan approved by Ben, 2026-11-27 14:11 UTC ("just fix it do whatever you need to"); commit, pull request and merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 27 | `phase-27-members-row-layout` | Merged | 1.0.9 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("apply that fix you mentioned"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
+| 28 | `phase-28-test-formatting-fixes` | Merged | 1.0.10 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("carry on with the rest of the build"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
 
 ## Handoff Notes
 

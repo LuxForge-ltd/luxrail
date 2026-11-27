@@ -7,6 +7,7 @@ import "testing"
 
 func TestConsoleIPRoute(t *testing.T) {
 	r := consoleIPRoute("console.10-10-180-5.sslip.io", 5050) // check-public: allow
+
 	if r == nil || r.Domain != "10.10.180.5" || r.TLS != "internal" || r.UpstreamName != consoleUpstream || r.Port != 5050 { // check-public: allow
 		t.Fatalf("private sslip name: %+v", r)
 	}
