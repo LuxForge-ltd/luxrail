@@ -67,6 +67,16 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 - 2026-11-27 14:16 UTC, Ben (same thread): "commit and merge 25 26 27" and "upgrade", answering the message sent at about 14:15 UTC that asked for exactly those words. This approves the phase 24 commit and pull request, merging pull requests #25 (phase 22), #26 (phase 23) and #27 (phase 24) into `Dev` in that order, and upgrading VM 105 to the release Ben cuts from that `Dev` (backup first), then replacing `consoleUrl` with `linkUrl` in its `config.json`.
   - 24 `phase-24-private-console-tls`: names that can only point at a private address, and bare IPs, use Caddy's internal CA; a private console name is also served on its bare IP; a `linkUrl` setting for the links LuxRail hands out.
 
+### Members list rows that show who each member is, phase 27
+
+- 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "done, check it then apply that fix you mentioned then carry on with the rest of the build", answering the message sent at about 16:50 UTC that explained the role picker on Settings → Members hides each member's name and email and offered a small phase to fix it. Phase number 27 leaves 25 and 26 for the two open pull requests that still carry phase 22. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
+  - 27 `phase-27-members-row-layout`: a field select keeps a width its caller gives it, so the Members role picker stays narrow and names and emails show again.
+
+### Test clean-up, phase 28
+
+- 2026-11-27 16:53 UTC, Ben (LuxRail project thread "Rename and grow the LuxRail VM disk"): "then carry on with the rest of the build", read as the clean-up phase offered earlier that day (gofmt in one test, and the `TestJoinAndConnect` SQLITE_BUSY flake). The reading was stated to him at about 17:00 UTC. Commit, pull request and merge approved by Ben at 17:03 UTC in the same thread ("commit and merge 27 28").
+  - 28 `phase-28-test-formatting-fixes`: `consoleip_test.go` is gofmt-clean; the engine tests and `engine.OpenDB` start write transactions with BEGIN IMMEDIATE, as core's store does, so concurrent writers wait instead of failing with SQLITE_BUSY.
+
 ### A trial Tower on LuxRail, phase 25
 
 - 2026-11-26 12:02 UTC, Ben (Tower project thread "Deploy Tower in LuxRail for trial"): "go ahead - and lets add a Tower deployment in LuxRail so we can see how it behaves". At 13:11 UTC Ben chose "Approve, UI on a LuxRail domain" on the plan's decision card in that thread, approving the plan with the web frontend reached through LuxRail's domain. At 21:44 UTC he chose "Commit and open the PR" on the commit card (sent as phase 21; it is phase 25 because phases 21 to 24 merged first, and keeps its branch name `phase-22-tower-trial-service` because its pull request, #23, was already open). Merging needs his word; creating the service on VM 105 needs his separate go.
@@ -100,7 +110,9 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 22 | `phase-22-rewrite-project-readme` | Merged | 1.0.6 | #25 | Plan approved by Ben, 2026-11-27 13:06 UTC ("go"); commit and pull request approved by Ben, 13:49 UTC ("commit"); merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 23 | `phase-23-member-email-change` | Merged | 1.0.7 | #26 | Plan approved by Ben, 2026-11-27 13:19 and 13:23 UTC (scope "Owner and admins", see Approved Plans); commit and pull request approved by Ben, 13:49 UTC ("commit"); merge approved 14:16 UTC ("commit and merge 25 26 27") |
 | 24 | `phase-24-private-console-tls` | Merged | 1.0.8 | #27 | Plan approved by Ben, 2026-11-27 14:11 UTC ("just fix it do whatever you need to"); commit, pull request and merge approved 14:16 UTC ("commit and merge 25 26 27") |
-| 25 | `phase-22-tower-trial-service` | Pull request open | 1.0.9 | #23 | Plan approved by Ben, 2026-11-26 12:02 and 13:11 UTC; commit and pull request approved by Ben, 2026-11-26 21:44 UTC (see Approved Plans); merge not yet approved |
+| 27 | `phase-27-members-row-layout` | Merged | 1.0.9 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("apply that fix you mentioned"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
+| 28 | `phase-28-test-formatting-fixes` | Merged | 1.0.10 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("carry on with the rest of the build"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
+| 25 | `phase-22-tower-trial-service` | Pull request open | 1.0.11 | #23 | Plan approved by Ben, 2026-11-26 12:02 and 13:11 UTC; commit and pull request approved by Ben, 2026-11-26 21:44 UTC (see Approved Plans); merge not yet approved |
 
 ## Handoff Notes
 

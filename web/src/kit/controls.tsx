@@ -137,10 +137,15 @@ export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectE
   variant?: "outline" | "flat" | "field";
 }
 
+/** A field select fills its row unless the caller gives it a width of its own (such as w-28). */
+export function fieldFills(variant: SelectProps["variant"], className?: string): boolean {
+  return variant === "field" && !/(^|\s)w-\S+/.test(className ?? "");
+}
+
 /** A native select with the console chevron. */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select({ options, variant = "outline", className, children, ...p }, ref) {
   return (
-    <div className={cx("relative inline-flex min-w-0 items-center", variant === "field" && "w-full", className)}>
+    <div className={cx("relative inline-flex min-w-0 items-center", fieldFills(variant, className) && "w-full", className)}>
       <select ref={ref} {...p}
         className={cx(
           "w-full min-w-0 cursor-pointer appearance-none truncate rounded-md bg-transparent pr-8 outline-none transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60",

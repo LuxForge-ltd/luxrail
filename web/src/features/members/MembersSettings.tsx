@@ -45,7 +45,7 @@ export default function MembersSettings({ me, install, onInstall }: { me: T.User
                 </>
               ) : (
                 <>
-                  <Select aria-label={`Role for ${u.email}`} className="w-28 h-9" value={u.role} options={ROLE_OPTIONS} onChange={(e) => update(u, { role: e.target.value })} />
+                  <Select aria-label={`Role for ${u.email}`} className="w-28 shrink-0" value={u.role} options={ROLE_OPTIONS} onChange={(e) => update(u, { role: e.target.value })} />
                   <Menu trigger={<Button variant="ghost" aria-label={`Actions for ${u.email}`}>More</Button>} items={[
                     { label: u.disabled ? "Enable" : "Disable", onClick: () => update(u, { disabled: !u.disabled }) },
                     ...emailItem(u),
