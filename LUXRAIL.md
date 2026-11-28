@@ -123,3 +123,9 @@ and with the operator's go and a backup first:
   also `web/public/favicon.svg`), the name LuxRail in its header and tab titles
   (`web/src/kit/brand.ts`), and the LuxForge Framework's plum brand scale and page colours
   (`web/src/kit/luxforge.css`, loaded after `theme.css`, which is unchanged). The install name shown in the console is a setting (Settings > General > Name).
+
+## Services LuxForge runs on LuxRail
+
+- **A trial Tower** (`luxforge/tower/`): LuxForge's Tower, installed from the Foundry feed at
+  `TOWER_VERSION`, as a service in `luxrail-ops` with its web frontend on a LuxRail domain, so its
+  behaviour can be watched on a real install. `luxforge/tower/README.md` says how to deploy it.
