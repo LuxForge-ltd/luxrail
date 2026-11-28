@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"regexp"
 	"strings"
 
@@ -44,11 +43,11 @@ func Resolve(ctx context.Context, o Options, version string) (Release, error) {
 		return Release{}, err
 	}
 	if version == "" || version == "latest" {
-		b, err := fetch(ctx, o.HTTP, o.LatestURL, 256)
+		v, err := Latest(ctx, o)
 		if err != nil {
 			return Release{}, fmt.Errorf("cannot find the latest release: %w", err)
 		}
-		version = strings.TrimSpace(string(b))
+		version = v
 	}
 	return resolveFile(ctx, o, keys, version, func(v string) string { return ServerTarball(v, o.Arch) })
 }
@@ -62,24 +61,53 @@ func resolveFile(ctx context.Context, o Options, keys []minisign.PublicKey, vers
 	if !ValidVersion(version) {
 		return Release{}, fmt.Errorf("%q is not a release version; use the form v0.1.0", version)
 	}
-	base := o.ReleaseBase + "/" + version + "/"
-	sums, err := fetch(ctx, o.HTTP, base+"checksums.txt", 1<<20)
+	file := name(version)
+	where, err := o.releaseFiles(ctx, version, file)
+	if err != nil {
+		return Release{}, err
+	}
+	sums, err := fetch(ctx, o, where["checksums.txt"], 1<<20)
 	if err != nil {
 		return Release{}, fmt.Errorf("cannot download the checksums of %s: %w", version, err)
 	}
-	sig, err := fetch(ctx, o.HTTP, base+"checksums.txt.minisig", 64<<10)
+	sig, err := fetch(ctx, o, where["checksums.txt.minisig"], 64<<10)
 	if err != nil {
 		return Release{}, fmt.Errorf("cannot download the signature of %s: %w", version, err)
 	}
 	if _, _, err := minisign.Verify(keys, sums, sig); err != nil {
 		return Release{}, fmt.Errorf("the checksums of %s failed signature verification, so nothing was installed: %w", version, err)
 	}
-	file := name(version)
 	sum, err := lookupChecksum(sums, file)
 	if err != nil {
 		return Release{}, fmt.Errorf("release %s: %w", version, err)
 	}
-	return Release{Version: version, URL: base + file, SHA256: sum}, nil
+	return Release{Version: version, URL: where[file], SHA256: sum}, nil
+}
+
+// releaseFiles returns where the checksums, their signature and file of
+// version are downloaded from: under ReleaseBase, or the release's API
+// asset addresses when a token is in use.
+func (o Options) releaseFiles(ctx context.Context, version, file string) (map[string]string, error) {
+	names := []string{"checksums.txt", "checksums.txt.minisig", file}
+	out := map[string]string{}
+	if !o.usesToken() {
+		for _, n := range names {
+			out[n] = o.ReleaseBase + "/" + version + "/" + n
+		}
+		return out, nil
+	}
+	r, err := o.apiRelease(ctx, version)
+	if err != nil {
+		return nil, err
+	}
+	for _, n := range names[:2] {
+		if out[n], err = r.asset(n); err != nil {
+			return nil, err
+		}
+	}
+	// A missing build for this architecture is reported from the checksums.
+	out[file], _ = r.asset(file)
+	return out, nil
 }
 
 // lookupChecksum finds name in a checksums.txt ("<sha256>  <file>" lines).
@@ -102,19 +130,12 @@ func lookupChecksum(sums []byte, name string) (string, error) {
 }
 
 // fetch GETs url and returns at most limit bytes.
-func fetch(ctx context.Context, c *http.Client, url string, limit int64) ([]byte, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := c.Do(req)
+func fetch(ctx context.Context, o Options, url string, limit int64) ([]byte, error) {
+	resp, err := o.openAsset(ctx, url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("%s answered %s", url, resp.Status)
-	}
 	b, err := io.ReadAll(io.LimitReader(resp.Body, limit+1))
 	if err != nil {
 		return nil, err

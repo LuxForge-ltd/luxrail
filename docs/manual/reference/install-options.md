@@ -26,6 +26,7 @@ Piped into `sh`, it asks nothing. Downloaded and run from a terminal (`curl -fsS
 | `--archive PATH` | none | Install from a local release tarball; `checksums.txt` and `checksums.txt.minisig` must sit next to it |
 | `--release-base URL` | GitHub Releases | Download releases from another base URL; needs `--release-pubkey` |
 | `--release-pubkey KEY` | the embedded key | minisign public key for `--release-base`, or for a release when the installer has no key built in |
+| `--release-token-file PATH` | none | GitHub token (Contents read-only) for a private release repository; kept in `/etc/5050/release-token` for upgrades. Needs curl |
 | `--insecure-skip-verify` | off | With `--archive` only: skip the signature check, for test builds |
 | `--acme-ca staging\|production\|URL` | `production` | ACME directory |
 | `--public-ip IP` | detected | Public IPv4 address used for `sslip.io` names and DNS instructions |

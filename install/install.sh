@@ -213,6 +213,8 @@ Flags (each also an environment variable FIFTY_<FLAG>, for example FIFTY_DOMAIN)
   --insecure-skip-verify     with --archive only: skip the signature check (test builds)
   --release-base URL         download releases from URL (needs --release-pubkey)
   --release-pubkey KEY       minisign public key for --release-base
+  --release-token-file PATH  GitHub token (Contents read-only) for private releases; kept
+                             in /etc/5050/release-token for later upgrades (needs curl)
   --acme-ca staging|production|URL   ACME directory (default production)
   --public-ip IP             public IPv4 address (default: detected)
   --domain example.com       base domain for service domains (needs a wildcard A record)
@@ -264,6 +266,8 @@ ARCHIVE=$(env_or ARCHIVE)
 INSECURE=$(env_or INSECURE_SKIP_VERIFY)
 RELEASE_BASE=$(env_or RELEASE_BASE)
 RELEASE_PUBKEY=$(env_or RELEASE_PUBKEY)
+RELEASE_TOKEN_FILE=$(env_or RELEASE_TOKEN_FILE)
+RELEASE_API=$(env_or RELEASE_API)
 ACME_CA=$(env_or ACME_CA)
 PUBLIC_IP=$(env_or PUBLIC_IP)
 DOMAIN=$(env_or DOMAIN)
@@ -312,6 +316,7 @@ while [ "$#" -gt 0 ]; do
 	--insecure-skip-verify) INSECURE=1 ;;
 	--release-base) need_arg "$@"; RELEASE_BASE=$2; shift ;;
 	--release-pubkey) need_arg "$@"; RELEASE_PUBKEY=$2; shift ;;
+	--release-token-file) need_arg "$@"; RELEASE_TOKEN_FILE=$2; shift ;;
 	--acme-ca) need_arg "$@"; ACME_CA=$2; shift ;;
 	--public-ip) need_arg "$@"; PUBLIC_IP=$2; shift ;;
 	--domain) need_arg "$@"; DOMAIN=$2; shift ;;
@@ -362,6 +367,14 @@ fi
 if [ -n "$RELEASE_PUBKEY" ]; then
 	RELEASE_PUBKEYS=$RELEASE_PUBKEY
 fi
+if [ -n "$RELEASE_TOKEN_FILE" ]; then
+	[ -z "$RELEASE_BASE" ] || die "--release-token-file reads GitHub releases, so it cannot be used with --release-base."
+	[ -r "$RELEASE_TOKEN_FILE" ] || die "cannot read the release token file $RELEASE_TOKEN_FILE."
+	# wget would need the token on its command line, where other accounts can see it.
+	have curl || die "--release-token-file needs curl."
+fi
+[ -n "$RELEASE_API" ] || RELEASE_API="https://api.github.com/repos/${REPO_RELEASES#https://github.com/}"
+RELEASE_API=${RELEASE_API%/releases}
 if [ -n "$INSECURE" ] && [ -z "$ARCHIVE" ]; then
 	die "--insecure-skip-verify only works together with --archive."
 fi
@@ -519,7 +532,51 @@ fetch() { # fetch URL FILE
 	fi
 }
 
+# Private releases (--release-token-file): the release and its assets are
+# read through the GitHub API. The token goes into a header file that only
+# root can read, never onto a command line, and curl does not send it on to
+# the storage host the asset download is redirected to.
+api_fetch() { # api_fetch URL FILE [ACCEPT]
+	if [ ! -f "$TMP/auth.hdr" ]; then
+		token=$(tr -d ' \r\n' <"$RELEASE_TOKEN_FILE")
+		[ -n "$token" ] || die "the release token file $RELEASE_TOKEN_FILE is empty."
+		(umask 077 && printf 'Authorization: Bearer %s\n' "$token" >"$TMP/auth.hdr")
+		token=""
+	fi
+	code=$(curl -sSL --retry 3 -H @"$TMP/auth.hdr" -H "Accept: ${3:-application/vnd.github+json}" \
+		-H "X-GitHub-Api-Version: 2022-11-28" -o "$2" -w '%{http_code}' "$1") || code=000
+	case "$code" in
+	200) return 0 ;;
+	401) die "GitHub refused the release token in $RELEASE_TOKEN_FILE (401). The token is wrong, expired or revoked." ;;
+	403 | 404) die "the release token in $RELEASE_TOKEN_FILE cannot read ${4:-the release} ($code). Check the release exists and the token has Contents read access." ;;
+	*) die "GitHub answered $code for ${4:-the release}." ;;
+	esac
+}
+
+# api_release TAG: the release JSON of TAG ("latest" for the latest) in $TMP/release.json.
+api_release() {
+	if [ "$1" = latest ]; then
+		api_fetch "$RELEASE_API/releases/latest" "$TMP/release.json" "" "the latest release"
+	else
+		api_fetch "$RELEASE_API/releases/tags/$1" "$TMP/release.json" "" "release $1"
+	fi
+}
+
+# asset_fetch NAME FILE: downloads asset NAME of $TMP/release.json.
+asset_fetch() {
+	url=$(tr ',{}' '\n\n\n' <"$TMP/release.json" | awk -v n="$1" '
+		/"url"[ ]*:[ ]*"[^"]*\/releases\/assets\/[0-9]+"/ { u = $0; sub(/.*"url"[ ]*:[ ]*"/, "", u); sub(/".*/, "", u) }
+		/"name"[ ]*:/ { v = $0; sub(/.*"name"[ ]*:[ ]*"/, "", v); sub(/".*/, "", v); if (v == n && u != "") { print u; exit } }')
+	[ -n "$url" ] || die "release $VERSION has no $1."
+	api_fetch "$url" "$2" application/octet-stream "$1 of $VERSION"
+}
+
 latest_version() {
+	if [ -n "$RELEASE_TOKEN_FILE" ]; then
+		api_release latest
+		tr ',' '\n' <"$TMP/release.json" | sed -n 's/.*"tag_name"[ ]*:[ ]*"\([^"]*\)".*/\1/p' | head -n 1
+		return 0
+	fi
 	if [ -n "$RELEASE_BASE" ]; then
 		fetch "$RELEASE_BASE/latest.txt" "$TMP/latest.txt" || die "cannot read $RELEASE_BASE/latest.txt."
 	else
@@ -599,9 +656,16 @@ get_release() {
 		base=${base%/}/$VERSION
 		name=$(printf '%s' "$name_tpl" | sed "s/@V@/${VERSION#v}/")
 		sub "Downloading LuxRail $VERSION"
-		fetch "$base/checksums.txt" "$TMP/checksums.txt" || die "cannot download $base/checksums.txt. Does release $VERSION exist?"
-		fetch "$base/checksums.txt.minisig" "$TMP/checksums.txt.minisig" || die "cannot download the release signature."
-		fetch "$base/$name" "$TMP/$name" || die "cannot download $base/$name."
+		if [ -n "$RELEASE_TOKEN_FILE" ]; then
+			api_release "$VERSION"
+			asset_fetch checksums.txt "$TMP/checksums.txt"
+			asset_fetch checksums.txt.minisig "$TMP/checksums.txt.minisig"
+			asset_fetch "$name" "$TMP/$name"
+		else
+			fetch "$base/checksums.txt" "$TMP/checksums.txt" || die "cannot download $base/checksums.txt. Does release $VERSION exist?"
+			fetch "$base/checksums.txt.minisig" "$TMP/checksums.txt.minisig" || die "cannot download the release signature."
+			fetch "$base/$name" "$TMP/$name" || die "cannot download $base/$name."
+		fi
 	fi
 	minisign_verify "$TMP/checksums.txt" "$TMP/checksums.txt.minisig" ||
 		die "the release signature does not match the release key, so nothing was installed."
@@ -1126,6 +1190,12 @@ install_binaries() {
 	if [ -n "$RELEASE_BASE" ]; then
 		umask 022
 		printf '{\n  "releaseBase": "%s",\n  "publicKeys": ["%s"]\n}\n' "${RELEASE_BASE%/}" "$RELEASE_PUBKEY" >"$ETC_DIR/release.json"
+	fi
+	if [ -n "$RELEASE_TOKEN_FILE" ] && [ "$RELEASE_TOKEN_FILE" != "$ETC_DIR/release-token" ]; then
+		# Upgrades read the token from here (internal/upgrade/github.go).
+		(umask 077 && tr -d ' \r\n' <"$RELEASE_TOKEN_FILE" >"$ETC_DIR/release-token.new" && printf '\n' >>"$ETC_DIR/release-token.new")
+		chmod 0600 "$ETC_DIR/release-token.new"
+		mv "$ETC_DIR/release-token.new" "$ETC_DIR/release-token"
 	fi
 
 	for u in 5050d 5050-agent 5050-net-restore; do

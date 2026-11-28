@@ -91,7 +91,7 @@ func newOrch(p *plane) (cpapi.Orchestrator, error) {
 		PublicURL: p.c.ConsoleURL(context.Background()), LocalURL: "http://" + p.file.Listen,
 		PodCIDR: p.file.PodCIDR, MeshCIDR: p.file.MeshCIDR, Box: p.box, MasterKeyPath: p.file.MasterKeyPath,
 		Templates: templates.FS, ACMECA: p.file.ACMECA, ConsoleLAN: p.file.ConsoleLAN, Log: p.log,
-		Upgrade: upgrade.Options{ReleaseBase: p.file.ReleaseBase, LatestURL: p.file.LatestURL, DataDir: p.file.DataDir},
+		Upgrade: upgrade.Options{ReleaseBase: p.file.ReleaseBase, LatestURL: p.file.LatestURL, ReleaseTokenFile: p.file.ReleaseTokenFile, DataDir: p.file.DataDir},
 	})
 }
 
@@ -162,7 +162,7 @@ func cmdServe(ctx context.Context, args []string, stdout io.Writer) error {
 	h := coreapi.New(p.c, webFS, log)
 	if !*dev {
 		h.CLI = &coreapi.CLIDist{Version: version.Version,
-			Opts: upgrade.Options{ReleaseBase: p.file.ReleaseBase, LatestURL: p.file.LatestURL, DataDir: p.file.DataDir}}
+			Opts: upgrade.Options{ReleaseBase: p.file.ReleaseBase, LatestURL: p.file.LatestURL, ReleaseTokenFile: p.file.ReleaseTokenFile, DataDir: p.file.DataDir}}
 	}
 	srv := &http.Server{Addr: p.file.Listen, Handler: h,
 		ReadHeaderTimeout: 10 * time.Second, IdleTimeout: 120 * time.Second}

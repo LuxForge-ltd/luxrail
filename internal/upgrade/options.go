@@ -46,7 +46,16 @@ type Options struct {
 	// lives at <ReleaseBase>/<tag>/<file>.
 	ReleaseBase string
 	// LatestURL returns the latest stable tag as plain text.
-	LatestURL  string
+	LatestURL string
+	// ReleaseTokenFile holds a GitHub token for a private repository's
+	// releases (github.go). Empty means the token file named in ReleaseFile,
+	// else DefaultReleaseTokenFile when it exists; "-" means no token.
+	ReleaseTokenFile string
+	// ReleaseAPI is the GitHub API address of the release repository, used
+	// with a token. Empty derives it from a github.com ReleaseBase.
+	ReleaseAPI string
+	// GitHubAPI is the GitHub REST API, default https://api.github.com.
+	GitHubAPI  string
 	InstallDir string // /opt/5050
 	DataDir    string // /var/lib/5050
 	Arch       string // runtime.GOARCH
@@ -86,9 +95,10 @@ type Options struct {
 
 // releaseFile is /etc/5050/release.json.
 type releaseFile struct {
-	ReleaseBase string   `json:"releaseBase,omitempty"`
-	LatestURL   string   `json:"latestUrl,omitempty"`
-	PublicKeys  []string `json:"publicKeys,omitempty"`
+	ReleaseBase      string   `json:"releaseBase,omitempty"`
+	LatestURL        string   `json:"latestUrl,omitempty"`
+	ReleaseTokenFile string   `json:"releaseTokenFile,omitempty"`
+	PublicKeys       []string `json:"publicKeys,omitempty"`
 }
 
 // Defaults returns o with every empty field filled.
@@ -119,6 +129,14 @@ func (o Options) Defaults() Options {
 			o.LatestURL = o.ReleaseBase + "/latest.txt"
 		}
 	}
+	o.ReleaseTokenFile = o.tokenFile(rf.ReleaseTokenFile)
+	if o.GitHubAPI == "" {
+		o.GitHubAPI = DefaultGitHubAPI
+	}
+	if o.ReleaseAPI == "" {
+		o.ReleaseAPI = releaseAPIFor(o.ReleaseBase, o.GitHubAPI)
+	}
+	o.ReleaseAPI = strings.TrimRight(o.ReleaseAPI, "/")
 	if len(o.PublicKeys) == 0 {
 		o.PublicKeys = append(EmbeddedKeys(), rf.PublicKeys...)
 	}
@@ -157,6 +175,26 @@ func (o Options) Defaults() Options {
 		o.Now = time.Now
 	}
 	return o
+}
+
+// tokenFile picks the release token file: the one set, the one in the
+// release file, else the default when it exists (not when ReleaseFile is
+// "-", so tests never pick up a host's token). "-" means none.
+func (o Options) tokenFile(fromReleaseFile string) string {
+	switch {
+	case o.ReleaseTokenFile == "-":
+		return ""
+	case o.ReleaseTokenFile != "":
+		return o.ReleaseTokenFile
+	case fromReleaseFile != "":
+		return fromReleaseFile
+	case o.ReleaseFile == "-":
+		return ""
+	}
+	if _, err := os.Stat(DefaultReleaseTokenFile); err == nil {
+		return DefaultReleaseTokenFile
+	}
+	return ""
 }
 
 // EmbeddedKeys returns the release keys built into this binary.

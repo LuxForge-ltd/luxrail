@@ -50,6 +50,9 @@ type File struct {
 	ReleaseBase   string `json:"releaseBase,omitempty"`
 	LatestURL     string `json:"latestUrl,omitempty"`
 	NoUpdateCheck bool   `json:"noUpdateCheck,omitempty"`
+	// ReleaseTokenFile holds a GitHub token for private releases; empty means
+	// /etc/5050/release-token when it exists (internal/upgrade/github.go).
+	ReleaseTokenFile string `json:"releaseTokenFile,omitempty"`
 	// API overrides for the Railway importer's and GitHub's endpoints (fixture servers in e2e).
 	RailwayAPI string `json:"railwayApi,omitempty"`
 	GitHubAPI  string `json:"githubApi,omitempty"`
