@@ -317,7 +317,7 @@ func cmdUpgrade(ctx context.Context, args []string, stdout io.Writer) error {
 	}
 	o := upgrade.Options{}
 	if f, err := config.Load(*cfgPath); err == nil {
-		o.ReleaseBase, o.LatestURL, o.DataDir = f.ReleaseBase, f.LatestURL, f.DataDir
+		o.ReleaseBase, o.LatestURL, o.ReleaseTokenFile, o.DataDir = f.ReleaseBase, f.LatestURL, f.ReleaseTokenFile, f.DataDir
 		o.Snapshot = func(path string) error {
 			p, err := openPlane(ctx, *cfgPath, nil, nil)
 			if err != nil {

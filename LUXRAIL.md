@@ -79,6 +79,15 @@ the same number, `v<VERSION>`, starting at `v1.0.0` (see `luxforge/release/READM
   `LUXRAIL_NO_UPDATE=1` turns it off. (`internal/upgrade/cli.go`, `internal/cp/core/api/clidist.go`,
   `internal/cli/selfupdate.go`, `web/src/features/cli/`)
 
+- **Private releases.** With a token in `/etc/5050/release-token` (or `"releaseTokenFile"` in
+  `config.json`, or the installer's `--release-token-file`), the upgrader, agents and update check
+  read releases through the GitHub API, so the repository can be private. The token is a
+  fine-grained one with Contents read-only on LuxRail, is read from its file (mode 600) on each
+  use, goes only to the API and never to the redirected download, and is never logged or put in a
+  URL. Refusals are `release_auth_failed` (401) and `release_not_accessible` (403, 404), naming the
+  release, the answer and the token file. Every host that runs an agent needs the file; the CLI
+  does not, as it updates from the console. (`internal/upgrade/github.go`, `install/install.sh`)
+
 ### Moving VM 105 from `caddy-lan` to `consoleLan`
 
 VM 105 serves `https://10.10.180.5:8443` from a separate Caddy (`luxrail-lan.service`,

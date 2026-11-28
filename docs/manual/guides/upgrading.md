@@ -57,6 +57,19 @@ sudo 5050d upgrade --version v0.1.0
 
 If the newer release changed the database schema, the older binary may not read it. In that case restore the snapshot you took before upgrading, as described in [Restore](restore.md#the-control-planes-state-on-the-same-host).
 
+## Private releases
+
+When the release repository is private, GitHub hands out its releases only with a token. Create a fine-grained token with **Contents: read-only** on the release repository and nothing else, then put it in `/etc/5050/release-token` on every host, readable by root only:
+
+```sh
+sudo install -m 600 -o root -g root /dev/null /etc/5050/release-token
+sudo sh -c 'cat > /etc/5050/release-token'   # paste the token, then Ctrl-D
+```
+
+With that file in place, the upgrader, the agents and the daily update check read releases through the GitHub API with the token. The token is read from the file each time, sent only to `api.github.com` (never to the storage address GitHub redirects a download to), and never written to logs or put in a URL. Release signatures and checksums are checked exactly as before. Another path can be set with `"releaseTokenFile"` in `/etc/5050/config.json`, and the installer takes `--release-token-file PATH` and copies the token to `/etc/5050/release-token`.
+
+If GitHub refuses the token, the upgrade stops before anything changes and says which release, what GitHub answered and which token file it used: `release_auth_failed` (401) means the token is wrong, expired or revoked; `release_not_accessible` (403 or 404) means the token cannot see that release. Put a new token in the file and run the upgrade again. The CLI needs no token: it updates itself from the console.
+
 ## Agents and version skew
 
 Agents are upgraded after the control plane. **Settings**, **Hosts** shows each agent's version, and the `agent.version_skew` alert fires when a host runs a different version for long.

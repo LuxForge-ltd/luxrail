@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
 	"os"
 	"path/filepath"
 	"sort"
@@ -50,7 +49,7 @@ func Stage(ctx context.Context, o Options, r Release, want ...string) (string, e
 		_ = tmpFile.Close()
 		_ = os.Remove(tmpFile.Name())
 	}()
-	if err := download(ctx, o.HTTP, r.URL, tmpFile, r.SHA256); err != nil {
+	if err := download(ctx, o, r.URL, tmpFile, r.SHA256); err != nil {
 		return "", err
 	}
 	if _, err := tmpFile.Seek(0, io.SeekStart); err != nil {
@@ -111,19 +110,12 @@ func hasFiles(dir string, want []string) error {
 	return nil
 }
 
-func download(ctx context.Context, c *http.Client, url string, w io.Writer, wantSHA string) error {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return err
-	}
-	resp, err := c.Do(req)
+func download(ctx context.Context, o Options, url string, w io.Writer, wantSHA string) error {
+	resp, err := o.openAsset(ctx, url)
 	if err != nil {
 		return fmt.Errorf("cannot download %s: %w", url, err)
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("cannot download %s: the server answered %s", url, resp.Status)
-	}
 	h := sha256.New()
 	n, err := io.Copy(io.MultiWriter(w, h), io.LimitReader(resp.Body, maxTarball+1))
 	if err != nil {

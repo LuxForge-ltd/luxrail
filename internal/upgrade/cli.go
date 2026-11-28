@@ -80,7 +80,7 @@ func FetchCLI(ctx context.Context, o Options, r Release) (string, error) {
 		_ = tmp.Close()
 		_ = os.Remove(tmp.Name())
 	}()
-	if err := download(ctx, o.HTTP, r.URL, tmp, r.SHA256); err != nil {
+	if err := download(ctx, o, r.URL, tmp, r.SHA256); err != nil {
 		return "", err
 	}
 	if err := tmp.Close(); err != nil {

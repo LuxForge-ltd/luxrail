@@ -6,8 +6,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
-	"io"
-	"net/http"
 	"sort"
 	"strings"
 	"sync"
@@ -758,25 +756,15 @@ func (c *Core) updateCheck(ctx context.Context) {
 	if c.file.NoUpdateCheck {
 		return
 	}
-	url := c.file.LatestURL
-	if url == "" {
-		url = upgrade.DefaultLatestURL
+	o := upgrade.Options{ReleaseBase: c.file.ReleaseBase, LatestURL: c.file.LatestURL, ReleaseTokenFile: c.file.ReleaseTokenFile, HTTP: c.httpc()}
+	if o.LatestURL == "" {
+		o.LatestURL = upgrade.DefaultLatestURL
 	}
 	check := func() {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+		v, err := upgrade.Latest(ctx, o)
 		if err != nil {
 			return
 		}
-		resp, err := c.httpc().Do(req)
-		if err != nil {
-			return
-		}
-		defer resp.Body.Close()
-		if resp.StatusCode != http.StatusOK {
-			return
-		}
-		b, _ := io.ReadAll(io.LimitReader(resp.Body, 256))
-		v := strings.TrimSpace(string(b))
 		if _, ok := semver(v); ok {
 			c.mu.Lock()
 			c.latest = v
