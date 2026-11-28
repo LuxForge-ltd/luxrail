@@ -140,7 +140,7 @@ export default function SettingsTab({ eid, service, onService, onDeleted }: {
             <input ref={filterRef} aria-label="Filter settings" placeholder="Filter Settings..." value={filter}
               onChange={(e) => setFilter(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Escape") { e.stopPropagation(); setFilter(""); filterRef.current?.blur(); } }}
-              className="h-[34px] w-full rounded-md border border-line bg-secondaryBg pl-1.5 pr-10 text-base text-foreground outline-none transition-colors duration-150 placeholder:text-fg-2 hover:border-fg-5 focus:border-accent-muted focus:shadow-none" />
+              className="h-[34px] w-full rounded-md border border-line bg-secondaryBg pl-1.5 pr-10 text-base text-foreground outline-hidden transition-colors duration-150 placeholder:text-fg-2 hover:border-fg-5 focus:border-accent-muted focus:shadow-none" />
             {filter ? (
               <button type="button" aria-label="Clear filter" onClick={() => { setFilter(""); filterRef.current?.focus(); }}
                 className="absolute right-[3px] top-[3px] inline-flex h-7 w-7 items-center justify-center rounded border border-surface-hover bg-background text-fg-2 transition-colors hover:text-foreground">

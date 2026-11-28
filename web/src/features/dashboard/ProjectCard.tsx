@@ -46,7 +46,7 @@ function ServiceTile({ pid, t }: { pid: string; t: Tile }) {
   if (!t.serviceId) return <span className="group/tile">{tile}</span>;
   return (
     <Link to={`/project/${encodeURIComponent(pid)}/service/${encodeURIComponent(t.serviceId)}`} aria-label="Open service"
-      className="group/tile pointer-events-auto relative z-20 rounded-xl focus:outline-none focus-visible:shadow-ring">
+      className="group/tile pointer-events-auto relative z-20 rounded-xl focus:outline-hidden focus-visible:shadow-ring">
       {tile}
     </Link>
   );
@@ -84,7 +84,7 @@ export const ProjectCard = memo(function ProjectCard({ p, favourite, onFavourite
   return (
     <li className="h-full" data-project-id={p.id}>
       <div className="group/card relative h-full overflow-hidden rounded-lg bg-surface shadow-card outline outline-1 outline-line-popover transition-[background-color,outline-color,box-shadow] duration-150 hover:bg-surface-hover hover:outline-line-panel focus-within:outline-line-panel">
-        <Link to={`/project/${encodeURIComponent(p.id)}`} className="absolute inset-0 z-0 rounded-lg focus:outline-none focus-visible:shadow-ring">
+        <Link to={`/project/${encodeURIComponent(p.id)}`} className="absolute inset-0 z-0 rounded-lg focus:outline-hidden focus-visible:shadow-ring">
           <span className="sr-only">Open {p.name}</span>
         </Link>
         <div className="pointer-events-none relative z-10 flex h-full flex-col">
@@ -105,7 +105,7 @@ export const ProjectRow = memo(function ProjectRow({ p, favourite, onFavourite }
   return (
     <li data-project-id={p.id}>
       <div className="relative overflow-hidden rounded-xl bg-surface p-4 outline outline-1 outline-line-popover transition-[background-color,outline-color] duration-150 hover:bg-surface-hover hover:outline-line-panel focus-within:outline-line-panel">
-        <Link to={`/project/${encodeURIComponent(p.id)}`} className="absolute inset-0 z-0 rounded-xl focus:outline-none focus-visible:shadow-ring">
+        <Link to={`/project/${encodeURIComponent(p.id)}`} className="absolute inset-0 z-0 rounded-xl focus:outline-hidden focus-visible:shadow-ring">
           <span className="sr-only">Open {p.name}</span>
         </Link>
         <div className="pointer-events-none relative z-10 flex flex-col justify-between gap-2 md:flex-row md:items-center">

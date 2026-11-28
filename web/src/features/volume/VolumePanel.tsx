@@ -132,7 +132,7 @@ function Usage({ d }: { d: VolumeDetail }) {
 }
 
 function Legend({ cls, children }: { cls: string; children: ReactNode }) {
-  return <span className="inline-flex items-center gap-1.5"><span className={cx("h-2 w-2 rounded-sm", cls)} />{children}</span>;
+  return <span className="inline-flex items-center gap-1.5"><span className={cx("h-2 w-2 rounded-xs", cls)} />{children}</span>;
 }
 
 /* ---------- settings ---------- */
@@ -239,7 +239,7 @@ export function AttachVolumeModal({ eid, serviceId, onClose, onDone }: { eid: st
     setBusy(true); setErr(null);
     try { const v = await post<Volume>(`${svcPath(eid, serviceId)}/volume`, { mountPath, name: name || undefined }); onDone?.(v); onClose(); } catch (e) { setErr((e as Error).message); setBusy(false); }
   };
-  const field = "h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-none transition-colors focus:border-accent-muted focus:shadow-none";
+  const field = "h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-hidden transition-colors focus:border-accent-muted focus:shadow-none";
   return (
     <Modal title="Attach Volume" onClose={onClose} footer={<>
       <Button onClick={onClose}>Cancel</Button>

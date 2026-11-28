@@ -110,7 +110,7 @@ export default function Dashboard() {
               <LayoutGrid size={16} className="shrink-0 text-fg-4" />
               {loading ? <span className="inline-block h-4 w-[72px] animate-skeleton rounded bg-skeleton" /> : plural(count, "Project")}
             </span>
-            <VDivider className="hidden !bg-line sm:inline-block" />
+            <VDivider className="!bg-line max-sm:hidden" />
             <label className="sr-only" htmlFor="dash-sort">Project sort</label>
             <Select id="dash-sort" variant="flat" value={sort} onChange={(e) => setSort(e.target.value as Sort)} className="w-auto [&>select]:pr-6">
               {SORTS.map((s) => <option key={s.value} value={s.value} title={s.title} className="bg-surface-raised text-foreground">{s.label}</option>)}

@@ -52,7 +52,7 @@ export function NewItemModal({ eid, services, initial, onSave, onClose }: {
         </div>
         <div className="mt-6 flex h-[42px] items-center rounded-md border border-line bg-transparent pr-1 transition-colors focus-within:border-fg-4">
           <input aria-label="Title" value={title} onChange={(e) => { setTitle(e.target.value); setTouched(true); }}
-            className="h-full min-w-0 flex-1 bg-transparent px-3 text-base text-foreground outline-none focus-visible:shadow-none" />
+            className="h-full min-w-0 flex-1 bg-transparent px-3 text-base text-foreground outline-hidden focus-visible:shadow-none" />
           {!showDesc && (
             <button type="button" onClick={() => setShowDesc(true)}
               className="inline-flex h-[34px] items-center gap-2 rounded-md px-3 text-body text-fg-5 transition-colors hover:text-fg-2">
@@ -62,7 +62,7 @@ export function NewItemModal({ eid, services, initial, onSave, onClose }: {
         </div>
         {showDesc && (
           <input aria-label="Description" autoFocus value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Description"
-            className="mt-2 h-[42px] rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-none transition-colors placeholder:text-fg-4 focus:border-fg-4 focus-visible:shadow-none" />
+            className="mt-2 h-[42px] rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-hidden transition-colors placeholder:text-fg-4 focus:border-fg-4 focus-visible:shadow-none" />
         )}
         <Button type="submit" variant="primary" size="lg" block className="mt-6">Save Item</Button>
       </form>

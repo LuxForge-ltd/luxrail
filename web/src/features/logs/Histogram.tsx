@@ -57,8 +57,8 @@ export default function Histogram({ lines, from, to, onZoom }: { lines: LogLine[
           return (
             <div key={i} className={cx("relative flex h-full flex-1 flex-col justify-end px-[2px] transition-opacity duration-150 group-hover/hist:opacity-55", hover?.i === i && "!opacity-100")}>
               {(hover?.i === i || sel) && <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 bg-gray-200 opacity-50" />}
-              {future ? <div className="h-px w-full border-t border-dashed border-line" /> : b.total === 0 ? <div className="h-[3px] w-full rounded-t-sm bg-surface-hover" /> : (
-                <div className="flex w-full flex-col-reverse overflow-hidden rounded-t-sm" style={{ height: `${Math.max(3, (b.total / max) * 100)}%` }}>
+              {future ? <div className="h-px w-full border-t border-dashed border-line" /> : b.total === 0 ? <div className="h-[3px] w-full rounded-t-xs bg-surface-hover" /> : (
+                <div className="flex w-full flex-col-reverse overflow-hidden rounded-t-xs" style={{ height: `${Math.max(3, (b.total / max) * 100)}%` }}>
                   {STACK.map((l) => b.counts[l] > 0 && <div key={l} className={FILL[l]} style={{ flex: b.counts[l] }} />)}
                 </div>
               )}

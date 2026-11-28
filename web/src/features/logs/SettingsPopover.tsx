@@ -54,7 +54,7 @@ export default function SettingsPopover({ opts, onChange, hideTags }: { opts: Vi
                   else if (e.key === "Backspace" && !draft && opts.dataCols.length) onChange({ ...opts, dataCols: opts.dataCols.slice(0, -1) });
                 }}
                 onBlur={add}
-                className="min-w-[60px] flex-1 bg-transparent px-1 font-mono text-[11px] text-foreground outline-none" />
+                className="min-w-[60px] flex-1 bg-transparent px-1 font-mono text-[11px] text-foreground outline-hidden" />
             </div>
           </section>
         </div>

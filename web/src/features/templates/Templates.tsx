@@ -29,7 +29,7 @@ const CAT_ICON: Record<string, ReactNode> = { database: <Database size={16} />, 
 export function TemplateCard({ t, to }: { t: TemplateSummary; to: string }) {
   const n = t.services.length || 1;
   return (
-    <Link to={to} className="group flex h-[222px] flex-col rounded-lg border border-line bg-surface-raised p-6 outline-none transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-fg-5 hover:bg-surface hover:shadow-card focus-visible:border-accent active:scale-[.99]">
+    <Link to={to} className="group flex h-[222px] flex-col rounded-lg border border-line bg-surface-raised p-6 outline-hidden transition-[border-color,background-color,box-shadow,transform] duration-150 hover:border-fg-5 hover:bg-surface hover:shadow-card focus-visible:border-accent active:scale-[.99]">
       <BrandIcon name={t.icon || t.id} size={32} fallback="box" className="transition-transform duration-200 group-hover:scale-105" />
       <div className="mt-4 truncate text-lead font-semibold text-foreground">{t.name}</div>
       <p className="line-clamp-2 text-sm text-fg-3">{t.tagline || t.description}</p>
@@ -97,7 +97,7 @@ export function TemplateList() {
         <label className="relative mt-12 block w-full max-w-[768px]">
           <span className="sr-only">Search templates</span>
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search Postgres, n8n, Ghost..." autoComplete="off"
-            className="h-[42px] w-full rounded-md border border-line bg-black/25 py-2 pl-3 pr-10 text-lead text-foreground outline-none transition-colors placeholder:text-fg-3 hover:border-fg-5 focus:border-accent focus-visible:shadow-none" />
+            className="h-[42px] w-full rounded-md border border-line bg-black/25 py-2 pl-3 pr-10 text-lead text-foreground outline-hidden transition-colors placeholder:text-fg-3 hover:border-fg-5 focus:border-accent focus-visible:shadow-none" />
           <Search size={18} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-fg-3" />
         </label>
       </section>

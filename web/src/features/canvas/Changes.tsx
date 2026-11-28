@@ -261,7 +261,7 @@ function Details({ onClose, onCommit, busy, readOnly, changes }: {
           <label className="flex h-16 shrink-0 items-center gap-4 border-b border-line px-8">
             <Avatar name={me.user.name || me.user.email} size={32} />
             <input ref={input} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Commit message (optional)" aria-label="Commit message"
-              className="h-full min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-fg-3 focus-visible:shadow-none" />
+              className="h-full min-w-0 flex-1 bg-transparent text-base text-foreground outline-hidden placeholder:text-fg-3 focus-visible:shadow-none" />
           </label>
         )}
         <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-8 scroll-thin">

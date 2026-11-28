@@ -100,7 +100,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
   );
 });
 
-const FIELD_BASE = "w-full rounded-md border border-line bg-transparent text-foreground outline-none transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-accent focus:shadow-none disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-danger";
+const FIELD_BASE = "w-full rounded-md border border-line bg-transparent text-foreground outline-hidden transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-accent focus:shadow-none disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-danger";
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "size"> {
   /** "md" = 42px, 16px text (forms, the default); "sm" = 34px, 14px text (toolbars, filters, dense rows). */
@@ -148,7 +148,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
     <div className={cx("relative inline-flex min-w-0 items-center", fieldFills(variant, className) && "w-full", className)}>
       <select ref={ref} {...p}
         className={cx(
-          "w-full min-w-0 cursor-pointer appearance-none truncate rounded-md bg-transparent pr-8 outline-none transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60",
+          "w-full min-w-0 cursor-pointer appearance-none truncate rounded-md bg-transparent pr-8 outline-hidden transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60",
           variant === "flat" && "h-[34px] border border-transparent pl-0 text-sm text-fg-2 hover:text-foreground",
           variant === "outline" && "h-[34px] border border-line pl-2.5 text-sm text-foreground hover:border-fg-5 focus:border-accent",
           variant === "field" && "h-[42px] border border-line pl-3 text-base text-foreground hover:border-fg-5 focus:border-accent",

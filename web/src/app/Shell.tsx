@@ -230,7 +230,7 @@ const NAV_EXTERNAL = [
   { href: LINKS.support, label: "Report an issue", icon: MessageSquare },
 ];
 
-const NAV_ITEM = "group relative flex h-9 items-center rounded-lg text-sm outline-none transition-colors duration-150";
+const NAV_ITEM = "group relative flex h-9 items-center rounded-lg text-sm outline-hidden transition-colors duration-150";
 
 function SideLink({ def, collapsed }: { def: NavDef; collapsed: boolean }) {
   const { pathname } = useLocation();
@@ -377,7 +377,7 @@ function Sidebar({ mode, onToggle }: { mode: "expanded" | "rail"; onToggle: () =
         <UserMenu variant="row" collapsed={collapsed} placement={collapsed ? "right" : "top"} />
       </div>
       <button type="button" aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} onClick={onToggle}
-        className="group absolute -right-[3px] top-0 z-10 flex h-full w-1.5 cursor-ew-resize items-center justify-center outline-none">
+        className="group absolute -right-[3px] top-0 z-10 flex h-full w-1.5 cursor-ew-resize items-center justify-center outline-hidden">
         <span className="h-8 w-0.5 rounded-full bg-tint-pill opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100" />
       </button>
     </aside>

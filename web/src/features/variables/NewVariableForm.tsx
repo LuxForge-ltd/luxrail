@@ -11,7 +11,7 @@ import { Hit, RefList, listKeys, type ListEntry } from "./parts";
 import { rank, type RefItem } from "./refs";
 
 export const FIELD =
-  "block w-full resize-none rounded-md border border-gray-200 bg-transparent py-1.5 pl-1.5 pr-7 text-sm leading-5 text-foreground outline-none focus-visible:shadow-none transition-colors duration-150 placeholder:text-fg-4 hover:border-gray-400 focus:border-pink-400 scroll-thin";
+  "block w-full resize-none rounded-md border border-gray-200 bg-transparent py-1.5 pl-1.5 pr-7 text-sm leading-5 text-foreground outline-hidden focus-visible:shadow-none transition-colors duration-150 placeholder:text-fg-4 hover:border-gray-400 focus:border-pink-400 scroll-thin";
 
 /** A one-row textarea that grows with its content up to 30vh. */
 export function useGrow(value: string) {
@@ -41,7 +41,7 @@ export function MultilineModal({ value, onSave, onClose }: { value: string; onSa
     <Modal title="Edit value" width={560} onClose={onClose}
       footer={<><Button onClick={onClose}>Cancel</Button><Button variant="primary" onClick={() => { onSave(v); onClose(); }}>Save</Button></>}>
       <textarea aria-label="Value" autoFocus value={v} onChange={(e) => setV(e.target.value)} rows={10} spellCheck={false}
-        className="scroll-thin w-full resize-y rounded-md border border-gray-200 bg-transparent p-2 font-mono text-sm text-foreground outline-none focus-visible:shadow-none focus:border-pink-400" />
+        className="scroll-thin w-full resize-y rounded-md border border-gray-200 bg-transparent p-2 font-mono text-sm text-foreground outline-hidden focus-visible:shadow-none focus:border-pink-400" />
     </Modal>
   );
 }

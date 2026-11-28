@@ -102,7 +102,7 @@ export default function VariablesTab({ eid, service }: { eid: string; service: S
                   <input autoFocus aria-label="Filter variables" placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)}
                     onKeyDown={(e) => { if (e.key === "Escape") { e.stopPropagation(); setQuery(""); setSearching(false); } }}
                     onBlur={() => { if (!query) setSearching(false); }}
-                    className="h-8 w-48 rounded-md border border-gray-200 bg-transparent pl-8 pr-2 text-sm text-foreground outline-none focus-visible:shadow-none transition-colors placeholder:text-fg-4 hover:border-gray-400 focus:border-pink-400" />
+                    className="h-8 w-48 rounded-md border border-gray-200 bg-transparent pl-8 pr-2 text-sm text-foreground outline-hidden focus-visible:shadow-none transition-colors placeholder:text-fg-4 hover:border-gray-400 focus:border-pink-400" />
                 </div>
               ) : (
                 <button type="button" title="Filter variables" aria-label="Filter variables" aria-expanded={false} onClick={() => setSearching(true)}
@@ -116,7 +116,7 @@ export default function VariablesTab({ eid, service }: { eid: string; service: S
                 className={cx("!text-fg-2 hover:!text-foreground [&>svg:first-child]:text-pink-700", shared && "!border-pink-200")}
                 icon={shared ? <ChevronUp size={16} /> : <CornerDownRight size={16} />}
                 onClick={() => setShared((s) => !s)}>{shared ? "Close Shared Variables" : "Shared Variable"}</Button>
-              <Button variant="accent-ghost" className="hidden !text-fg-2 hover:!text-foreground md:inline-flex [&>svg:first-child]:text-pink-700"
+              <Button variant="accent-ghost" className="!text-fg-2 hover:!text-foreground max-md:hidden [&>svg:first-child]:text-pink-700"
                 icon={<Braces size={16} />} onClick={() => setRaw(true)}>Raw Editor</Button>
               <Button variant="accent-outline" icon={<Plus size={16} />} onClick={() => setAdding({ openRefs: false })}>New Variable</Button>
             </div>

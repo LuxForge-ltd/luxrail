@@ -18,7 +18,7 @@ export const SCHEDULE_PRESETS = [
   { value: "0 0 1 * *", label: "Monthly" },
 ];
 
-const INPUT = "h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-none transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-accent-muted focus:shadow-none aria-[invalid=true]:border-danger";
+const INPUT = "h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-hidden transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-accent-muted focus:shadow-none aria-[invalid=true]:border-danger";
 
 export interface CronValue { schedule: string; timezone: string; overlap: string; timeoutSec?: number }
 
@@ -136,7 +136,7 @@ function TimeoutInput({ value, onSave }: { value?: number; onSave: (n: number | 
         onChange={(e) => setT(e.target.value.replace(/\D/g, ""))}
         onBlur={() => { const n = t ? Number(t) : ""; if (n !== (value || "")) void onSave(n).catch(() => setT(value ? String(value) : "")); }}
         onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-        className="h-[30px] w-20 rounded-md border border-line bg-transparent px-2 text-center font-mono text-caption text-foreground outline-none focus:border-accent-muted focus:shadow-none" />
+        className="h-[30px] w-20 rounded-md border border-line bg-transparent px-2 text-center font-mono text-caption text-foreground outline-hidden focus:border-accent-muted focus:shadow-none" />
       seconds
     </label>
   );

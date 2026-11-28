@@ -154,7 +154,7 @@ export default function FilterBar({ value, onApply, placeholder = "Filter and se
           onChange={(e) => { setText(e.target.value); setCaret(e.target.selectionStart ?? 0); }}
           onFocus={() => { setFocus(true); track(); }} onBlur={() => window.setTimeout(() => setFocus(false), 120)}
           onKeyDown={onKey} onKeyUp={track} onClick={track} onSelect={track} onScroll={sync}
-          className="h-full w-full bg-transparent pl-[38px] pr-[62px] font-mono text-sm text-transparent caret-white outline-none placeholder:font-sans placeholder:text-fg-2 focus-visible:shadow-none" />
+          className="h-full w-full bg-transparent pl-[38px] pr-[62px] font-mono text-sm text-transparent caret-white outline-hidden placeholder:font-sans placeholder:text-fg-2 focus-visible:shadow-none" />
         <div className="absolute right-1 flex items-center gap-1">
           {showErr && text && <span title={parsed.error} className="flex h-[26px] w-[22px] items-center justify-center text-warn-icon"><AlertTriangle size={16} aria-label={parsed.error} /></span>}
           {text ? (
@@ -175,7 +175,7 @@ export default function FilterBar({ value, onApply, placeholder = "Filter and se
             {items.map((it, i) => (
               <button key={it.key} type="button" role="option" aria-selected={i === hi} onMouseEnter={() => setHi(i)} onClick={() => replaceChunk(it.insert)}
                 className={cx("flex h-9 w-full items-center gap-3 px-4 text-left font-mono text-sm text-foreground", i === hi && "bg-gray-50")}>
-                {it.level && <span className={cx("h-4 w-[3px] shrink-0 rounded-sm", LEVEL_BAR[it.level as keyof typeof LEVEL_BAR])} />}
+                {it.level && <span className={cx("h-4 w-[3px] shrink-0 rounded-xs", LEVEL_BAR[it.level as keyof typeof LEVEL_BAR])} />}
                 {mVal?.[1] === "service" && <BrandIcon name={it.icon || (brandKey(it.label) ? it.label : "")} size={16} fallback="terminal" />}
                 <span className="min-w-0 flex-1 truncate">{it.label}</span>
                 {it.hint && <span className="shrink-0 font-sans text-caption font-medium text-fg-2">{it.hint}</span>}

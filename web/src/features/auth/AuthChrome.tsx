@@ -236,7 +236,7 @@ export function AuthButton({ busy, iconRight, variant = "primary", className, ch
       className={cx(
         "inline-flex h-[42px] w-full items-center justify-center gap-3 rounded-md border px-3 text-sm font-medium",
         "transition-[background-color,border-color,color,transform] duration-200 ease-out active:scale-[.98] active:duration-[50ms]",
-        "focus-visible:outline-none",
+        "focus-visible:outline-hidden",
         primary && !off && "border-accent bg-accent text-accent-fg hover:border-accent-hover hover:bg-accent-hover",
         primary && off && "border-transparent bg-surface-hover text-fg-3 cursor-not-allowed",
         !primary && "border-line bg-surface-hover text-foreground hover:border-fg-5 hover:bg-line",

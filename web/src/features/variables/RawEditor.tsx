@@ -122,7 +122,7 @@ export function RawEditor({ base, list, onClose, onApplied }: {
               <textarea aria-label="Raw variables" value={text} spellCheck={false} autoFocus wrap="soft"
                 onChange={(e) => { setText(e.target.value); setError(""); }}
                 onScroll={(e) => { if (mirror.current) mirror.current.scrollTop = e.currentTarget.scrollTop; }}
-                className={cx(lineCls, "scroll-thin absolute inset-0 h-full w-full resize-none overflow-y-auto border-0 bg-transparent text-transparent caret-white outline-none focus-visible:shadow-none")} />
+                className={cx(lineCls, "scroll-thin absolute inset-0 h-full w-full resize-none overflow-y-auto border-0 bg-transparent text-transparent caret-white outline-hidden focus-visible:shadow-none")} />
             </>
           )}
         </div>

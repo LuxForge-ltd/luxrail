@@ -113,7 +113,7 @@ const th = "whitespace-nowrap px-0 py-0 text-left text-caption font-medium text-
 function Cell({ children, onClick, className }: { children: React.ReactNode; onClick?: () => void; className?: string }) {
   return (
     <td className={cx("whitespace-nowrap py-1 pr-6 align-top leading-[18px]", className)}>
-      {onClick ? <button type="button" onClick={onClick} title="Add as a filter" className="rounded-sm text-left transition-colors hover:underline hover:decoration-fg-4 hover:underline-offset-2">{children}</button> : children}
+      {onClick ? <button type="button" onClick={onClick} title="Add as a filter" className="rounded-xs text-left transition-colors hover:underline hover:decoration-fg-4 hover:underline-offset-2">{children}</button> : children}
     </td>
   );
 }

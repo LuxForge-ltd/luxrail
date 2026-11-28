@@ -65,7 +65,7 @@ function Field({ label, value, onChange, placeholder, error }: { label: string; 
       <span className="mb-2 block text-caption text-fg-2">{label}</span>
       <span className="relative block">
         <input value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} aria-invalid={error || undefined} spellCheck={false}
-          className="h-[34px] w-full rounded-md border border-line bg-transparent pl-2 pr-9 text-caption text-foreground outline-none transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-fg-4 aria-[invalid=true]:border-danger" />
+          className="h-[34px] w-full rounded-md border border-line bg-transparent pl-2 pr-9 text-caption text-foreground outline-hidden transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-fg-4 aria-[invalid=true]:border-danger" />
         <Calendar size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-fg-3" />
       </span>
     </label>

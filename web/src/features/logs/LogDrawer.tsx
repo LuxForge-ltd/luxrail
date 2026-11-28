@@ -109,7 +109,7 @@ export default function LogDrawer(p: DrawerProps) {
       <div role="tablist" className="mt-6 flex gap-6 border-b border-line px-6">
         {([["attrs", "Attributes"], ["raw", "Raw Data"]] as const).map(([id, label]) => (
           <button key={id} role="tab" aria-selected={tab === id} type="button" onClick={() => setTab(id)}
-            className={cx("-mb-px h-[41px] border-b-2 text-sm outline-none transition-colors", tab === id ? "border-foreground text-foreground" : "border-transparent text-fg-3 hover:text-foreground")}>{label}</button>
+            className={cx("-mb-px h-[41px] border-b-2 text-sm outline-hidden transition-colors", tab === id ? "border-foreground text-foreground" : "border-transparent text-fg-3 hover:text-foreground")}>{label}</button>
         ))}
       </div>
 

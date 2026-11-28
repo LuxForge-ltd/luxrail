@@ -49,7 +49,7 @@ export function GeneratorDialog({ initial, onSave, onClose }: { initial: string;
       footer={<Button variant="primary" size="lg" busy={busy} disabled={!t.trim()} onClick={() => void save()}>Save</Button>}>
       <input aria-label="Generator template" autoFocus value={t} onChange={(e) => setT(e.target.value)} spellCheck={false}
         onKeyDown={(e) => { if (e.key === "Enter") void save(); }}
-        className="h-[42px] w-full rounded-md border border-gray-200 bg-transparent px-3 py-2 font-mono text-base text-foreground outline-none focus-visible:shadow-none transition-colors hover:border-gray-400 focus:border-pink-400" />
+        className="h-[42px] w-full rounded-md border border-gray-200 bg-transparent px-3 py-2 font-mono text-base text-foreground outline-hidden focus-visible:shadow-none transition-colors hover:border-gray-400 focus:border-pink-400" />
       {err && <div role="alert" className="mt-2 text-sm text-danger-text">{err}</div>}
       <div className="mt-4 rounded-md bg-gray-50 p-4">
         <h3 className="text-sm font-semibold leading-5 text-foreground">How this works</h3>

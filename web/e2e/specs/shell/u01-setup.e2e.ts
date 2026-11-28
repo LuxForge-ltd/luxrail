@@ -24,7 +24,8 @@ test("U1 owner setup, logout and login", async ({ page }) => {
 
   await page.goto("/login");
   await page.getByLabel("Email").fill(env.ownerEmail);
-  await page.getByLabel("Password").fill(env.ownerPassword);
+  await page.getByRole("button", { name: "Continue" }).click();
+  await page.getByRole("textbox", { name: "Password" }).fill(env.ownerPassword);
   await page.getByRole("button", { name: "Log in" }).click();
   await expect(page.getByRole("heading", { name: "Projects" })).toBeVisible();
   await page.context().storageState({ path: OWNER_STATE });

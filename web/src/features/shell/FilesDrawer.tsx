@@ -120,7 +120,7 @@ export default function FilesDrawer({ eid, sid, replica, onPaste }: Props) {
     <section aria-label="Files" className="relative flex shrink-0 flex-col border-t border-white/10" style={{ height }}>
       <div role="separator" aria-label="Resize files" aria-orientation="horizontal" tabIndex={0}
         onPointerDown={startResize} onKeyDown={onHandleKey}
-        className="flex h-1.5 shrink-0 cursor-row-resize touch-none items-center justify-center outline-none focus-visible:shadow-none focus-visible:bg-white/5">
+        className="flex h-1.5 shrink-0 cursor-row-resize touch-none items-center justify-center outline-hidden focus-visible:shadow-none focus-visible:bg-white/5">
         <span className="console-grip h-0.5 w-8 rounded" />
       </div>
 

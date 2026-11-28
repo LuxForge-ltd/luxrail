@@ -119,7 +119,7 @@ function DeleteServiceModal({ onClose }: { onClose: () => void }) {
         <label className="mt-4 block">
           <span className="block text-sm text-fg-2">Type <b className="font-mono font-semibold text-foreground">{name}</b> to confirm</span>
           <input autoFocus value={typed} onChange={(e) => setTyped(e.target.value)} aria-label="Service name"
-            className="mt-2 h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-none transition-colors focus:border-accent-muted focus:shadow-none" />
+            className="mt-2 h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-hidden transition-colors focus:border-accent-muted focus:shadow-none" />
         </label>
         {err && <div role="alert" className="mt-3 text-sm text-danger-text">{err}</div>}
         <div className="mt-6 flex justify-end gap-2">

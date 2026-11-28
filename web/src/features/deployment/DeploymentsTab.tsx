@@ -234,7 +234,7 @@ function LeadCard({ d, onOpen, onAction }: { d: Deployment; onOpen: (did: string
   return (
     <div className={cx("overflow-hidden rounded-md border p-1", frame)} data-deployment-id={d.id}>
       <div role="link" tabIndex={0} onClick={() => onOpen(d.id)} onKeyDown={(e) => { if (e.key === "Enter") onOpen(d.id); }}
-        className="flex h-[76px] cursor-pointer items-center rounded-md px-3 outline-none">
+        className="flex h-[76px] cursor-pointer items-center rounded-md px-3 outline-hidden">
         <span className="min-w-24 shrink-0 pr-2"><StatusBadge d={d} /></span>
         <span className="w-[52px] shrink-0"><AuthorAvatar d={d} ring={ring} /></span>
         <div className="min-w-0 flex-1 pr-4">
@@ -274,7 +274,7 @@ function HistoryCard({ d, onOpen, onAction }: { d: Deployment; onOpen: (did: str
   return (
     <div className="group rounded-md border border-line p-1" data-deployment-id={d.id}>
       <div role="link" tabIndex={0} onClick={() => onOpen(d.id)} onKeyDown={(e) => { if (e.key === "Enter") onOpen(d.id); }}
-        className="flex h-[76px] cursor-pointer items-center rounded-md bg-surface-hover px-3 outline-none transition-[filter] duration-150 hover:brightness-110 focus-visible:brightness-110">
+        className="flex h-[76px] cursor-pointer items-center rounded-md bg-surface-hover px-3 outline-hidden transition-[filter] duration-150 hover:brightness-110 focus-visible:brightness-110">
         <span className="min-w-24 shrink-0 pr-2"><StatusBadge d={d} /></span>
         <span className="w-[52px] shrink-0"><AuthorAvatar d={d} /></span>
         <div className="min-w-0 flex-1 pr-4">
