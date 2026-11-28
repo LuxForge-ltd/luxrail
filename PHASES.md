@@ -84,7 +84,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 
 ### A trial Tower on LuxRail, phase 25
 
-- 2026-11-26 12:02 UTC, Ben (Tower project thread "Deploy Tower in LuxRail for trial"): "go ahead - and lets add a Tower deployment in LuxRail so we can see how it behaves". At 13:11 UTC Ben chose "Approve, UI on a LuxRail domain" on the plan's decision card in that thread, approving the plan with the web frontend reached through LuxRail's domain. At 21:44 UTC he chose "Commit and open the PR" on the commit card (sent as phase 21; it is phase 25 because phases 21 to 24 merged first, and keeps its branch name `phase-22-tower-trial-service` because its pull request, #23, was already open). Merging needs his word; creating the service on VM 105 needs his separate go.
+- 2026-11-26 12:02 UTC, Ben (Tower project thread "Deploy Tower in LuxRail for trial"): "go ahead - and lets add a Tower deployment in LuxRail so we can see how it behaves". At 13:11 UTC Ben chose "Approve, UI on a LuxRail domain" on the plan's decision card in that thread, approving the plan with the web frontend reached through LuxRail's domain. At 21:44 UTC he chose "Commit and open the PR" on the commit card (sent as phase 21; it is phase 25 because phases 21 to 24 merged first, and keeps its branch name `phase-22-tower-trial-service` because its pull request, #23, was already open). On 2026-11-28 at 00:21 UTC he said "Merge" in the project chat. Creating the service on VM 105 needs his separate go.
   - 25 `phase-22-tower-trial-service`: `luxforge/tower/` (Dockerfile, start script, forwarder, `luxrail.json`, README) for a Tower service in `luxrail-ops`, installed from the Foundry feed at `TOWER_VERSION` (default 0.0.54) with a sealed `LUXFORGE_FEED_TOKEN` build secret, its state on a volume at `/var/lib/tower`, and its loopback API forwarded to `PORT` so the frontend sits behind LuxRail's TLS and the Tower's sign-in.
 
 ## Phases
@@ -118,7 +118,7 @@ Handoff record for agent work in this repository, as required by LuxForge [AI Ag
 | 27 | `phase-27-members-row-layout` | Merged | 1.0.9 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("apply that fix you mentioned"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
 | 28 | `phase-28-test-formatting-fixes` | Merged | 1.0.10 | see pull requests | Plan approved by Ben, 2026-11-27 16:53 UTC ("carry on with the rest of the build"); commit, pull request and merge approved 17:03 UTC ("commit and merge 27 28") |
 | 29 | `phase-29-cli-self-update` | Merged | 1.0.11 | see pull requests | Plan approved by Ben, 2026-11-27 20:19 UTC ("make it so that the cli can auto-update itself when launched AND you can download it from the website itself"); commit, pull request and merge approved 21:00 UTC ("commit and merge 29") |
-| 25 | `phase-22-tower-trial-service` | Pull request open | 1.0.12 | #23 | Plan approved by Ben, 2026-11-26 12:02 and 13:11 UTC; commit and pull request approved by Ben, 2026-11-26 21:44 UTC (see Approved Plans); merge not yet approved |
+| 25 | `phase-22-tower-trial-service` | Merged | 1.0.12 | #23 | Plan approved by Ben, 2026-11-26 12:02 and 13:11 UTC; commit and pull request approved by Ben, 2026-11-26 21:44 UTC (see Approved Plans); merge approved by Ben, 2026-11-28 00:21 UTC ("Merge", project chat) |
 
 ## Handoff Notes
 
