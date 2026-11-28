@@ -110,7 +110,7 @@ export function ScanDialog({ target, repo, defaultBranch, onBack, onClose }: { t
         )}
         <ErrorLine error={scanErr} />
         {scan && (
-          <dl className="grid grid-cols-[120px,1fr] gap-x-4 gap-y-2.5 rounded-lg border border-line px-4 py-3.5 text-sm animate-fade-in">
+          <dl className="grid grid-cols-[120px_1fr] gap-x-4 gap-y-2.5 rounded-lg border border-line px-4 py-3.5 text-sm animate-fade-in">
             {rows.map(([k, v], i) => <Fragment key={i}><dt className="text-fg-3">{k}</dt><dd className="min-w-0 break-words text-foreground">{v}</dd></Fragment>)}
           </dl>
         )}

@@ -183,7 +183,7 @@ export function PlusField({ label, value, placeholder, onSave, validate, mono = 
 }
 
 /** The 42px settings input look (transparent, #33323e border, accent border on focus). */
-export const INPUT = "h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-none transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-accent-muted focus:shadow-none disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-danger";
+export const INPUT = "h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-hidden transition-colors duration-150 placeholder:text-fg-4 hover:border-fg-5 focus:border-accent-muted focus:shadow-none disabled:cursor-not-allowed disabled:opacity-60 aria-[invalid=true]:border-danger";
 
 /** A text input that saves on blur or Enter (always visible). */
 export function SaveInput({ value, onSave, label, placeholder, validate, mono, type = "text", suffix, disabled, className }: {
@@ -246,7 +246,7 @@ export function SelectCard<T extends string>({ value, options, onChange, label, 
       {(close) => options.map((o) => (
         <button key={o.value} type="button" role="option" aria-selected={o.value === value} disabled={o.disabled}
           onClick={() => { close(); if (o.value !== value) onChange(o.value); }}
-          className="flex w-full items-start gap-2 rounded px-3 py-2 text-left outline-none transition-colors hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none disabled:opacity-40">
+          className="flex w-full items-start gap-2 rounded px-3 py-2 text-left outline-hidden transition-colors hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none disabled:opacity-40">
           <span className="min-w-0 flex-1">
             <span className="flex items-center gap-2">
               <span className={cx("text-[15px]", o.value === value ? "text-accent-text" : "text-foreground")}>{o.label}</span>
@@ -279,7 +279,7 @@ export function DropField<T extends string>({ value, options, onChange, label, d
       {(close) => options.map((o) => (
         <button key={o.value} type="button" role="option" aria-selected={o.value === value}
           onClick={() => { close(); if (o.value !== value) onChange(o.value); }}
-          className={cx("flex min-h-[36px] w-full items-center gap-3 rounded px-3 text-left text-base outline-none transition-colors hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none",
+          className={cx("flex min-h-[36px] w-full items-center gap-3 rounded px-3 text-left text-base outline-hidden transition-colors hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none",
             o.value === value ? "bg-surface-hover text-foreground" : "text-fg-2 hover:text-foreground")}>
           {o.icon}
           <span className="min-w-0 flex-1 truncate">{o.label}</span>
@@ -342,7 +342,7 @@ export function InlinePanel({ title, children, hint, onCancel, submit, onSubmit,
 }
 
 /** A 42px input for inline panels (filled darker than the panel). */
-export const PANEL_INPUT = "h-[42px] w-full rounded-md border border-line bg-secondaryBg px-3 text-base text-foreground outline-none transition-colors duration-150 placeholder:text-fg-4 focus:border-accent-muted focus:shadow-none";
+export const PANEL_INPUT = "h-[42px] w-full rounded-md border border-line bg-secondaryBg px-3 text-base text-foreground outline-hidden transition-colors duration-150 placeholder:text-fg-4 focus:border-accent-muted focus:shadow-none";
 
 /** A muted underlined text button ("Add Root Directory"). */
 export function TextButton({ children, onClick, icon }: { children: ReactNode; onClick: () => void; icon?: ReactNode }) {

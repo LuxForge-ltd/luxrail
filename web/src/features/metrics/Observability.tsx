@@ -107,7 +107,7 @@ function Illustration() {
       {sets.map((bars, i) => (
         <div key={i} className="flex h-[76px] w-[96px] items-end gap-1.5 rounded-lg border border-line bg-surface-raised px-3 pb-3 pt-4">
           {bars.map((h, j) => (
-            <span key={j} className="w-full origin-bottom rounded-sm animate-rise-in" style={{ height: h * 3, background: j === bars.length - 1 ? "var(--accent)" : "var(--gray-200)", animationDelay: `${(i * 5 + j) * 40}ms` }} />
+            <span key={j} className="w-full origin-bottom rounded-xs animate-rise-in" style={{ height: h * 3, background: j === bars.length - 1 ? "var(--accent)" : "var(--gray-200)", animationDelay: `${(i * 5 + j) * 40}ms` }} />
           ))}
         </div>
       ))}

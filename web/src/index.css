@@ -1,27 +1,263 @@
 /* SPDX-License-Identifier: AGPL-3.0-only */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind 4 puts preflight and utilities in cascade layers. React Flow's stylesheet goes in the
+   components layer, so it overrides preflight and utilities override it, as in Tailwind 3. The
+   console's own rules at the end of this file close the utilities layer. */
+@layer theme, base, components, utilities;
+@import "@xyflow/react/dist/style.css" layer(components);
+@import "tailwindcss";
 
-/* Token values live in src/kit/theme.css (dark :root and html.light). */
+@theme {
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --color-secondaryBg: var(--secondaryBg);
 
-html, body, #root { height: 100%; }
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  line-height: 26px;
-  font-feature-settings: "cv11", "ss01";
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-gray-50: var(--gray-50);
+  --color-gray-100: var(--gray-100);
+  --color-gray-200: var(--gray-200);
+  --color-gray-300: var(--gray-300);
+  --color-gray-400: var(--gray-400);
+  --color-gray-500: var(--gray-500);
+  --color-gray-600: var(--gray-600);
+  --color-gray-700: var(--gray-700);
+  --color-gray-800: var(--gray-800);
+  --color-gray-900: var(--gray-900);
+  --color-gray-950: var(--gray-950);
+
+  --color-blue-50: var(--blue-50);
+  --color-blue-100: var(--blue-100);
+  --color-blue-200: var(--blue-200);
+  --color-blue-300: var(--blue-300);
+  --color-blue-400: var(--blue-400);
+  --color-blue-500: var(--blue-500);
+  --color-blue-600: var(--blue-600);
+  --color-blue-700: var(--blue-700);
+  --color-blue-800: var(--blue-800);
+  --color-blue-900: var(--blue-900);
+  --color-blue-950: var(--blue-950);
+
+  --color-red-50: var(--red-50);
+  --color-red-100: var(--red-100);
+  --color-red-200: var(--red-200);
+  --color-red-300: var(--red-300);
+  --color-red-400: var(--red-400);
+  --color-red-500: var(--red-500);
+  --color-red-600: var(--red-600);
+  --color-red-700: var(--red-700);
+  --color-red-800: var(--red-800);
+  --color-red-900: var(--red-900);
+  --color-red-950: var(--red-950);
+
+  --color-pink-50: var(--pink-50);
+  --color-pink-100: var(--pink-100);
+  --color-pink-200: var(--pink-200);
+  --color-pink-300: var(--pink-300);
+  --color-pink-400: var(--pink-400);
+  --color-pink-500: var(--pink-500);
+  --color-pink-600: var(--pink-600);
+  --color-pink-700: var(--pink-700);
+  --color-pink-800: var(--pink-800);
+  --color-pink-900: var(--pink-900);
+  --color-pink-950: var(--pink-950);
+
+  --color-green-50: var(--green-50);
+  --color-green-100: var(--green-100);
+  --color-green-200: var(--green-200);
+  --color-green-300: var(--green-300);
+  --color-green-400: var(--green-400);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
+  --color-green-700: var(--green-700);
+  --color-green-800: var(--green-800);
+  --color-green-900: var(--green-900);
+  --color-green-950: var(--green-950);
+
+  --color-yellow-50: var(--yellow-50);
+  --color-yellow-100: var(--yellow-100);
+  --color-yellow-200: var(--yellow-200);
+  --color-yellow-300: var(--yellow-300);
+  --color-yellow-400: var(--yellow-400);
+  --color-yellow-500: var(--yellow-500);
+  --color-yellow-600: var(--yellow-600);
+  --color-yellow-700: var(--yellow-700);
+  --color-yellow-800: var(--yellow-800);
+  --color-yellow-900: var(--yellow-900);
+  --color-yellow-950: var(--yellow-950);
+
+  --color-success: hsl(152, 38%, 60%);
+
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-input: var(--surface-input);
+
+  --color-line: var(--line);
+  --color-line-popover: var(--line-popover);
+  --color-line-panel: var(--line-panel);
+  --color-line-faint: var(--line-faint);
+
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-4: var(--fg-4);
+  --color-fg-5: var(--fg-5);
+  --color-fg: var(--foreground);
+  --color-fg-menu: var(--fg-menu);
+
+  --color-tint-active: var(--tint-active);
+  --color-tint-hover: var(--tint-hover);
+  --color-tint-pill: var(--tint-pill);
+  --color-tint-header: var(--tint-header);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-accent-muted: var(--accent-muted);
+  --color-accent-fg: var(--accent-fg);
+
+  --color-ok: var(--ok);
+  --color-ok-text: var(--ok-text);
+  --color-ok-soft: var(--ok-soft);
+
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-bg-hover: var(--danger-bg-hover);
+  --color-danger-line: var(--danger-line);
+  --color-danger-text: var(--danger-text);
+  --color-danger-soft: var(--danger-soft);
+
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-warn-line: var(--warn-line);
+  --color-warn-icon: var(--warn-icon);
+
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+  --color-info-line: var(--info-line);
+
+  --color-tooltip: var(--tooltip);
+  --color-tooltip-fg: var(--tooltip-fg);
+
+  --color-skeleton: var(--skeleton);
+  --color-overlay: var(--overlay);
+
+  --font-sans:
+    'Inter Variable', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    sans-serif;
+  --font-serif: 'IBM Plex Serif', Georgia, serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
+
+  /* Tailwind 3's line heights for the default sizes: fixed lengths, so a child with a smaller font
+     inherits the same line height, where Tailwind 4's are ratios of each element's own size. */
+  --text-xs--line-height: 1rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl--line-height: 2.5rem;
+
+  --text-micro: 10px;
+  --text-micro--line-height: 14px;
+  --text-caption: 12px;
+  --text-caption--line-height: 18px;
+  --text-body: 14px;
+  --text-body--line-height: 20px;
+  --text-lead: 16px;
+  --text-lead--line-height: 24px;
+  --text-h3: 18px;
+  --text-h3--line-height: 26px;
+  --text-h3--font-weight: 600;
+  --text-h2: 20px;
+  --text-h2--line-height: 28px;
+  --text-h2--font-weight: 600;
+  --text-h1: 24px;
+  --text-h1--line-height: 33px;
+  --text-h1--font-weight: 600;
+  --text-title: 28px;
+  --text-title--line-height: 38.5px;
+  --text-title--font-weight: 400;
+
+  --spacing-header: 56px;
+  --spacing-banner: 52px;
+  --spacing-sidebar: 220px;
+  --spacing-rail: 56px;
+  --spacing-nav: 36px;
+  --spacing-control: 34px;
+  --spacing-field: 40px;
+
+  --height-md: 34px;
+
+  --container-content: 1120px;
+  --container-narrow: 872px;
+
+  --radius-well: 4px;
+  --radius-menu: 6px;
+  --radius-card: 8px;
+  --radius-row: 12px;
+  --radius-panel: 12px;
+
+  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --shadow-popover:
+    0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-modal: 0 16px 48px -8px rgba(0, 0, 0, 0.5);
+  --shadow-well: inset 0 0 0 0.5px var(--line);
+  --shadow-ring: 0 0 0 2px var(--accent);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+
+  --animate-skeleton: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-overlay-in: overlay-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-modal-in: modal-scale-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-sheet-in: sheet-in 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-pop-in: pop-in 0.12s cubic-bezier(0, 0, 0.2, 1);
+  --animate-pop-in-up: pop-in-up 0.12s cubic-bezier(0, 0, 0.2, 1);
+  --animate-rise-in: rise-in 0.2s cubic-bezier(0, 0, 0.2, 1);
+  --animate-fade-in: fade-in 0.15s ease-out;
+  --animate-palette-push: palette-push 0.15s cubic-bezier(0, 0, 0.2, 1);
+  --animate-palette-pop: palette-pop 0.15s cubic-bezier(0, 0, 0.2, 1);
+  --animate-collapsible-down: collapsible-down 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-shimmer: shimmer 5s linear infinite;
+  --animate-flash: flash 1.2s ease-out;
+  --animate-toast-in: toast-in 0.2s cubic-bezier(0, 0, 0.2, 1);
+  --animate-ping: ping 1s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
-* { border-color: var(--line); }
-code, kbd, pre, samp { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
-input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color: var(--accent); }
-::selection { background: color-mix(in srgb, var(--accent) 40%, transparent); }
 
+/* Base styles, in Tailwind's base layer so any utility on the element wins, as it did in
+   Tailwind 3. Pseudo-elements keep Tailwind 3's default border colour; elements use the line
+   token. Token values live in src/kit/theme.css (dark :root and html.light). */
+@layer base {
+  ::after, ::before, ::backdrop, ::file-selector-button { border-color: var(--color-gray-200, currentcolor); }
+  * { border-color: var(--line); }
+  html, body, #root { height: 100%; }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 26px;
+    font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  code, kbd, pre, samp { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+  input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color: var(--accent); }
+  ::selection { background: color-mix(in srgb, var(--accent) 40%, transparent); }
+  /* Tailwind 4's preflight gives buttons the default cursor; Tailwind 3 gave them a pointer. */
+  button, [role="button"] { cursor: pointer; }
+  :disabled { cursor: default; }
+  /* Tailwind 4's placeholder is the text colour at half strength; Tailwind 3 used gray-400. */
+  input::placeholder, textarea::placeholder { color: var(--color-gray-400); }
+}
+
+/* The console's own rules. They close the utilities layer, after every generated utility, so
+   they win over a utility of equal specificity and lose to a variant such as focus:, exactly as
+   they did when Tailwind 3 emitted them after its utilities. */
+@layer utilities {
 /* Focus: a 2px accent ring on every keyboard-focused control. */
 :focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent); }
 .focus-ring:focus-visible { box-shadow: 0 0 0 2px var(--accent); }
@@ -49,7 +285,7 @@ input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color:
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Motion. Keyframe names match tailwind.config.js animation keys. */
+/* Motion. Keyframe names match the --animate-* keys in @theme above. */
 @keyframes panel-in { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 .panel-in { animation: panel-in 160ms ease-out; }
 @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
@@ -78,6 +314,7 @@ input[type="radio"], input[type="checkbox"], input[type="range"] { accent-color:
 @keyframes flash { from { background-color: var(--blue-100); } to { background-color: transparent; } }
 @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
 @keyframes toast-in { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

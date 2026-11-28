@@ -132,7 +132,7 @@ export const FilterBox = forwardRef<HTMLInputElement, {
             if (e.key === "Enter") { e.preventDefault(); onSubmit(value.trim()); setFocus(false); }
             if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); (e.target as HTMLInputElement).blur(); }
           }}
-          className={cx("h-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-fg-2 focus-visible:shadow-none", value && "font-mono")} />
+          className={cx("h-full min-w-0 flex-1 bg-transparent text-sm text-foreground outline-hidden placeholder:text-fg-2 focus-visible:shadow-none", value && "font-mono")} />
         {value ? (
           <button type="button" aria-label="Clear filter" onClick={() => { onChange(""); onSubmit(""); inner.current?.focus(); }}
             className="inline-flex h-6 w-6 items-center justify-center rounded text-foreground transition-colors hover:bg-surface-hover"><X size={16} /></button>

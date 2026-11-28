@@ -28,7 +28,7 @@ export type CtxEntry =
   | "sep"
   | { heading: ReactNode };
 
-const ROW = "flex w-full items-center gap-3 rounded px-3 text-left text-sm outline-none transition-colors duration-100";
+const ROW = "flex w-full items-center gap-3 rounded px-3 text-left text-sm outline-hidden transition-colors duration-100";
 
 function Rows({ items, onClose, onSub, subOpen, rowH }: {
   items: CtxEntry[]; onClose: () => void; onSub: (i: number | null, el?: HTMLElement) => void; subOpen: number | null; rowH: number;
@@ -127,7 +127,7 @@ function Panel({ x, y, items, onClose, width, rowH, level, anchorLeft, onBack, u
           if (e.key === "ArrowLeft" && onBack) { e.preventDefault(); e.stopPropagation(); onBack(); return; }
           roving(e);
         }}
-        className="cv-menu fixed z-[210] rounded-md border border-line bg-background text-foreground shadow-[0_2px_6px_rgba(0,0,0,.04),0_6px_24px_rgba(0,0,0,.24)] outline-none focus-visible:shadow-[0_2px_6px_rgba(0,0,0,.04),0_6px_24px_rgba(0,0,0,.24)]">
+        className="cv-menu fixed z-[210] rounded-md border border-line bg-background text-foreground shadow-[0_2px_6px_rgba(0,0,0,.04),0_6px_24px_rgba(0,0,0,.24)] outline-hidden focus-visible:shadow-[0_2px_6px_rgba(0,0,0,.04),0_6px_24px_rgba(0,0,0,.24)]">
         <Rows items={items} onClose={onClose} onSub={onSub} subOpen={sub?.i ?? null} rowH={rowH} />
       </div>
       {sub && entry && entry !== "sep" && !("heading" in entry) && entry.sub && (

@@ -29,7 +29,7 @@ function Underlay({ text }: { text: string }) {
   const parts = text.split(/(\$\{\{[^}]*\}\})/g);
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 whitespace-pre-wrap break-words py-1.5 pl-1.5 pr-7 text-sm leading-5 text-transparent" style={{ border: "1px solid transparent" }}>
-      {parts.map((p, i) => (p.startsWith("${{") ? <span key={i} className="rounded-sm bg-gray-200 outline outline-1 outline-gray-200">{p}</span> : p))}
+      {parts.map((p, i) => (p.startsWith("${{") ? <span key={i} className="rounded-xs bg-gray-200 outline outline-1 outline-gray-200">{p}</span> : p))}
     </div>
   );
 }

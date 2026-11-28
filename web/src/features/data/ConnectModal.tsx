@@ -84,7 +84,7 @@ export default function ConnectModal({ base, onClose, onOpenNetworking }: { base
               <div className="text-body">
                 <p>Private by default, only services inside your project can reach {name}.</p>
                 <h3 className="mt-6 text-body font-semibold text-foreground">Public Access</h3>
-                <p className="mt-1">Adds a public host and port and sets <code className="rounded-sm bg-surface px-1 font-mono text-accent-text">{pubVar}</code></p>
+                <p className="mt-1">Adds a public host and port and sets <code className="rounded-xs bg-surface px-1 font-mono text-accent-text">{pubVar}</code></p>
                 <div className="mt-3 divide-y divide-line rounded-md border border-line">
                   <div className="flex h-10 items-center gap-3 px-3 text-danger-text"><AlertTriangle size={16} className="shrink-0" />Anyone with the string can connect, use a strong password and SSL.</div>
                   <div className="flex h-10 items-center gap-3 px-3 text-fg-2"><Info size={16} className="shrink-0 text-fg-3" />Public traffic is billed as egress by your host.</div>

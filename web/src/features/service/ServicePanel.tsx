@@ -134,7 +134,7 @@ function Name({ s, eid, onService }: { s: Service; eid: string; onService: (s: S
       <input aria-label="Service name" autoFocus value={name} maxLength={32} onChange={(e) => setName(e.target.value)} onBlur={save}
         onFocus={(e) => e.currentTarget.select()}
         onKeyDown={(e) => { if (e.key === "Enter") save(); if (e.key === "Escape") { e.preventDefault(); setName(shown); setEditing(false); } }}
-        className="-ml-2 h-[34px] min-w-0 rounded-md border border-accent bg-transparent px-2 text-h1 text-foreground outline-none focus-visible:shadow-none"
+        className="-ml-2 h-[34px] min-w-0 rounded-md border border-accent bg-transparent px-2 text-h1 text-foreground outline-hidden focus-visible:shadow-none"
         style={{ width: `${Math.max(6, name.length + 2)}ch` }} />
     );
   }

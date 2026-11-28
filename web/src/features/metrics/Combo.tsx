@@ -38,10 +38,10 @@ export function Combo({ value, options, onChange, label, searchable, placeholder
         {searchable ? (
           <input ref={input} role="combobox" aria-label={label} aria-expanded={open} aria-controls={listId} aria-autocomplete="list"
             value={open ? q : cur?.label ?? ""} placeholder={cur ? undefined : placeholder} onFocus={() => setOpen(true)} onChange={(e) => { setQ(e.target.value); setOpen(true); }}
-            className={cx("h-full min-w-0 flex-1 bg-transparent text-base outline-none focus-visible:shadow-none placeholder:text-fg-4", cur ? "text-foreground" : "text-fg-4")} />
+            className={cx("h-full min-w-0 flex-1 bg-transparent text-base outline-hidden focus-visible:shadow-none placeholder:text-fg-4", cur ? "text-foreground" : "text-fg-4")} />
         ) : (
           <button type="button" role="combobox" aria-label={label} aria-expanded={open} aria-controls={listId} onClick={(e) => { e.stopPropagation(); setOpen((o) => !o); }}
-            className="h-full min-w-0 flex-1 truncate text-left text-base text-foreground outline-none">{cur?.label}</button>
+            className="h-full min-w-0 flex-1 truncate text-left text-base text-foreground outline-hidden">{cur?.label}</button>
         )}
         <ChevronDown size={18} className={cx("shrink-0 text-foreground transition-transform duration-200", open && "rotate-180")} />
       </div>

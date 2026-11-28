@@ -72,8 +72,8 @@ const Row = memo(function Row({ l, c }: { l: LogLine; c: RowCtx }) {
           <div key={col} role="cell" className="flex min-w-0 items-stretch py-[4px] pl-3">
             {c.opts.severity ? (
               <button type="button" aria-label={`Filter level ${lvl}`} title={`Filter @level:${lvl}`} onClick={(e) => { e.stopPropagation(); c.onFilter("level", lvl); }}
-                className="group/bar flex min-h-[18px] items-stretch gap-3 text-left outline-none">
-                <span className={cx("w-1 shrink-0 self-stretch rounded-sm", LEVEL_BAR[lvl], lvl === "debug" && "opacity-70")} />
+                className="group/bar flex min-h-[18px] items-stretch gap-3 text-left outline-hidden">
+                <span className={cx("w-1 shrink-0 self-stretch rounded-xs", LEVEL_BAR[lvl], lvl === "debug" && "opacity-70")} />
                 <span className="whitespace-nowrap tabular-nums text-fg-2 group-hover/bar:underline" title={fmtStampMs(l.ts)}>
                   <span className="hidden md:inline">{fmtStamp(l.ts)}</span><span className="md:hidden">{fmtStamp(l.ts, false)}</span>
                 </span>
@@ -86,7 +86,7 @@ const Row = memo(function Row({ l, c }: { l: LogLine; c: RowCtx }) {
         if (col === "service") return (
           <div key={col} role="cell" className="min-w-0 px-2 py-[4px]">
             <button type="button" onClick={(e) => { e.stopPropagation(); c.onFilter("service", c.serviceName(l)); }} title={`Filter @service:${c.serviceName(l)}`}
-              className="max-w-full truncate text-left text-fg-2 outline-none hover:underline focus-visible:underline">{c.serviceName(l)}</button>
+              className="max-w-full truncate text-left text-fg-2 outline-hidden hover:underline focus-visible:underline">{c.serviceName(l)}</button>
           </div>
         );
         if (col === "deploy") return <div key={col} role="cell" className="truncate px-2 py-[4px] text-fg-2">{shortId(l.deploymentId)}</div>;

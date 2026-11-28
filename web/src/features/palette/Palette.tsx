@@ -216,7 +216,7 @@ function PaletteDialog({ onClose, initial }: { onClose: () => void; initial?: st
           <input ref={input} autoFocus value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} aria-label="Search commands" autoComplete="off" spellCheck={false}
             role="combobox" aria-expanded="true" aria-controls="palette-list" aria-activedescendant={rows[cursor] ? `pal-${cursor}` : undefined}
             placeholder={level.placeholder || "What can we help with?"}
-            className="h-14 w-full shrink-0 rounded-t-lg bg-surface-raised px-6 text-lead text-foreground caret-white outline-none placeholder:text-fg-3 focus-visible:shadow-none" />
+            className="h-14 w-full shrink-0 rounded-t-lg bg-surface-raised px-6 text-lead text-foreground caret-white outline-hidden placeholder:text-fg-3 focus-visible:shadow-none" />
           <div key={stack.length} className={cx("scroll-palette min-h-0 flex-1 overflow-y-auto border-t border-line", dir === "push" && "animate-palette-push", dir === "pop" && "animate-palette-pop")}>
             <ul id="palette-list" ref={listRef} role="listbox" className="py-3">
               {sections.map((sec, si) => (

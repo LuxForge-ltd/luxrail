@@ -79,6 +79,15 @@ the same number, `v<VERSION>`, starting at `v1.0.0` (see `luxforge/release/READM
   `LUXRAIL_NO_UPDATE=1` turns it off. (`internal/upgrade/cli.go`, `internal/cp/core/api/clidist.go`,
   `internal/cli/selfupdate.go`, `web/src/features/cli/`)
 
+- **Tailwind CSS 4.** The console builds with Tailwind 4 through `@tailwindcss/vite` (no PostCSS or
+  `tailwind.config.js`); the theme lives in `@theme` in `web/src/index.css`, and LuxRail's base and
+  custom rules sit in cascade layers so utilities still win. The console now needs Chrome or Edge
+  111, Safari 16.4 or Firefox 128 or later. Two Tailwind 4 rules to keep in mind: a plain
+  `hidden` no longer beats `inline`, `inline-block` or `inline-flex` in the same class list (use
+  `max-sm:hidden` and the like), and `rounded-sm` is now 4px (Tailwind 3's 2px is `rounded-xs`).
+  `web/e2e/specs/visual/screens.e2e.ts` and `scripts/screens-diff.py` capture every main screen
+  in both themes at three widths and compare two builds image by image.
+
 ### Moving VM 105 from `caddy-lan` to `consoleLan`
 
 VM 105 serves `https://10.10.180.5:8443` from a separate Caddy (`luxrail-lan.service`,

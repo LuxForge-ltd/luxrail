@@ -91,7 +91,7 @@ export function PaletteInput({ value, onChange, placeholder, icon, onBack, onKey
       <input ref={ref} value={value} onChange={(e) => onChange(e.target.value)} onKeyDown={onKeyDown} placeholder={placeholder}
         aria-label={label} role="combobox" aria-expanded aria-controls={listId} aria-activedescendant={activeId} aria-autocomplete="list"
         autoComplete="off" spellCheck={false}
-        className={cx("h-[46px] w-full rounded-md border border-pink-300 bg-pink-50 py-3 pl-9 pr-3 text-sm text-foreground outline-none",
+        className={cx("h-[46px] w-full rounded-md border border-pink-300 bg-pink-50 py-3 pl-9 pr-3 text-sm text-foreground outline-hidden",
           "placeholder:text-fg-4 transition-colors focus:border-pink-400 focus-visible:shadow-none", mono && "font-mono text-[13px]")} />
     </div>
   );

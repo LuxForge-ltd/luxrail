@@ -185,7 +185,7 @@ export function MenuItem({ children, onClick, active, checkSide = "right", dange
   return (
     <button type="button" role="menuitem" disabled={disabled} onClick={onClick}
       className={cx(
-        "flex w-full items-center gap-2.5 rounded px-3 text-left text-sm font-medium outline-none transition-colors duration-150",
+        "flex w-full items-center gap-2.5 rounded px-3 text-left text-sm font-medium outline-hidden transition-colors duration-150",
         description ? "min-h-[44px] py-1.5" : "min-h-[36px]",
         "hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none disabled:pointer-events-none disabled:opacity-40",
         danger ? "text-danger-text hover:text-danger-soft" : active ? "text-fg-menu" : "text-fg-2 hover:text-foreground focus-visible:text-foreground",
@@ -254,7 +254,7 @@ export function Listbox<T extends string = string>({ value, options, onChange, p
       {(close) => options.map((o) => (
         <button key={o.value} type="button" role="option" aria-selected={o.value === value} aria-disabled={o.disabled || undefined} disabled={o.disabled}
           onClick={() => { close(); onChange(o.value); }}
-          className={cx("flex min-h-[36px] w-full items-center gap-2.5 rounded px-3 text-left text-sm font-medium outline-none transition-colors hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none disabled:opacity-40",
+          className={cx("flex min-h-[36px] w-full items-center gap-2.5 rounded px-3 text-left text-sm font-medium outline-hidden transition-colors hover:bg-surface-hover focus-visible:bg-surface-hover focus-visible:shadow-none disabled:opacity-40",
             o.value === value ? "text-fg-menu" : "text-fg-2 hover:text-foreground")}>
           {o.icon && <span className="flex shrink-0 [&>svg]:h-4 [&>svg]:w-4">{o.icon}</span>}
           <span className="min-w-0 flex-1"><span className="block truncate">{o.label}</span>{o.description && <span className="block truncate text-caption font-normal text-fg-3">{o.description}</span>}</span>
@@ -367,7 +367,7 @@ export function Modal({ title, children, onClose, footer, width = 480, descripti
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-overlay p-4 animate-overlay-in"
       onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div ref={ref} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}
-        className={cx("relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-lg bg-surface-raised text-foreground shadow-modal outline-none animate-modal-in", className)}
+        className={cx("relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-lg bg-surface-raised text-foreground shadow-modal outline-hidden animate-modal-in", className)}
         style={{ maxWidth: width }}>
         {!bare && (
           <div className="flex items-start justify-between gap-4 px-6 pb-3 pt-6">
@@ -460,7 +460,7 @@ export function Confirm({ title, body, confirm, danger, typeName, onConfirm, onC
           <label className="block space-y-2">
             <span className="block text-caption font-semibold text-fg-2">Type <span className="font-mono text-foreground">{typeName}</span> to confirm</span>
             <input autoFocus value={typed} onChange={(e) => setTyped(e.target.value)}
-              className="h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-none focus:border-accent focus:shadow-none" />
+              className="h-[42px] w-full rounded-md border border-line bg-transparent px-3 text-base text-foreground outline-hidden focus:border-accent focus:shadow-none" />
           </label>
         )}
         {!!err && <div role="alert" className="rounded-md border border-danger-line bg-danger-bg px-3 py-2 text-sm text-danger-text">{err instanceof Error ? err.message : String(err)}</div>}

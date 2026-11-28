@@ -210,7 +210,7 @@ function Configuration({ d }: { d: DeploymentDetail }) {
           <div className="relative rounded-md bg-surface-hover">
             <div className="absolute right-4 top-4 flex items-center gap-2">
               <select aria-label="Format" value={fmt} onChange={(e) => setFmt(e.target.value as "json" | "yaml")}
-                className="h-[34px] rounded-md border border-line bg-transparent px-3 text-sm text-foreground outline-none hover:border-fg-5 focus:border-accent">
+                className="h-[34px] rounded-md border border-line bg-transparent px-3 text-sm text-foreground outline-hidden hover:border-fg-5 focus:border-accent">
                 <option value="json">JSON</option><option value="yaml">YAML</option>
               </select>
               <CopyButton text={code} label="Copy config" size={34} className="border border-line" />

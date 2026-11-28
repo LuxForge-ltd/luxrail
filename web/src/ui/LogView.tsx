@@ -150,7 +150,7 @@ export default function LogView({ targets, version, showService, onService, hist
             <label className="flex items-center gap-3 h-[34px] px-3 rounded-md border border-gray-200 focus-within:border-pink-400 font-mono text-sm">
               <Search size={15} className="text-gray-500 shrink-0" />
               <input ref={inputRef} value={q} onChange={(e) => setQ(e.target.value)} onBlur={() => setApplied(q)}
-                placeholder={placeholder || 'Filter and search logs'} className="flex-1 min-w-0 bg-transparent outline-none font-sans placeholder:text-gray-500" />
+                placeholder={placeholder || 'Filter and search logs'} className="flex-1 min-w-0 bg-transparent outline-hidden font-sans placeholder:text-gray-500" />
               <kbd className="text-xs text-gray-500 border border-gray-200 rounded px-1.5">/</kbd>
             </label>
           </form>

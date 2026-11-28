@@ -187,7 +187,7 @@ export function RenameChip({ rect, value, onSave, onClose }: { rect: DOMRect; va
             if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); onClose(); }
             if (e.key === "Enter") { e.preventDefault(); if (v.trim()) onSave(v.trim()); onClose(); }
           }}
-          className="block h-14 w-full rounded-md bg-surface-raised px-6 text-base text-foreground shadow-modal outline-none placeholder:text-fg-4 focus-visible:shadow-modal" />
+          className="block h-14 w-full rounded-md bg-surface-raised px-6 text-base text-foreground shadow-modal outline-hidden placeholder:text-fg-4 focus-visible:shadow-modal" />
       </div>
     </div>,
     document.body,

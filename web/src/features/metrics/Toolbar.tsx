@@ -102,7 +102,7 @@ function TimeField({ label, value, onChange, onCommit, invalid, placeholder }: {
       <div className={cx("relative flex h-8 items-center rounded-md border bg-transparent transition-colors duration-150 focus-within:border-fg-4", invalid ? "border-danger" : "border-line")}>
         <input id={id} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} aria-invalid={invalid}
           onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); onCommit(); } }}
-          className="h-full min-w-0 flex-1 bg-transparent px-2.5 text-caption text-foreground outline-none focus-visible:shadow-none placeholder:text-fg-4" />
+          className="h-full min-w-0 flex-1 bg-transparent px-2.5 text-caption text-foreground outline-hidden focus-visible:shadow-none placeholder:text-fg-4" />
         <button type="button" aria-label={`Pick ${label.toLowerCase()} date`} onClick={() => native.current?.showPicker?.()}
           className="mr-1 inline-flex h-6 w-6 items-center justify-center rounded text-fg-3 transition-colors hover:text-foreground">
           <CalendarDays size={14} />
